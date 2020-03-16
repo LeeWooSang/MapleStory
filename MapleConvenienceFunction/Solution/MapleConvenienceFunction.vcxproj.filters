@@ -53,6 +53,18 @@
     <Filter Include="Code\GameObject\Skill\PassiveSkill">
       <UniqueIdentifier>{8cd43a46-044a-4518-a10b-f86c0df42c07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\Job\Adventurer">
+      <UniqueIdentifier>{f762d560-241a-4af4-b32c-1d0821d97db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Job\Adventurer\AdventurerWarrior">
+      <UniqueIdentifier>{f4083155-4cd3-470a-9510-df7fb0d66c21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Job\Adventurer\AdventurerArcher">
+      <UniqueIdentifier>{0e7514ab-5bf7-4eba-8ad4-6016c7c19256}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero">
+      <UniqueIdentifier>{896657fd-e8c3-4058-8d12-474ceab91694}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Main.cpp">
@@ -105,6 +117,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Skill\ActiveSkill\ActiveSkill.cpp">
       <Filter>Code\GameObject\Skill\ActiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Skill\SkillManager.cpp">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Job\Adventurer\Adventurer.cpp">
+      <Filter>Code\GameObject\Job\Adventurer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Job\Adventurer\AdventurerWarrior\AdventurerWarrior.cpp">
+      <Filter>Code\GameObject\Job\Adventurer\AdventurerWarrior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero\Hero.cpp">
+      <Filter>Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +185,18 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Skill\ActiveSkill\ActiveSkill.h">
       <Filter>Code\GameObject\Skill\ActiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Skill\SkillManager.h">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Job\Adventurer\Adventurer.h">
+      <Filter>Code\GameObject\Job\Adventurer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Job\Adventurer\AdventurerWarrior\AdventurerWarrior.h">
+      <Filter>Code\GameObject\Job\Adventurer\AdventurerWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero\Hero.h">
+      <Filter>Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

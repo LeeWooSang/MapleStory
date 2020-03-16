@@ -1,9 +1,9 @@
 #pragma once
 #include "../GameObject.h"
 
-struct Slot
+struct InvenSlot
 {
-	Slot() : m_item(nullptr), m_isEmpty(true)	{ }
+	InvenSlot() : m_item(nullptr), m_isEmpty(true)	{ }
 
 	class Item* m_item;
 	bool m_isEmpty;
@@ -29,7 +29,7 @@ public:
 	void SetPlayerMeso(unsigned __int64 meso) { m_meso = meso; }
 
 private:
-	Slot* m_slot;
+	InvenSlot* m_slot;
 	unsigned char m_slotSize;
 	unsigned __int64 m_meso;
 };

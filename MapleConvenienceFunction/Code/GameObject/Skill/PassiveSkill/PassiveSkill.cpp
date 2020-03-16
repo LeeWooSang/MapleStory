@@ -9,7 +9,7 @@ PassiveSkill::~PassiveSkill()
 {
 }
 
-bool PassiveSkill::Initialize(void *)
+bool PassiveSkill::Initialize(void*)
 {
 	return false;
 }

@@ -34,7 +34,7 @@ bool Inventory::Initialize(void* p)
 	if (m_slotSize <= 0)
 		return false;
 
-	m_slot = new Slot[m_slotSize];
+	m_slot = new InvenSlot[m_slotSize];
 
 	return true;
 }
@@ -86,7 +86,7 @@ bool Inventory::ResizeSlot(unsigned char newSlotSize)
 	// 3. 기존 슬롯의 데이터를 새로 할당한 슬롯에 복사한다.
 	// 4. 기존 슬롯을 지움
 	// 5. 현재 슬롯 개수를 변경한다.
-	Slot* newSlot = new Slot[newSlotSize];
+	InvenSlot* newSlot = new InvenSlot[newSlotSize];
 
 	for (int i = 0; i < m_slotSize; ++i)
 	{

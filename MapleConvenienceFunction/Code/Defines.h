@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <array>
 #include <unordered_map>
 #include <algorithm>
 #include <fstream>

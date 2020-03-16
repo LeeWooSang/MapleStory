@@ -17,5 +17,7 @@ private:
 
 	class Union* m_uni;
 	class Inventory* m_inventory;
+
+	list<class Skill*> m_skillList;
 };
 

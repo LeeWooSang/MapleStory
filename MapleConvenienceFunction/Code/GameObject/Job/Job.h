@@ -28,7 +28,7 @@ public:
 
 	MAIN_STAT GetMainStat()	const { return m_mainStat; }
 
-private:
+protected:
 	int m_unionRank;
 	int m_unionRaiderEffect;
 
@@ -42,8 +42,9 @@ private:
 enum JOB_KIND
 {
 	// 전사 직업군
-	WARRIOR = 0x0001,
-	ARCHER = 0x0002,
-	WIZARD = 0x0004,
-	THIEF = 0x0008
+	WARRIOR		= 0x0001,
+	ARCHER		= 0x0002,
+	MAGICIAN	= 0x0004,
+	THIEF			= 0x0008,
+	PIRATE			= 0x0010
 };

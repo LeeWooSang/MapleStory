@@ -4,6 +4,7 @@
 #include "../../Union/Union.h"
 #include "../../Inventory/Inventory.h"
 #include "../../Status/PlayerStatus/PlayerStatus.h"
+#include "../../Skill/SkillManager.h"
 
 Player::Player(const string& name)
 	: Character(name)
@@ -58,6 +59,9 @@ bool Player::Initialize(void* p)
 	if (m_stat->Initialize(reinterpret_cast<void*>(m_myCharacter->m_level)) == false)
 		return false;
 
+	if (GET_INSTANCE(SkillManager)->Initialize() == false)
+		return false;
+
 	cout << "플레이어 초기화 완료" << endl;
 
 	return true;
@@ -92,6 +96,11 @@ void Player::Update()
 	case 'u':
 	case 'U':
 		m_uni->Update();
+		break;
+
+	case 'k':
+	case 'K':
+		GET_INSTANCE(SkillManager)->Update();
 		break;
 
 	default:
