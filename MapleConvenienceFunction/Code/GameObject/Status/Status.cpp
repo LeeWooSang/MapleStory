@@ -18,6 +18,7 @@ bool Status::Initialize(void* p)
 {
 	m_level = reinterpret_cast<unsigned char>(p);
 
+
 	return true;
 }
 

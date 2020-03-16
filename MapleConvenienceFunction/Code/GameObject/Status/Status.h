@@ -10,6 +10,7 @@ public:
 	virtual bool Initialize(void*);
 	virtual void Update();
 
+	const string& GetNickName()	const { return m_nickName; }
 	unsigned char GetLevel()	const { return m_level; }
 
 protected:

@@ -174,7 +174,7 @@ bool Resource::LoadCharacterInfo()
 	int level = 0;
 
 	while (in >> nickName >> jobName >> level)
-		m_characterInfoList.emplace(nickName, CharacterInfo(jobName, level));
+		m_characterInfoList.emplace(nickName, CharacterInfo(nickName, jobName, level));
 
 	in.close();
 

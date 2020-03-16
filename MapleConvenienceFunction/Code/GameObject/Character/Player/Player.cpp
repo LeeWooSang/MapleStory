@@ -44,12 +44,15 @@ bool Player::Initialize(void* p)
 {
 	string nickName = "";
 	auto characterInfo = GET_INSTANCE(Resource)->GetCharacterInfo();
-	
+
 	auto iter = characterInfo.find(nickName);
 	if (iter == characterInfo.end())
 		return false;
+
+	CharacterInfo myCharacter = (*iter).second;
+
 	// 직업이름을 인자로 줌
-	m_job = new Job((*iter).second.m_name);
+	m_job = new Job(reinterpret_castmyCharacter);
 	if (m_job->Initialize(nullptr) == false)
 		return false;
 

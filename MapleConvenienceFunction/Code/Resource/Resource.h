@@ -21,10 +21,11 @@ struct JobInfo
 
 struct CharacterInfo
 {
-	CharacterInfo(const string& name, unsigned char level)
-		: m_name(name), m_level(level) {}
+	CharacterInfo(const string& nickName, const string& jobName, unsigned char level)
+		: m_nickName(nickName), m_jobName(jobName), m_level(level) {}
 
-	string m_name;
+	string m_nickName;
+	string m_jobName;
 	unsigned char m_level;
 };
 

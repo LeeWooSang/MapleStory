@@ -36,6 +36,7 @@ bool Union::Initialize(void* p)
 {
 	if (p == nullptr)
 		return false;
+	Job* myJob = reinterpret_cast<Job*>(p);
 
 	// 유니온 캐릭터 정보 저장
 	auto characterInfo = GET_INSTANCE(Resource)->GetCharacterInfo();
