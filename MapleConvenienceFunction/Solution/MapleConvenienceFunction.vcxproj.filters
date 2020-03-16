@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Code">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Code\GameObject">
+      <UniqueIdentifier>{ff601eeb-3a96-4bbf-825a-6416b9a21ae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Item">
+      <UniqueIdentifier>{9d2f9745-acc6-4528-acea-6a2c46bed631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Auction">
+      <UniqueIdentifier>{b68d001f-c1d0-46e1-9403-a48a290036bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Union">
+      <UniqueIdentifier>{d750229d-38de-4e7a-a754-ce3b9e5506eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Job">
+      <UniqueIdentifier>{05411c14-d71f-49db-8c66-e917ebc5425a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Resource">
+      <UniqueIdentifier>{9d8bdc4e-78e6-4d65-8b5a-16eee8d3b88b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core">
+      <UniqueIdentifier>{e01baa77-0410-4d3c-9031-4e5bf516ba4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Status">
+      <UniqueIdentifier>{2f1d4997-ef37-4b34-ba4f-235bfbe20352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Item\ArcaneSymbol">
+      <UniqueIdentifier>{20d59ccf-2b5a-4828-be1d-d6abd49259fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Character">
+      <UniqueIdentifier>{7a8ab856-8423-4847-84f8-fa2bdbe5674b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Character\Player">
+      <UniqueIdentifier>{67ddf461-6066-416e-863f-8500288ded07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Status\PlayerStatus">
+      <UniqueIdentifier>{89238e3e-9488-4e80-9aa0-7bb0d0b05722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Inventory">
+      <UniqueIdentifier>{c6a604cc-86a8-49f0-8a26-291dfe1309bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Code\Main.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\GameObject.cpp">
+      <Filter>Code\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Item\Item.cpp">
+      <Filter>Code\GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Auction\Auction.cpp">
+      <Filter>Code\GameObject\Auction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Union\Union.cpp">
+      <Filter>Code\GameObject\Union</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Job\Job.cpp">
+      <Filter>Code\GameObject\Job</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Resource\Resource.cpp">
+      <Filter>Code\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Core\Core.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Status\Status.cpp">
+      <Filter>Code\GameObject\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Item\ArcaneSymbol\ArcaneSymbol.cpp">
+      <Filter>Code\GameObject\Item\ArcaneSymbol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Character\Character.cpp">
+      <Filter>Code\GameObject\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp">
+      <Filter>Code\GameObject\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.cpp">
+      <Filter>Code\GameObject\Status\PlayerStatus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Inventory\Inventory.cpp">
+      <Filter>Code\GameObject\Inventory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Code\GameObject\GameObject.h">
+      <Filter>Code\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Defines.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Item\Item.h">
+      <Filter>Code\GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Auction\Auction.h">
+      <Filter>Code\GameObject\Auction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Union\Union.h">
+      <Filter>Code\GameObject\Union</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Job\Job.h">
+      <Filter>Code\GameObject\Job</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Resource\Resource.h">
+      <Filter>Code\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Macro.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Core\Core.h">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Status\Status.h">
+      <Filter>Code\GameObject\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Item\ArcaneSymbol\ArcaneSymbol.h">
+      <Filter>Code\GameObject\Item\ArcaneSymbol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Character\Character.h">
+      <Filter>Code\GameObject\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Character\Player\Player.h">
+      <Filter>Code\GameObject\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.h">
+      <Filter>Code\GameObject\Status\PlayerStatus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Inventory\Inventory.h">
+      <Filter>Code\GameObject\Inventory</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
