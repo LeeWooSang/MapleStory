@@ -3,55 +3,41 @@
 #include "../Job/Job.h"
 #include "../Status/PlayerStatus/PlayerStatus.h"
 
-Union::Union()
-	: m_unionLevel(0), m_unionSize(0)
-{
-	m_unionInfoList.clear();
-}
-
 Union::Union(const string& name)
 	: GameObject(name), m_unionLevel(0), m_unionSize(0)
 {
-	m_unionInfoList.clear();
+	m_unionCharacterList.clear();
 }
 
 Union::~Union()
 {
-	for (auto iter = m_unionInfoList.begin(); iter != m_unionInfoList.end(); )
+	for (auto iter = m_unionCharacterList.begin(); iter != m_unionCharacterList.end(); ++iter)
 	{
 		if ((*iter)->m_job == nullptr)
-		{
-			++iter;
 			continue;
-		}
 
 		delete (*iter)->m_job;
 		(*iter)->m_job = nullptr;
 	}
 
-	SAFE_DELETE_LIST(m_unionInfoList);
+	SAFE_DELETE_LIST(m_unionCharacterList);
 }
 
 bool Union::Initialize(void* p)
 {
-	if (p == nullptr)
-		return false;
-	Job* myJob = reinterpret_cast<Job*>(p);
-
 	// 유니온 캐릭터 정보 저장
 	auto characterInfo = GET_INSTANCE(Resource)->GetCharacterInfo();
 	for (auto iter = characterInfo.begin(); iter != characterInfo.end(); ++iter)
 	{
-		Job* job = new Job((*iter).first);
-		UnionInfo* info = new UnionInfo(job, (*iter).second);
-		m_unionInfoList.emplace_back(info);
+		Job* job = new Job((*iter).second.m_jobName);
+		m_unionCharacterList.emplace_back(new UnionCharaterInfo((*iter).first, job, (*iter).second.m_level));
 		if (job->Initialize(nullptr) == false)
 			return false;
 	}
 
 	// 유니온 캐릭터에 맞는 공격대원 효과 저장
 	auto raiderEffectInfo = GET_INSTANCE(Resource)->GetUnionRaiderEffectInfo();
-	for (auto iter = m_unionInfoList.begin(); iter != m_unionInfoList.end(); ++iter)
+	for (auto iter = m_unionCharacterList.begin(); iter != m_unionCharacterList.end(); ++iter)
 	{
 		auto iter2 = raiderEffectInfo.find((*iter)->m_job->GetName());
 		if (iter2 == raiderEffectInfo.end())
@@ -92,12 +78,12 @@ void Union::Update()
 
 void Union::CalculateUnionLevel()
 {
-	if (m_unionInfoList.size() <= 0)
+	if (m_unionCharacterList.size() <= 0)
 		return;
 
-	else if (m_unionInfoList.size() == 1)
+	else if (m_unionCharacterList.size() == 1)
 	{
-		auto iter = m_unionInfoList.begin();
+		auto iter = m_unionCharacterList.begin();
 		m_unionLevel = (*iter)->m_level;
 
 		m_unionSize = 1;
@@ -106,9 +92,9 @@ void Union::CalculateUnionLevel()
 	}
 
 	// 직업 레벨 순위 정렬
-	m_unionInfoList.sort([](const UnionInfo* a, const UnionInfo* b) { return a->m_level > b->m_level; });
+	m_unionCharacterList.sort([](const UnionCharaterInfo* a, const UnionCharaterInfo* b) { return a->m_level > b->m_level; });
 
-	for (auto data : m_unionInfoList)
+	for (auto data : m_unionCharacterList)
 	{
 		if (data->m_level < 60)
 			continue;
@@ -123,7 +109,7 @@ void Union::CalculateUnionLevel()
 
 void Union::CalculateUnionRank()
 {
-	for (auto data : m_unionInfoList)
+	for (auto data : m_unionCharacterList)
 	{
 		int rank = 0x0000;
 		int level = data->m_level;
@@ -180,7 +166,7 @@ void Union::CalculateUnionRaiderEffect(PlayerStatus* stat)
 	int tempExp = 0;
 	int tempMeso = 0;
 
-	for (auto data : m_unionInfoList)
+	for (auto data : m_unionCharacterList)
 	{
 		result |= data->m_job->GetUnionRank();
 		result |= data->m_job->GetUnionRaiderEffect();
@@ -305,7 +291,7 @@ void Union::ShowUnion()
 	cout << "=============== [유니온] ===============" << endl;
 	cout << "유니온 레벨 : " << m_unionLevel << endl;
 
-	for (auto data : m_unionInfoList)
+	for (auto data : m_unionCharacterList)
 		cout << "등급 : " << data->m_job->GetUnionRank() << ", 직업 : " << data->m_job->GetName() << ", 레벨 : " << static_cast<int>(data->m_level)
 		<< ", 공격대원 효과 : " << data->m_job->GetUnionRaiderEffect() << endl;
 	cout << "========================================" << endl;
@@ -317,4 +303,15 @@ void Union::AddUnionCharacter()
 
 void Union::SaveUnionCharacter()
 {
+}
+
+UnionCharaterInfo* Union::GetMyCharacter(const string& nickName)
+{
+	for (auto iter = m_unionCharacterList.begin(); iter != m_unionCharacterList.end(); ++iter)
+	{
+		if ((*iter)->m_nickName == nickName)
+			return (*iter);
+	}
+
+	return nullptr;
 }

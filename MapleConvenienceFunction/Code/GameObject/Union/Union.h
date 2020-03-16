@@ -1,10 +1,12 @@
 #pragma once
 #include "../GameObject.h"
 
-struct UnionInfo
+struct UnionCharaterInfo
 {
-	UnionInfo(class Job* job, unsigned char level) : m_job(job), m_level(level) {}
+	UnionCharaterInfo(const string& nickName, class Job* job, unsigned char level)
+		: m_nickName(nickName), m_job(job), m_level(level) {}
 
+	string m_nickName;
 	class Job* m_job;
 	unsigned char m_level;
 };
@@ -12,7 +14,6 @@ struct UnionInfo
 class Union : public GameObject
 {
 public:
-	Union();
 	Union(const string&);
 	virtual ~Union();
 
@@ -32,10 +33,10 @@ public:
 	void AddUnionCharacter();
 	void SaveUnionCharacter();
 
-	const list<UnionInfo*>& GetUnionInfo() const { return m_unionInfoList; }
+	UnionCharaterInfo* GetMyCharacter(const string&);
 
 private:
-	list<UnionInfo*> m_unionInfoList;
+	list<UnionCharaterInfo*> m_unionCharacterList;
 
 	unsigned short m_unionLevel;
 	int m_unionSize;

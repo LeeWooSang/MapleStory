@@ -28,6 +28,9 @@
     <ClCompile Include="..\Code\GameObject\Item\ArcaneSymbol\ArcaneSymbol.cpp" />
     <ClCompile Include="..\Code\GameObject\Item\Item.cpp" />
     <ClCompile Include="..\Code\GameObject\Job\Job.cpp" />
+    <ClCompile Include="..\Code\GameObject\Skill\ActiveSkill\ActiveSkill.cpp" />
+    <ClCompile Include="..\Code\GameObject\Skill\PassiveSkill\PassiveSkill.cpp" />
+    <ClCompile Include="..\Code\GameObject\Skill\Skill.cpp" />
     <ClCompile Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.cpp" />
     <ClCompile Include="..\Code\GameObject\Status\Status.cpp" />
     <ClCompile Include="..\Code\GameObject\Union\Union.cpp" />
@@ -45,6 +48,9 @@
     <ClInclude Include="..\Code\GameObject\Item\ArcaneSymbol\ArcaneSymbol.h" />
     <ClInclude Include="..\Code\GameObject\Item\Item.h" />
     <ClInclude Include="..\Code\GameObject\Job\Job.h" />
+    <ClInclude Include="..\Code\GameObject\Skill\ActiveSkill\ActiveSkill.h" />
+    <ClInclude Include="..\Code\GameObject\Skill\PassiveSkill\PassiveSkill.h" />
+    <ClInclude Include="..\Code\GameObject\Skill\Skill.h" />
     <ClInclude Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.h" />
     <ClInclude Include="..\Code\GameObject\Status\Status.h" />
     <ClInclude Include="..\Code\GameObject\Union\Union.h" />

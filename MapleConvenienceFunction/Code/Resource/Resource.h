@@ -21,10 +21,9 @@ struct JobInfo
 
 struct CharacterInfo
 {
-	CharacterInfo(const string& nickName, const string& jobName, unsigned char level)
-		: m_nickName(nickName), m_jobName(jobName), m_level(level) {}
+	CharacterInfo(const string& jobName, unsigned char level)
+		: m_jobName(jobName), m_level(level) {}
 
-	string m_nickName;
 	string m_jobName;
 	unsigned char m_level;
 };
@@ -52,7 +51,7 @@ public:
 	bool SaveJobInfo();
 
 	bool LoadCharacterInfo();
-	bool SaveCharacterInfo(list<class Job*>&);
+	bool SaveCharacterInfo();
 
 	bool LoadUnionRaiderEffectInfo();
 	bool SaveUnionRaiderEffectInfo();

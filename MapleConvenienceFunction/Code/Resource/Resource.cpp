@@ -26,7 +26,7 @@ bool Resource::Initialize()
 
 	if (LoadJobInfo() == false)
 		return false;
-	
+
 	if (LoadCharacterInfo() == false)
 		return false;
 
@@ -174,7 +174,7 @@ bool Resource::LoadCharacterInfo()
 	int level = 0;
 
 	while (in >> nickName >> jobName >> level)
-		m_characterInfoList.emplace(nickName, CharacterInfo(nickName, jobName, level));
+		m_characterInfoList.emplace(nickName, CharacterInfo(jobName, level));
 
 	in.close();
 
@@ -183,12 +183,21 @@ bool Resource::LoadCharacterInfo()
 	return true;
 }
 
-bool Resource::SaveCharacterInfo(list<class Job*>& characterList)
+bool Resource::SaveCharacterInfo()
 {
 	ofstream out("../Resource/CharacterInfo.txt");
 
-	//for (auto data : characterList)
-	//	out << data->GetName() << '\t' << static_cast<int>(data->GetLevel()) << endl;
+	m_characterInfoList.emplace("Ã¢¿ø±âÀü", CharacterInfo("È÷¾î·Î", 237));
+	m_characterInfoList.emplace("¾ÅÁð", CharacterInfo("ÆÈ¶óµò", 211));
+	m_characterInfoList.emplace("ºù¼³°¢", CharacterInfo("ÆÒÅÒ", 200));
+	m_characterInfoList.emplace("¿ì°¡µ·ÃÌ", CharacterInfo("µ¥¸ó¾îº¥Á®", 200));
+	m_characterInfoList.emplace("Ä«¸£Æäµð¿¥YJ", CharacterInfo("³ªÀÌÆ®·Îµå", 200));
+	m_characterInfoList.emplace("ÇÁ·©Å©D·ç³ª", CharacterInfo("¿£Á©¸¯¹ö½ºÅÍ", 200));
+	m_characterInfoList.emplace("ºñÁÖ¾ó2017", CharacterInfo("½ãÄÝ", 200));
+	m_characterInfoList.emplace("HANSÄÉÀÍ", CharacterInfo("Á¦·Î", 200));
+	
+	for (auto data : m_characterInfoList)
+		out << data.first << '\t' << data.second.m_jobName << '\t' << static_cast<int>(data.second.m_level) << endl;
 
 	out.close();
 

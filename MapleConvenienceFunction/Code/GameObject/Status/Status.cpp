@@ -1,4 +1,5 @@
 #include "Status.h"
+#include "../../Resource/Resource.h"
 
 Status::Status(const string& name)
 	: GameObject(name)
@@ -16,6 +17,9 @@ Status::~Status()
 
 bool Status::Initialize(void* p)
 {
+	if (p == nullptr)
+		return false;
+
 	m_level = reinterpret_cast<unsigned char>(p);
 
 

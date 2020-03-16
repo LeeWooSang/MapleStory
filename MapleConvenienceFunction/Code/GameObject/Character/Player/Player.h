@@ -13,7 +13,8 @@ public:
 	class Inventory* GetInventory()		const { return m_inventory; }
 
 private:
-	class Job* m_job;
+	struct UnionCharaterInfo* m_myCharacter;
+
 	class Union* m_uni;
 	class Inventory* m_inventory;
 };

@@ -44,6 +44,15 @@
     <Filter Include="Code\GameObject\Inventory">
       <UniqueIdentifier>{c6a604cc-86a8-49f0-8a26-291dfe1309bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\Skill">
+      <UniqueIdentifier>{e66b2d35-cb38-49f4-91da-a412eb32b707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Skill\ActiveSkill">
+      <UniqueIdentifier>{3674d811-4471-41b8-9004-13506b58361e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Skill\PassiveSkill">
+      <UniqueIdentifier>{8cd43a46-044a-4518-a10b-f86c0df42c07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Main.cpp">
@@ -87,6 +96,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Inventory\Inventory.cpp">
       <Filter>Code\GameObject\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Skill\Skill.cpp">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Skill\PassiveSkill\PassiveSkill.cpp">
+      <Filter>Code\GameObject\Skill\PassiveSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Skill\ActiveSkill\ActiveSkill.cpp">
+      <Filter>Code\GameObject\Skill\ActiveSkill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +152,15 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Inventory\Inventory.h">
       <Filter>Code\GameObject\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Skill\Skill.h">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Skill\PassiveSkill\PassiveSkill.h">
+      <Filter>Code\GameObject\Skill\PassiveSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Skill\ActiveSkill\ActiveSkill.h">
+      <Filter>Code\GameObject\Skill\ActiveSkill</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

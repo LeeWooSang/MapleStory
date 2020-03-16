@@ -8,7 +8,7 @@
 Player::Player(const string& name)
 	: Character(name)
 {
-	m_job = nullptr;
+	m_myCharacter = nullptr;
 	m_uni = nullptr;
 	m_inventory = nullptr;
 }
@@ -33,32 +33,18 @@ Player::~Player()
 		m_uni = nullptr;
 	}
 
-	if (m_job != nullptr)
-	{
-		delete m_job;
-		m_job = nullptr;
-	}
+	m_myCharacter = nullptr;
 }
 
 bool Player::Initialize(void* p)
 {
-	string nickName = "";
-	auto characterInfo = GET_INSTANCE(Resource)->GetCharacterInfo();
-
-	auto iter = characterInfo.find(nickName);
-	if (iter == characterInfo.end())
-		return false;
-
-	CharacterInfo myCharacter = (*iter).second;
-
-	// 직업이름을 인자로 줌
-	m_job = new Job(reinterpret_castmyCharacter);
-	if (m_job->Initialize(nullptr) == false)
-		return false;
-
 	// 유니온
 	m_uni = new Union("유니온");
-	if (m_uni->Initialize(m_job) == false)
+	if (m_uni->Initialize(nullptr) == false)
+		return false;
+
+	m_myCharacter = m_uni->GetMyCharacter("창원기전");
+	if (m_myCharacter == nullptr)
 		return false;
 
 	//인벤토리
@@ -69,7 +55,7 @@ bool Player::Initialize(void* p)
 
 	// 스텟
 	m_stat = new PlayerStatus("스텟");
-	if (m_stat->Initialize(reinterpret_cast<void*>((*iter).second.m_level)) == false)
+	if (m_stat->Initialize(reinterpret_cast<void*>(m_myCharacter->m_level)) == false)
 		return false;
 
 	cout << "플레이어 초기화 완료" << endl;
@@ -99,7 +85,7 @@ void Player::Update()
 	case 's':
 	case 'S':
 		m_uni->CalculateUnionRaiderEffect(reinterpret_cast<PlayerStatus*>(m_stat));
-		reinterpret_cast<PlayerStatus*>(m_stat)->ArcaneSymoblEffect(m_job);
+		reinterpret_cast<PlayerStatus*>(m_stat)->ArcaneSymoblEffect(m_myCharacter->m_job);
 		m_stat->Update();
 		break;
 
