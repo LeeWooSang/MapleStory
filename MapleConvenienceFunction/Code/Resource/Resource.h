@@ -2,12 +2,13 @@
 #include "../Macro.h"
 #include "../Defines.h"
 
-struct ItemInfo
+struct CashItemInfo
 {
-	ItemInfo(const string& name, int cash)
-		: m_name(name), m_cash(cash) {}
+	CashItemInfo(const string& name, int cash, int size)
+		: m_name(name), m_cash(cash), m_size(size) {}
 	string m_name;
 	int m_cash;
+	int m_size;
 };
 
 struct JobInfo
@@ -56,13 +57,15 @@ public:
 	bool LoadUnionRaiderEffectInfo();
 	bool SaveUnionRaiderEffectInfo();
 
-	const list<ItemInfo*>& GetItemInfo() const { return m_itemInfoList; }
+	const list<CashItemInfo*>& GetItemInfo() const { return m_cashItemInfoList; }
+	void AddItemInfo(const string& name, int price, int size) { m_cashItemInfoList.emplace_back(new CashItemInfo(name, price, size)); }
+
 	const unordered_map<string, unsigned char>& GetJobInfo() const { return m_jobInfoList; }
 	const unordered_map<string, CharacterInfo>& GetCharacterInfo() const { return m_characterInfoList; }
 	const unordered_map<string, int>& GetUnionRaiderEffectInfo() const { return m_unionRaiderEffectList; }
 
 private:
-	list<ItemInfo*> m_itemInfoList;
+	list<CashItemInfo*> m_cashItemInfoList;
 
 	// Key : Á÷¾÷, Value : ÁÖ½ºÅÝ
 	unordered_map<string, unsigned char> m_jobInfoList;

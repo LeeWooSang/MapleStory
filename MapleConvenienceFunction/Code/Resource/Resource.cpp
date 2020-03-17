@@ -1,10 +1,11 @@
 #include "Resource.h"
 #include "../GameObject/Job/Job.h"
+#include "../Script/Script.h"
 
 INIT_INSTACNE(Resource)
 Resource::Resource()
 {
-	m_itemInfoList.clear();
+	m_cashItemInfoList.clear();
 	m_jobInfoList.clear();
 	m_characterInfoList.clear();
 	m_unionRaiderEffectList.clear();
@@ -12,7 +13,7 @@ Resource::Resource()
 
 Resource::~Resource()
 {
-	SAFE_DELETE_LIST(m_itemInfoList);
+	SAFE_DELETE_LIST(m_cashItemInfoList);
 	
 	m_jobInfoList.clear();
 	m_characterInfoList.clear();
@@ -38,7 +39,7 @@ bool Resource::Initialize()
 
 bool Resource::LoadItemInfo()
 {
-	ifstream in("../Resource/ItemInfo.txt");
+	/*ifstream in("../Resource/ItemInfo.txt");
 	if (!in)
 	{
 		cout << "아이템 정보 파일이 존재하지 않습니다." << endl;
@@ -51,7 +52,16 @@ bool Resource::LoadItemInfo()
 	while (in >> name >> cash)
 		m_itemInfoList.emplace_back(new ItemInfo(name, cash));
 
-	in.close();
+	in.close();*/
+
+	Script* cashItemScript = new Script;
+	if (cashItemScript->Initialize() == false)
+	{
+		delete cashItemScript;
+		return false;
+	}
+
+	delete cashItemScript;
 
 	cout << "아이템 정보 파일 로딩 완료" << endl;
 	return true;

@@ -41,7 +41,7 @@ bool Auction::Initialize(void* p)
 	cout << "경매장 판매 수수료 : ";
 	cin >> m_saleCommission;
 
-	list<ItemInfo*> itemInfoList = GET_INSTANCE(Resource)->GetItemInfo();
+	list<CashItemInfo*> itemInfoList = GET_INSTANCE(Resource)->GetItemInfo();
 
 	for (auto iter = itemInfoList.begin(); iter != itemInfoList.end(); ++iter)
 	{

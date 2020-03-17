@@ -40,6 +40,7 @@
     <ClCompile Include="..\Code\GameObject\Union\Union.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Resource\Resource.cpp" />
+    <ClCompile Include="..\Code\Script\Script.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h" />
@@ -64,6 +65,10 @@
     <ClInclude Include="..\Code\GameObject\Union\Union.h" />
     <ClInclude Include="..\Code\Macro.h" />
     <ClInclude Include="..\Code\Resource\Resource.h" />
+    <ClInclude Include="..\Code\Script\Script.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\Lua\Script\ItemInfo.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

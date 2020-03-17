@@ -61,8 +61,8 @@ bool Player::Initialize(void* p)
 	if (m_stat->Initialize(reinterpret_cast<void*>(m_myCharacter->m_level)) == false)
 		return false;
 
-	if (GET_INSTANCE(SkillManager)->Initialize() == false)
-		return false;
+	//if (GET_INSTANCE(SkillManager)->Initialize() == false)
+	//	return false;
 
 	cout << "플레이어 초기화 완료" << endl;
 

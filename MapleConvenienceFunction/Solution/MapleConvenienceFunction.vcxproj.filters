@@ -65,6 +65,9 @@
     <Filter Include="Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero">
       <UniqueIdentifier>{896657fd-e8c3-4058-8d12-474ceab91694}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Script">
+      <UniqueIdentifier>{27f1da78-4ca9-4810-bef3-688fedeae79f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Main.cpp">
@@ -129,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero\Hero.cpp">
       <Filter>Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Script\Script.cpp">
+      <Filter>Code\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,5 +204,13 @@
     <ClInclude Include="..\Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero\Hero.h">
       <Filter>Code\GameObject\Job\Adventurer\AdventurerWarrior\Hero</Filter>
     </ClInclude>
+    <ClInclude Include="..\Code\Script\Script.h">
+      <Filter>Code\Script</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\Lua\Script\ItemInfo.lua">
+      <Filter>Code\Script</Filter>
+    </None>
   </ItemGroup>
 </Project>
