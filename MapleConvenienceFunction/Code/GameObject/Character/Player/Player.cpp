@@ -16,6 +16,8 @@ Player::Player(const string& name)
 
 Player::~Player()
 {
+	GET_INSTANCE(SkillManager)->Release();
+
 	if (m_stat != nullptr)
 	{
 		delete m_stat;

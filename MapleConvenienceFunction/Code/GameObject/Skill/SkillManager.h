@@ -2,27 +2,20 @@
 #include "../../Macro.h"
 #include "../../Defines.h"
 
-struct LinkSkillSlot
-{
-	LinkSkillSlot(bool isEmpty, class Skill* skill)
-		: m_isEmpty(isEmpty), m_skill(skill) {}
-
-	bool m_isEmpty;
-	class Skill* m_skill;
-};
-
 class SkillManager
 {
 	SINGLE_TONE(SkillManager)
 
 public:
-	bool Initialize();
+	bool Initialize(class PlayerStatus*);
 	void Update();
 
+	void CalculateLinkSkillLevel();
 	void CalculateLinkSkillEffect();
 
 private:
-	array<LinkSkillSlot*, 12> m_linkSkillList;
+	PlayerStatus* m_stat;
+	array<class Skill*, 12> m_linkSkillList;
 };
 
 // 링크 스킬관련 직업
@@ -30,7 +23,7 @@ enum LINK_SKILL_JOB
 {
 	ADVENTURER_WARRIOR	= 0x00000001,
 	ADVENTURER_ARCHER	= 0x00000002,
-	ADVENTURER_MAGICIAN = 0x00000004,
+	ADVENTURER_MAGICIAN= 0x00000004,
 	ADVENTURER_THIEF		= 0x00000008,
 	ADVENTURER_PIRATE		= 0x00000010,
 	CYGNUS							= 0x00000020,
@@ -52,5 +45,7 @@ enum LINK_SKILL_JOB
 	ILLIUM								= 0x00200000,
 	KINESIS								= 0x00400000,
 	ZERO								= 0x00800000,
-	HOYOUNG						= 0x01000000
+	HOYOUNG						= 0x01000000,
 };
+
+constexpr unsigned char MAX_LINK_SKILL_LEVEL = 2;
