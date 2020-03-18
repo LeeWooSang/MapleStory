@@ -15,9 +15,14 @@ public:
 
 	bool Initialize();
 	void ErrorDisplay();
+
+	bool LoadICashtemInfoScript();
+	bool LoadJobInfoScript();
+
 	lua_State* GetLua()	{ return m_lua; }
 
 	static int API_GetCashItem(lua_State*);
+	static int API_GetJobInfo(lua_State*);
 
 private:
 	lua_State* m_lua;

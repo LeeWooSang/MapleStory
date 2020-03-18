@@ -45,8 +45,7 @@ class Resource
 public:
 	bool Initialize();
 
-	bool LoadItemInfo();
-	bool SaveItemInfo();
+	bool LoadCashItemInfo();
 
 	bool LoadJobInfo();
 	bool SaveJobInfo();
@@ -62,7 +61,9 @@ public:
 
 	const unordered_map<string, unsigned char>& GetJobInfo() const { return m_jobInfoList; }
 	const unordered_map<string, CharacterInfo>& GetCharacterInfo() const { return m_characterInfoList; }
+
 	const unordered_map<string, int>& GetUnionRaiderEffectInfo() const { return m_unionRaiderEffectList; }
+	void AddUnionRaiderEffectInfo(const string& jobName, int effect) { m_unionRaiderEffectList.emplace(jobName, effect); }
 
 private:
 	list<CashItemInfo*> m_cashItemInfoList;

@@ -22,7 +22,7 @@ Resource::~Resource()
 
 bool Resource::Initialize()
 {
-	if (LoadItemInfo() == false)
+	if (LoadCashItemInfo() == false)
 		return false;
 
 	if (LoadJobInfo() == false)
@@ -37,45 +37,24 @@ bool Resource::Initialize()
 	return true;
 }
 
-bool Resource::LoadItemInfo()
+bool Resource::LoadCashItemInfo()
 {
-	/*ifstream in("../Resource/ItemInfo.txt");
-	if (!in)
+	Script* scr = new Script;
+	if (scr->Initialize() == false)
 	{
-		cout << "아이템 정보 파일이 존재하지 않습니다." << endl;
+		delete scr;
 		return false;
 	}
 
-	string name = "";
-	int cash = 0;
-
-	while (in >> name >> cash)
-		m_itemInfoList.emplace_back(new ItemInfo(name, cash));
-
-	in.close();*/
-
-	Script* cashItemScript = new Script;
-	if (cashItemScript->Initialize() == false)
+	if (scr->LoadICashtemInfoScript() == false)
 	{
-		delete cashItemScript;
+		delete scr;
 		return false;
 	}
 
-	delete cashItemScript;
+	delete scr;
 
 	cout << "아이템 정보 파일 로딩 완료" << endl;
-	return true;
-}
-
-bool Resource::SaveItemInfo()
-{
-	ofstream out("../Resource/ItemInfo.txt");
-	//for (auto data : m_itemList)
-	//	out << data->GetName() << '\t' << data->GetCash() << endl;
-
-	out.close();
-
-	cout << "아이템 정보 파일 출력 완료" << endl;
 	return true;
 }
 
@@ -218,19 +197,20 @@ bool Resource::SaveCharacterInfo()
 
 bool Resource::LoadUnionRaiderEffectInfo()
 {
-	ifstream in("../Resource/UnionRaiderEffectInfo.txt");
-	if (!in)
+	Script* scr = new Script;
+	if (scr->Initialize() == false)
 	{
-		cout << "유니온 공격대원 효과 정보 파일이 존재하지 않습니다." << endl;
+		delete scr;
 		return false;
 	}
 
-	string name = "";
-	int effect = 0;
-	while (in >> name >> effect)
-		m_unionRaiderEffectList.emplace(name, effect);
+	if (scr->LoadUnionRaiderEffectInfoScript() == false)
+	{
+		delete scr;
+		return false;
+	}
 
-	in.close();
+	delete scr;
 
 	cout << "유니온 공격대원 효과 정보 파일 로딩 완료" << endl;
 
