@@ -12,6 +12,8 @@ PlayerStatus::PlayerStatus(const string& name)
 	m_INT = 0;
 	m_LUK = 0;
 
+	m_Damage = 0;
+
 	m_critical = 0;
 	m_criticalDamage = 0;
 	m_bossDamage = 0;

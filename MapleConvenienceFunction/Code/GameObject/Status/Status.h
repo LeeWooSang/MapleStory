@@ -11,11 +11,11 @@ public:
 	virtual void Update();
 
 	const string& GetNickName()	const { return m_nickName; }
-	unsigned char GetLevel()	const { return m_level; }
+	unsigned short GetLevel()	const { return m_level; }
 
 protected:
 	string m_nickName;
-	unsigned char m_level;
+	unsigned short m_level;
 	unsigned int m_HP;
 	unsigned char m_moveSpeed;
 	unsigned char m_jumpAbility;

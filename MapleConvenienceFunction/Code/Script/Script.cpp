@@ -34,6 +34,43 @@ void Script::ErrorDisplay()
 	lua_pop(m_lua, 1);
 }
 
+bool Script::LoadINormalInfoScript()
+{
+	int error = luaL_loadfile(m_lua, "../Resource/Script/ArcaneSymbol.lua");
+	if (error)
+	{
+		ErrorDisplay();
+		return false;
+	}
+
+	error = lua_pcall(m_lua, 0, 0, 0);
+	if (error)
+	{
+		ErrorDisplay();
+		return false;
+	}
+
+	lua_getglobal(m_lua, "g_TableSize");
+	int size = static_cast<int>(lua_tonumber(m_lua, -1));
+	lua_pop(m_lua, 1);
+
+	for (int i = 0; i < size; ++i)
+	{
+		lua_register(m_lua, "API_GetArcaneSymbolInfo", API_GetArcaneSymbolInfo);
+		lua_getglobal(m_lua, "GetArcaneSymbolInfo");
+		lua_pushnumber(m_lua, i);
+
+		error = lua_pcall(m_lua, 1, 0, 0);
+		if (error)
+		{
+			ErrorDisplay();
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool Script::LoadICashtemInfoScript()
 {
 	int error = luaL_loadfile(m_lua, "../Resource/Script/CashItemInfo.lua");
@@ -108,6 +145,18 @@ bool Script::LoadJobInfoScript()
 	return true;
 }
 
+int Script::API_GetArcaneSymbolInfo(lua_State* lua)
+{
+	string name = const_cast<char*>(lua_tostring(lua, -2));
+	int requestLevel = static_cast<int>(lua_tonumber(lua, -1));
+	lua_pop(lua, 3);
+
+	GET_INSTANCE(Resource)->AddNormalItemInfo(name, requestLevel);
+
+	return 0;
+}
+
+
 int Script::API_GetCashItem(lua_State* lua)
 {
 	string name = const_cast<char*>(lua_tostring(lua, -3));
@@ -115,7 +164,7 @@ int Script::API_GetCashItem(lua_State* lua)
 	int size = static_cast<int>(lua_tonumber(lua, -1));
 	lua_pop(lua, 4);
 
-	GET_INSTANCE(Resource)->AddItemInfo(name, price, size);
+	GET_INSTANCE(Resource)->AddCashItemInfo(name, price, size);
 
 	return 0;
 }

@@ -40,7 +40,7 @@ void SkillManager::Update()
 
 void SkillManager::CalculateLinkSkillLevel()
 {
-	unsigned char mylevel = m_stat->GetLevel();
+	unsigned short mylevel = m_stat->GetLevel();
 
 	for (auto& data : m_linkSkillList)
 	{

@@ -45,7 +45,7 @@ bool Auction::Initialize(void* p)
 	m_saleCommission = 5;
 	cout << m_saleCommission << endl;
 
-	list<CashItemInfo*> itemInfoList = GET_INSTANCE(Resource)->GetItemInfo();
+	list<CashItemInfo*> itemInfoList = GET_INSTANCE(Resource)->GetCashItemInfo();
 
 	for (auto iter = itemInfoList.begin(); iter != itemInfoList.end(); ++iter)
 	{

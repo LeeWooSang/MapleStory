@@ -5,6 +5,7 @@
 INIT_INSTACNE(Resource)
 Resource::Resource()
 {
+	m_normalItemInfoList.clear();
 	m_cashItemInfoList.clear();
 	m_jobInfoList.clear();
 	m_characterInfoList.clear();
@@ -12,6 +13,7 @@ Resource::Resource()
 
 Resource::~Resource()
 {
+	SAFE_DELETE_MAP(m_normalItemInfoList);
 	SAFE_DELETE_LIST(m_cashItemInfoList);
 	SAFE_DELETE_MAP(m_jobInfoList);
 
@@ -20,6 +22,9 @@ Resource::~Resource()
 
 bool Resource::Initialize()
 {
+	if (LoadNormalItemInfo() == false)
+		return false;
+
 	if (LoadCashItemInfo() == false)
 		return false;
 
@@ -31,6 +36,28 @@ bool Resource::Initialize()
 
 	return true;
 }
+
+bool Resource::LoadNormalItemInfo()
+{
+	Script* scr = new Script;
+	if (scr->Initialize() == false)
+	{
+		delete scr;
+		return false;
+	}
+
+	if (scr->LoadINormalInfoScript() == false)
+	{
+		delete scr;
+		return false;
+	}
+
+	delete scr;
+
+	cout << "노말 아이템 정보 파일 로딩 완료" << endl;
+	return true;
+}
+
 
 bool Resource::LoadCashItemInfo()
 {
@@ -49,7 +76,7 @@ bool Resource::LoadCashItemInfo()
 
 	delete scr;
 
-	cout << "아이템 정보 파일 로딩 완료" << endl;
+	cout << "캐시 아이템 정보 파일 로딩 완료" << endl;
 	return true;
 }
 

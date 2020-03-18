@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp" />
+    <ClCompile Include="..\Code\DataBase\DataBase.cpp" />
     <ClCompile Include="..\Code\GameObject\Auction\Auction.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Character.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h" />
+    <ClInclude Include="..\Code\DataBase\DataBase.h" />
     <ClInclude Include="..\Code\Defines.h" />
     <ClInclude Include="..\Code\GameObject\Auction\Auction.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
@@ -70,6 +72,7 @@
   <ItemGroup>
     <None Include="..\Resource\Script\CashItemInfo.lua" />
     <None Include="..\Resource\Script\JobInfo.lua" />
+    <None Include="..\Resource\Script\ArcaneSymbol.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

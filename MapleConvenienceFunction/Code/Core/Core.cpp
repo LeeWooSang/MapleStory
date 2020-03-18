@@ -1,5 +1,6 @@
 #include "Core.h"
 #include "../Resource/Resource.h"
+#include "../DataBase/DataBase.h"
 #include "../GameObject/Character/Player/Player.h"
 #include "../GameObject/Auction/Auction.h"
 
@@ -27,16 +28,24 @@ Core::Core()
 Core::~Core()
 {
 	GET_INSTANCE(Resource)->Release();
+	GET_INSTANCE(DataBase)->Release();
+
 	SAFE_DELETE_MAP(m_objectList);
 }
 
 bool Core::Initialize()
 {
 	if (GET_INSTANCE(Resource)->Initialize() == false)
-	{
-		GET_INSTANCE(Resource)->Release();
 		return false;
-	}
+
+	if (GET_INSTANCE(DataBase)->Initialize() == false)
+		return false;
+
+	if (GET_INSTANCE(DataBase)->Connect() == false)
+		return false;
+
+	if (GET_INSTANCE(DataBase)->GetInventoryInfo() == false)
+		return false;
 
 	cout << endl;
 

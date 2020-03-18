@@ -68,6 +68,9 @@
     <Filter Include="Code\Script">
       <UniqueIdentifier>{27f1da78-4ca9-4810-bef3-688fedeae79f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\DataBase">
+      <UniqueIdentifier>{ace8be2f-38cb-4300-ba80-8ed5bdb4cede}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Main.cpp">
@@ -135,6 +138,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Script\Script.cpp">
       <Filter>Code\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\DataBase\DataBase.cpp">
+      <Filter>Code\DataBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,12 +213,18 @@
     <ClInclude Include="..\Code\Script\Script.h">
       <Filter>Code\Script</Filter>
     </ClInclude>
+    <ClInclude Include="..\Code\DataBase\DataBase.h">
+      <Filter>Code\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Script\CashItemInfo.lua">
       <Filter>Code\Script</Filter>
     </None>
     <None Include="..\Resource\Script\JobInfo.lua">
+      <Filter>Code\Script</Filter>
+    </None>
+    <None Include="..\Resource\Script\ArcaneSymbol.lua">
       <Filter>Code\Script</Filter>
     </None>
   </ItemGroup>

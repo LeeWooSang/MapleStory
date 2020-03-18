@@ -37,6 +37,8 @@ private:
 	unsigned int m_INT;
 	unsigned int m_LUK;
 
+	unsigned char m_Damage;
+
 	unsigned char m_critical;
 	unsigned char m_criticalDamage;
 	unsigned short m_bossDamage;
