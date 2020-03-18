@@ -190,6 +190,7 @@ Job_Table[19] =
 
 Job_Table[20] =
 {
+	occupationalCluster = "모험가";
 	jobName = "섀도어";
 	mainStat = LUK;
 	unionRaiderEffect = LUK_UP;

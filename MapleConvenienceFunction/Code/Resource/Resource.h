@@ -6,6 +6,7 @@ struct CashItemInfo
 {
 	CashItemInfo(const string& name, int cash, int size)
 		: m_name(name), m_cash(cash), m_size(size) {}
+
 	string m_name;
 	int m_cash;
 	int m_size;
@@ -13,11 +14,13 @@ struct CashItemInfo
 
 struct JobInfo
 {
-	JobInfo(const string& name, unsigned char mainStat)
-		: m_name(name), m_mainStat(mainStat) {}
+	JobInfo(const string& occupationalCluster, const string& jobName, unsigned char mainStat, int unionRaiderEffect)
+		: m_occupationalCluster(occupationalCluster), m_jobName(jobName), m_mainStat(mainStat), m_unionRaiderEffect(unionRaiderEffect) {}
 
-	string m_name;
+	string m_occupationalCluster;
+	string m_jobName;
 	unsigned char m_mainStat;
+	int m_unionRaiderEffect;
 };
 
 struct CharacterInfo
@@ -27,15 +30,6 @@ struct CharacterInfo
 
 	string m_jobName;
 	unsigned char m_level;
-};
-
-struct UnionRaiderEffectInfo
-{
-	UnionRaiderEffectInfo(const string& name, const string& raiderEffect)
-	: m_name(name), m_raiderEffect(raiderEffect) {}
-
-	string m_name;
-	string m_raiderEffect;
 };
 
 class Resource
@@ -48,33 +42,25 @@ public:
 	bool LoadCashItemInfo();
 
 	bool LoadJobInfo();
-	bool SaveJobInfo();
 
 	bool LoadCharacterInfo();
 	bool SaveCharacterInfo();
 
-	bool LoadUnionRaiderEffectInfo();
-	bool SaveUnionRaiderEffectInfo();
-
 	const list<CashItemInfo*>& GetItemInfo() const { return m_cashItemInfoList; }
 	void AddItemInfo(const string& name, int price, int size) { m_cashItemInfoList.emplace_back(new CashItemInfo(name, price, size)); }
 
-	const unordered_map<string, unsigned char>& GetJobInfo() const { return m_jobInfoList; }
-	const unordered_map<string, CharacterInfo>& GetCharacterInfo() const { return m_characterInfoList; }
+	const unordered_map<string, JobInfo*>& GetJobInfo() const { return m_jobInfoList; }
+	void AddJobInfo(const string& occupationalCluster, const string& jobName, int mainStat, int effect) { m_jobInfoList.emplace(jobName, new JobInfo(occupationalCluster, jobName, mainStat, effect)); }
 
-	const unordered_map<string, int>& GetUnionRaiderEffectInfo() const { return m_unionRaiderEffectList; }
-	void AddUnionRaiderEffectInfo(const string& jobName, int effect) { m_unionRaiderEffectList.emplace(jobName, effect); }
+	const unordered_map<string, CharacterInfo>& GetCharacterInfo() const { return m_characterInfoList; }
 
 private:
 	list<CashItemInfo*> m_cashItemInfoList;
 
-	// Key : 직업, Value : 주스텟
-	unordered_map<string, unsigned char> m_jobInfoList;
+	// Key : 직업, Value : 직업정보
+	unordered_map<string, JobInfo*> m_jobInfoList;
 
 	// Key : 닉네임, Value : 캐릭터 정보
 	unordered_map<string, CharacterInfo> m_characterInfoList;
-
-	// Key : 직업, Value : 효과
-	unordered_map<string, int> m_unionRaiderEffectList;
 };
 

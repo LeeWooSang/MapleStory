@@ -9,8 +9,11 @@ Script::Script()
 
 Script::~Script()
 {
-	if(m_lua != nullptr)
+	if (m_lua != nullptr)
+	{
 		lua_close(m_lua);
+		m_lua = nullptr;
+	}
 }
 
 bool Script::Initialize()
@@ -125,7 +128,7 @@ int Script::API_GetJobInfo(lua_State* lua)
 	int effect = static_cast<int>(lua_tonumber(lua, -1));
 	lua_pop(lua, 5);
 
-	GET_INSTANCE(Resource)->AddUnionRaiderEffectInfo(occupationalCluster, jobName, mainStat, effect);
+	GET_INSTANCE(Resource)->AddJobInfo(occupationalCluster, jobName, mainStat, effect);
 
 	return 0;
 }

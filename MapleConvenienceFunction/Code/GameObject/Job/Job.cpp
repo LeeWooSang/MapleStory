@@ -16,12 +16,12 @@ Job::~Job()
 
 bool Job::Initialize(void* p)
 {
-	unordered_map<string, unsigned char> jobInfo = GET_INSTANCE(Resource)->GetJobInfo();
+	auto jobInfo = GET_INSTANCE(Resource)->GetJobInfo();
 	auto iter = jobInfo.find(m_name);
 	if (iter == jobInfo.end())
 		return false;
 
-	m_mainStat = static_cast<MAIN_STAT>((*iter).second);
+	m_mainStat = static_cast<MAIN_STAT>((*iter).second->m_mainStat);
 
 	return true;
 }

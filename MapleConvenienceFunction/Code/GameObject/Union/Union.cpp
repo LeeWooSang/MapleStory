@@ -36,13 +36,13 @@ bool Union::Initialize(void* p)
 	}
 
 	// 유니온 캐릭터에 맞는 공격대원 효과 저장
-	auto raiderEffectInfo = GET_INSTANCE(Resource)->GetUnionRaiderEffectInfo();
+	auto jobInfo = GET_INSTANCE(Resource)->GetJobInfo();
 	for (auto iter = m_unionCharacterList.begin(); iter != m_unionCharacterList.end(); ++iter)
 	{
-		auto iter2 = raiderEffectInfo.find((*iter)->m_job->GetName());
-		if (iter2 == raiderEffectInfo.end())
+		auto iter2 = jobInfo.find((*iter)->m_job->GetName());
+		if (iter2 == jobInfo.end())
 			return false;
-		(*iter)->m_job->SetUnionRaiderEffect((*iter2).second);
+		(*iter)->m_job->SetUnionRaiderEffect((*iter2).second->m_unionRaiderEffect);
 	}
 
 	CalculateUnionLevel();

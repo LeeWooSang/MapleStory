@@ -209,10 +209,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resource\Lua\Script\UnionRaiderEffectInfo.lua">
+    <None Include="..\Resource\Lua\Script\CashItemInfo.lua">
       <Filter>Code\Script</Filter>
     </None>
-    <None Include="..\Resource\Lua\Script\CashItemInfo.lua">
+    <None Include="..\Resource\Lua\Script\JobInfo.lua">
       <Filter>Code\Script</Filter>
     </None>
   </ItemGroup>
