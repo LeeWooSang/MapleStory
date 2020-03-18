@@ -10,8 +10,8 @@ public:
 	virtual bool Initialize(void*);
 	virtual void Update();
 
-	void CalculateRatio(class Item*);
-	
+	void CalculateRatioBenefit(class Item*);
+
 	void ShowItem();
 	void Search();
 	void Insert(class Item*);
@@ -28,6 +28,5 @@ private:
 	double m_saleCommission;
 
 	list<class Item*> m_itemList;
-
 	class Player* m_player;
 };

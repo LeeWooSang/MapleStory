@@ -68,8 +68,8 @@
     <ClInclude Include="..\Code\Script\Script.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resource\Lua\Script\CashItemInfo.lua" />
-    <None Include="..\Resource\Lua\Script\JobInfo.lua" />
+    <None Include="..\Resource\Script\CashItemInfo.lua" />
+    <None Include="..\Resource\Script\JobInfo.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

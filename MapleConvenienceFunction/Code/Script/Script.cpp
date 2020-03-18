@@ -36,7 +36,7 @@ void Script::ErrorDisplay()
 
 bool Script::LoadICashtemInfoScript()
 {
-	int error = luaL_loadfile(m_lua, "../Resource/Lua/Script/CashItemInfo.lua");
+	int error = luaL_loadfile(m_lua, "../Resource/Script/CashItemInfo.lua");
 	if (error)
 	{
 		ErrorDisplay();
@@ -73,7 +73,7 @@ bool Script::LoadICashtemInfoScript()
 
 bool Script::LoadJobInfoScript()
 {
-	int error = luaL_loadfile(m_lua, "../Resource/Lua/Script/JobInfo.lua");
+	int error = luaL_loadfile(m_lua, "../Resource/Script/JobInfo.lua");
 	if (error)
 	{
 		ErrorDisplay();

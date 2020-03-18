@@ -32,7 +32,7 @@ CashItem_Table[3] =
 
 CashItem_Table[4] =
 {
-	name = "메이플 로얄 스타일";
+	name = "메이플 로얄 스타일(묶음)";
 	price = 99000;
 	size = 45;
 };

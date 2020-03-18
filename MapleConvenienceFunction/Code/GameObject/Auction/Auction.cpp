@@ -36,10 +36,14 @@ bool Auction::Initialize(void* p)
 	m_player = reinterpret_cast<Player*>(p);
 
 	cout << "1억 메소 가격(원) : ";
-	cin >> m_mesoMunicipalRates;
+	//cin >> m_mesoMunicipalRates;
+	m_mesoMunicipalRates = 4000;
+	cout << m_mesoMunicipalRates << endl;
 
 	cout << "경매장 판매 수수료 : ";
-	cin >> m_saleCommission;
+	//cin >> m_saleCommission;
+	m_saleCommission = 5;
+	cout << m_saleCommission << endl;
 
 	list<CashItemInfo*> itemInfoList = GET_INSTANCE(Resource)->GetItemInfo();
 
@@ -47,14 +51,16 @@ bool Auction::Initialize(void* p)
 	{
 		Item* item = new Item((*iter)->m_name);
 		m_itemList.emplace_back(item);
-		item->SetCash((*iter)->m_cash);
-
 		if (item->Initialize(nullptr) == false)
 			return false;
+		item->SetCash((*iter)->m_cash);
 	}
 
 	for (auto iter = m_itemList.begin(); iter != m_itemList.end(); ++iter)
-		CalculateRatio((*iter));
+	{
+		CalculateRatioBenefit((*iter));
+	}
+
 
 	cout << "경매장 초기화 완료" << endl;
 
@@ -66,13 +72,13 @@ void Auction::Update()
 	MunicipalRatesMenu();
 }
 
-void Auction::CalculateRatio(Item* item)
+void Auction::CalculateRatioBenefit(Item* item)
 {
 	double commission = 1 - (m_saleCommission * 0.01);
 	double ratio = 100000000 / m_mesoMunicipalRates;
 
 	int cash = item->GetCash();	
-	item->SetRatio(static_cast<int>(ratio) * cash);
+	item->SetRatio(static_cast<__int64>(ratio) * cash);
 
 	__int64 meso = item->GetMeso();
 	double temp = (meso - item->GetRatio()) * commission;
@@ -117,20 +123,22 @@ void Auction::Search()
 
 	ShowItem();
 
-	string item = "";
+	string name = "";
 	cout << "수정할 아이템 : ";
 	cin.ignore();
-	getline(cin, item);
+	getline(cin, name);
 
 	for (auto data : m_itemList)
 	{
-		if (item == data->GetName())
+		if (data->GetName() == name)
 		{
 			__int64 meso = 0;
 			cout << "수정할 경매장 가격 : ";
 			cin >> meso;
 			data->SetMeso(meso);
-			CalculateRatio(data);
+			
+			CalculateRatioBenefit(data);
+
 			return;
 		}
 	}
@@ -140,7 +148,7 @@ void Auction::Search()
 
 void Auction::Insert(Item* item)
 {
-	CalculateRatio(item);
+	CalculateRatioBenefit(item);
 	m_itemList.emplace_back(item);
 }
 
@@ -203,8 +211,9 @@ void Auction::BuyItem()
 	// 5. 플레이어가 구입할 수 있으면, 플레이어의 메소를 가격만큼 차감시킨다.
 
 	string name = "";
-	cout << "구입할 아이템 이름 : " << endl;
-	cin >> name;
+	cout << "구입할 아이템 이름 : ";
+	cin.ignore();
+	getline(cin, name);
 
 	for (auto iter = m_itemList.begin(); iter != m_itemList.end(); )
 	{

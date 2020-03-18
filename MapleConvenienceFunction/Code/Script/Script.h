@@ -1,11 +1,11 @@
 #pragma once
 extern "C"
 {
-#include "include/lua.h"
-#include "include/lauxlib.h"
-#include "include/lualib.h"
+#include "Lua/include/lua.h"
+#include "Lua/include/lauxlib.h"
+#include "Lua/include/lualib.h"
 }
-#pragma comment(lib, "../Resource/Lua/Lib/lua53.lib")
+#pragma comment(lib, "../Code/Script/Lua/lib/lua53.lib")
 
 class Script
 {
