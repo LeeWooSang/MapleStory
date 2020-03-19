@@ -1,12 +1,15 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <list>
 #include <array>
+#include <vector>
+#include <list>
 #include <unordered_map>
 #include <algorithm>
 #include <fstream>
 #include <random>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 

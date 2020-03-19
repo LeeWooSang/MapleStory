@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Code">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Code\Core">
+      <UniqueIdentifier>{408aae69-60b1-44b7-a564-676094f23de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject">
+      <UniqueIdentifier>{989540c7-08c9-4d82-aecd-e2c1aee8bd8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Character">
+      <UniqueIdentifier>{987bca9c-4821-4d2d-b24c-2fb1765121b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Character\Player">
+      <UniqueIdentifier>{d933b405-b032-48c4-9afc-14c28e8efde4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Skill">
+      <UniqueIdentifier>{e1d7c3de-4585-42b0-8959-f025f1be5d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Union">
+      <UniqueIdentifier>{b700cfe7-7da8-4434-afa0-ca5080f6215b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Job">
+      <UniqueIdentifier>{264e78a8-cdd7-4173-9798-d93ab6fde303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Status">
+      <UniqueIdentifier>{ac81993a-272f-4a98-ad6c-5d741060410b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Status\PlayerStatus">
+      <UniqueIdentifier>{dc7f4715-4043-4f73-afba-cf973b1154b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Inventory">
+      <UniqueIdentifier>{4e5582da-aa17-4348-9921-6ec6f0ba0ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Item">
+      <UniqueIdentifier>{47650e53-14a1-4733-9c96-21e183cd7ab0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Code\Core\Core.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Main.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\GameObject.cpp">
+      <Filter>Code\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Character\Character.cpp">
+      <Filter>Code\GameObject\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp">
+      <Filter>Code\GameObject\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Skill\Skill.cpp">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Skill\SkillManager.cpp">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Job\Job.cpp">
+      <Filter>Code\GameObject\Job</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Union\Union.cpp">
+      <Filter>Code\GameObject\Union</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Status\Status.cpp">
+      <Filter>Code\GameObject\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.cpp">
+      <Filter>Code\GameObject\Status\PlayerStatus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Inventory\Inventory.cpp">
+      <Filter>Code\GameObject\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Item\Item.cpp">
+      <Filter>Code\GameObject\Item</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Code\Core\Core.h">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MapleConvenienceFunction\Code\Defines.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MapleConvenienceFunction\Code\Macro.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\GameObject.h">
+      <Filter>Code\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Character\Character.h">
+      <Filter>Code\GameObject\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Character\Player\Player.h">
+      <Filter>Code\GameObject\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Protocol.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Skill\Skill.h">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Skill\SkillManager.h">
+      <Filter>Code\GameObject\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Job\Job.h">
+      <Filter>Code\GameObject\Job</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Union\Union.h">
+      <Filter>Code\GameObject\Union</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Status\Status.h">
+      <Filter>Code\GameObject\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.h">
+      <Filter>Code\GameObject\Status\PlayerStatus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Inventory\Inventory.h">
+      <Filter>Code\GameObject\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Item\Item.h">
+      <Filter>Code\GameObject\Item</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
