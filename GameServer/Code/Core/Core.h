@@ -26,6 +26,8 @@ private:
 	void SendPacket(int, char*);
 
 	void ProcessPacket(int, char*);
+	void UpdateObjectView(int);
+
 	void Disconnect(int);
 
 	int CreatePlayerID();

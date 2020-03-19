@@ -9,6 +9,10 @@ public:
 
 	virtual bool Initialize(void*);
 	virtual void Update();
+	void ClearPlayerInfo();
+
+	bool GetIsConnected()	const { return m_isConnected; }
+	void SetIsConnected(bool isConnected) { m_isConnected = isConnected; }
 
 	class Inventory* GetInventory()		const { return m_inventory; }
 
@@ -22,5 +26,10 @@ private:
 	class Inventory* m_inventory;
 
 	SOCKET m_socket;
+	char m_PacketBuf[MAX_BUFFER];
+	int	 m_PrevSize;
+	int	 m_SendBytes;
+	bool m_isConnected;
+
 };
 

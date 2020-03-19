@@ -2,7 +2,6 @@
 // 메모리 릭이 있는지 알려준다.
 #include <crtdbg.h>
 #include "../GameObject/Character/Player/Player.h"
-#include <Windows.h>
 
 INIT_INSTACNE(Core)
 Core::Core()
@@ -10,6 +9,7 @@ Core::Core()
 	m_IOCP = nullptr;
 	m_workerThread.reserve(WORKER_THREAD_SIZE);
 	m_characterList.reserve(MAX_CHARACTER);
+	m_listenSocket = { 0 };
 
 	// 메모리 릭이 있는지 체크를 해준다.
 	// 릭이 있으면, 번호를 출력해준다.
@@ -40,6 +40,8 @@ Core::~Core()
 		CloseHandle(m_IOCP);
 		m_IOCP = nullptr;
 	}
+
+	cout << "Server is quit" << endl;
 }
 
 bool Core::Initialize()
@@ -60,6 +62,8 @@ bool Core::Initialize()
 	// accept 스레드 생성
 	m_acceptThread = thread{ &Core::AcceptClient, this };
 
+	cout << "Server Initialize OK!!" << endl;
+
 	return true;
 }
 
@@ -75,7 +79,7 @@ bool Core::Run()
 			PostQueuedCompletionStatus(m_IOCP, 1, NULL, &overEx->overlapped);
 		}
 
-		cout << "WorkerThread Quit" << endl;
+		cout << "WorkerThread is quit" << endl;
 
 		closesocket(m_listenSocket);
 		WSACleanup();
@@ -145,6 +149,7 @@ void Core::ThreadPool()
 		{
 
 		}
+
 		else if (overEx->event_type == EVENT_TYPE::SEND)
 		{
 
@@ -204,7 +209,6 @@ void Core::AcceptClient()
 	int addrLen = sizeof(SOCKADDR_IN);
 	memset(&clientAddr, 0, addrLen);
 	SOCKET clientSocket;
-	DWORD flags;
 
 	while (true)
 	{
@@ -214,7 +218,7 @@ void Core::AcceptClient()
 			int error = WSAGetLastError();
 			if (error == 10004)
 			{
-				cout << "AcceptThread Quit" << endl;
+				cout << "AcceptThread it quit" << endl;
 				return;
 			}
 
@@ -230,7 +234,7 @@ void Core::AcceptClient()
 		player->SetSocket(clientSocket);
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(clientSocket), m_IOCP, id, 0);
 
-		//Do_Recv(new_id);
+		RecvPacket(id);
 	}
 
 	closesocket(m_listenSocket);
@@ -280,17 +284,185 @@ void Core::ProcessPacket(int id, char* buf)
 {
 	switch (buf[1])
 	{
+	case CS_MOVE:
+		CS_Packet_Move* packet = reinterpret_cast<CS_Packet_Move*>(buf);
+		m_characterList[id]->UpdatePosition(packet->direction);
+		break;
+
 	default:
 		break;
 	}
 }
 
+void Core::UpdateObjectView(int myID)
+{
+	m_characterList[myID]->ViewListMtxLock();
+	// 이동 전 viewList
+	unordered_set<int> old_viewList = m_characterList[myID]->GetViewList();
+	m_characterList[myID]->ViewListMtxUnLock();
+	
+	// 이동 후 viewList
+	unordered_set<int> new_viewList;
+
+	for (int i = 0; i < MAX_USER; ++i)
+	{
+		// i에 해당하는 클라가 접속해있고, 
+		// 나하고, 상대하고 근처에 있는지, 
+		// 또한 나하고 id하고 같지 않을 때,
+		Player* player = reinterpret_cast<Player*>(m_characterList[i]);
+		if (player->GetIsConnected() == true && Is_Near_Object(id, i) == true && i != id)
+			new_viewList.emplace(i);
+	}
+
+	for (int i = MONSTER_ID_START; i < MAX_CHARACTER; ++i)
+	{
+		// i에 해당하는 클라가 접속해있고, 
+		// 나하고, 상대하고 근처에 있는지, 
+		// 또한 나하고 id하고 같지 않을 때,
+		// 몬스터가 죽지 않았을 때
+		if (Is_Near_Object(id, i) == true && m_characterList[i]->GetState() != DIE)
+			new_viewList.insert(i);
+	}
+
+	// Put Object
+	// 나와 근처에 있는 오브젝트들에 대해
+	for (auto id : new_viewList)
+	{
+		// (새로 시야에 들어옴)
+		if (old_viewList.count(id) == 0)
+		{
+			m_characterList[myID]->ViewListMtxLock();
+			m_characterList[myID]->GetViewList().emplace(id);
+			m_characterList[myID]->ViewListMtxUnLock();
+			//Send_Add_Object_Packet(id, character);
+
+			if (id < MAX_CHARACTER)
+				Send_Add_Object_Packet(myID, id);
+
+			// 플레이어가 아니면, NPC를 깨워야함
+			//if (Is_Player(character) == false)
+			if (Is_Player(id) == false && id < MAX_CHARACTER)
+			{
+				WakeUp_NPC(id);
+				continue;
+			}
+
+			if (id < MAX_CHARACTER)
+			{
+				m_characterList[id]->ViewListMtxLock();
+				if (m_characterList[id]->GetViewList().count(id) != 0)
+				{
+					m_characterList[id]->ViewListMtxUnLock();
+					Send_Position_Packet(id, myID);
+				}
+
+				else
+				{
+					m_characterList[character]->GetViewList().emplace(id);
+					m_characterList[character]->GetViewListMtx().unlock();
+					Send_Add_Object_Packet(character, id);
+				}
+			}
+		}
+
+		// old_viewList에 new_viewList에 있는 클라ID가 있을 때, (old, new 동시 존재)
+		else if (old_viewList.count(character) != 0)
+		{
+			if (Is_Player(character) == false)	continue;
+
+			m_characterList[character]->GetViewListMtx().lock();
+			// viewList에 해당하는 id가 있으면, 
+			if (m_characterList[character]->GetViewList().count(id) != 0)
+			{
+				m_characterList[character]->GetViewListMtx().unlock();
+				Send_Position_Packet(character, id);
+			}
+
+			// viewList에 해당하는 id가 없으면,
+			else
+			{
+				m_characterList[character]->GetViewList().emplace(id);
+				m_characterList[character]->GetViewListMtx().unlock();
+				Send_Add_Object_Packet(character, id);
+			}
+		}
+	}
+
+	// 시야에서 사라짐
+	for (auto character : old_viewList)
+	{
+		if (new_viewList.count(character) != 0)	continue;
+
+		if (character >= ORANGEMUSHROOM_ID_START && character < RIBBONPIG_ID_START)
+		{
+			OrangeMushroom* monster = reinterpret_cast<OrangeMushroom*>(m_characterList[character]);
+			int target = monster->GetTarget();
+			if (target == id)
+				monster->SetTarget(-1);
+		}
+
+		m_characterList[id]->GetViewListMtx().lock();
+		m_characterList[id]->GetViewList().erase(character);
+		m_characterList[id]->GetViewListMtx().unlock();
+
+		if (character < MAX_CHARACTER)
+			Send_Remove_Object_Packet(id, character);
+		else
+			Send_Remove_Item_Packet(id, character);
+
+		if (Is_Player(character) == false)	continue;
+
+		m_characterList[character]->GetViewListMtx().lock();
+		if (m_characterList[character]->GetViewList().count(id) != 0)
+		{
+			m_characterList[character]->GetViewList().erase(id);
+			m_characterList[character]->GetViewListMtx().unlock();
+			Send_Remove_Object_Packet(character, id);
+		}
+
+		else
+			m_characterList[character]->GetViewListMtx().unlock();
+	}
+}
+
 void Core::Disconnect(int id)
 {
+	for (int i = 0; i < MAX_USER; ++i)
+	{
+		if (reinterpret_cast<Player*>(m_characterList[i])->GetIsConnected() == false)
+			continue;
+
+		m_characterList[i]->ViewListMtxLock();
+		if (m_characterList[i]->GetViewList().count(id) != 0)
+		{
+			m_characterList[i]->ViewListMtxUnLock();
+			//Send_Remove_Object_Packet(i, id);
+		}
+		else
+			m_characterList[i]->ViewListMtxUnLock();
+	}
+	Player* player = reinterpret_cast<Player*>(m_characterList[id]);
+	player->ClearPlayerInfo();
 }
 
 int Core::CreatePlayerID()
 {
-	return 0;
+	// 아이디가 있을 때까지, 루프돌면서 기다리게함
+	while (true)
+	{
+		for (int i = 0; i < MAX_USER; ++i)
+		{
+			Player* player = reinterpret_cast<Player*>(m_characterList[i]);
+
+			if (player->GetIsConnected() == false)
+			{
+				player->SetIsConnected(true);
+				return i;
+			}
+		}
+	}
 }
+
+
+
 
