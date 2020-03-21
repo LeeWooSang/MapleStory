@@ -2,8 +2,10 @@
 #include "../../../MapleConvenienceFunction/Code/Defines.h"
 #include "../../../MapleConvenienceFunction/Code/Macro.h"
 #include "../Protocol.h"
+#include "../GameObject/Channel/Channel.h"
 
 constexpr int WORKER_THREAD_SIZE = 4;
+constexpr int VIEW_DISTANCE = 3;
 
 class Core
 {
@@ -26,12 +28,32 @@ private:
 	void SendPacket(int, char*);
 
 	void ProcessPacket(int, char*);
-	void UpdateObjectView(int);
+
+	void ProcessChannelLogin(unsigned char, int);
+	void UpdateObjectViewList(int);
 
 	void Disconnect(int);
 
 	int CreatePlayerID();
+	bool IsPlayer(int);
+	bool IsNearObject(int, int);
 
+	void WakeUpNPC(int);
+
+private:
+	// Send 함수 종류
+	void SendServerLoginOkPacket(int);
+	void SendServerLoginFailPacket(int);
+
+	void SendChannelLoginOkPacket(int);
+	void SendChannelLoginFailPacket(int);
+
+	void SendPositionPacket(int, int);
+	void SendRemoveObjectPacket(int, int);
+	void SendAddObjectPacket(int, int);
+
+private:
+	// 멤버 변수
 	HANDLE m_IOCP;
 	vector<thread> m_workerThread;
 	thread m_acceptThread;
@@ -39,4 +61,5 @@ private:
 	SOCKET m_listenSocket;
 
 	vector<class Character*> m_characterList;
+	vector<Channel> m_channelList;
 };

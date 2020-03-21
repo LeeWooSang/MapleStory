@@ -20,6 +20,7 @@ public:
 
 	virtual bool Initialize(void*);
 	virtual void Update();
+	virtual void ClearCharacterInfo();
 
 	void UpdatePosition(char);
 
@@ -27,7 +28,15 @@ public:
 
 	void ViewListMtxLock() { m_viewListMtx.lock(); }
 	void ViewListMtxUnLock() { m_viewListMtx.unlock(); }
+
 	const unordered_set<int>& GetViewList()	const { return m_viewList; }
+	void AddIDInViewList(int id) { m_viewList.emplace(id); }
+	void RemoveIDInViewList(int id) { m_viewList.erase(id); }
+
+	void SetChannel(unsigned char channel) { m_channel = channel; }
+	unsigned char GetChannel() const { return m_channel; }
+
+	int GetMap()	const { return m_map; }
 
 	int GetX()	const { return m_x; }
 	void SetX(int x) { m_x = x; }
@@ -40,9 +49,12 @@ protected:
 	int m_ID;
 
 	OverEx	m_overEx;
-
 	mutex m_viewListMtx;
 	unordered_set<int> m_viewList;
+
+	unsigned char m_channel;
+
+	int m_map;
 
 	int m_x;
 	int m_y;

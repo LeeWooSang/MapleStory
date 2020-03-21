@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -152,7 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp" />
+    <ClCompile Include="..\Code\GameObject\Channel\Channel.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Character.cpp" />
+    <ClCompile Include="..\Code\GameObject\Character\NPC\NPC.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp" />
     <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
     <ClCompile Include="..\Code\GameObject\Inventory\Inventory.cpp" />
@@ -169,7 +171,9 @@
     <ClInclude Include="..\..\MapleConvenienceFunction\Code\Defines.h" />
     <ClInclude Include="..\..\MapleConvenienceFunction\Code\Macro.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
+    <ClInclude Include="..\Code\GameObject\Channel\Channel.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
+    <ClInclude Include="..\Code\GameObject\Character\NPC\NPC.h" />
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h" />
     <ClInclude Include="..\Code\GameObject\GameObject.h" />
     <ClInclude Include="..\Code\GameObject\Inventory\Inventory.h" />

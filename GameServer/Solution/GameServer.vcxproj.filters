@@ -42,6 +42,12 @@
     <Filter Include="Code\GameObject\Item">
       <UniqueIdentifier>{47650e53-14a1-4733-9c96-21e183cd7ab0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\Character\NPC">
+      <UniqueIdentifier>{ef8472d9-aba0-40bc-8279-552152b1a7fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Channel">
+      <UniqueIdentifier>{92bbe527-03c8-4ccd-a03c-8e1913e8f0ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -82,6 +88,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Item\Item.cpp">
       <Filter>Code\GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Character\NPC\NPC.cpp">
+      <Filter>Code\GameObject\Character\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Channel\Channel.cpp">
+      <Filter>Code\GameObject\Channel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +141,12 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Item\Item.h">
       <Filter>Code\GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Character\NPC\NPC.h">
+      <Filter>Code\GameObject\Character\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Channel\Channel.h">
+      <Filter>Code\GameObject\Channel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

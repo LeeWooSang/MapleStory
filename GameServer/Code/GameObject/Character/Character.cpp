@@ -15,6 +15,8 @@ Character::Character(const string& name)
 	ZeroMemory(&m_overEx.overlapped, sizeof(WSAOVERLAPPED));
 	m_viewList.clear();
 
+	m_channel = 0;
+	m_map = 0;
 	m_x = 0;
 	m_y = 0;
 }
@@ -30,6 +32,27 @@ bool Character::Initialize(void*)
 
 void Character::Update()
 {
+}
+
+void Character::ClearCharacterInfo()
+{
+	m_ID = 0;
+
+	m_overEx.dataBuffer.len = MAX_BUFFER;
+	m_overEx.dataBuffer.buf = m_overEx.messageBuffer;
+	m_overEx.event_type = Core::EVENT_TYPE::RECV;
+	//m_overEx.event_target_id = TARGET_IS_NONE;
+
+	ZeroMemory(&m_overEx.overlapped, sizeof(WSAOVERLAPPED));
+
+	m_viewListMtx.lock();
+	m_viewList.clear();
+	m_viewListMtx.unlock();
+
+	m_channel = 0;
+	m_map = 0;
+	m_x = 0;
+	m_y = 0;
 }
 
 void Character::UpdatePosition(char dir)

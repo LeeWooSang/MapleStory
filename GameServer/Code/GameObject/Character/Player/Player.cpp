@@ -8,10 +8,15 @@
 Player::Player(const string& name)
 	: Character(name)
 {
-	m_isConnected = false;
 	m_myCharacter = nullptr;
 	m_uni = nullptr;
 	m_inventory = nullptr;
+
+	m_socket = 0;
+	ZeroMemory(&m_PacketBuf, sizeof(char));
+	m_PrevSize = 0;
+	m_SendBytes = 0;
+	m_isConnected = false;
 }
 
 Player::~Player()
@@ -110,26 +115,17 @@ void Player::Update()
 	}
 }
 
-void Player::ClearPlayerInfo()
+void Player::ClearCharacterInfo()
 {
-	m_ID = 0;
-
-	m_overEx.dataBuffer.len = MAX_BUFFER;
-	m_overEx.dataBuffer.buf = m_overEx.messageBuffer;
-	m_overEx.event_type = Core::EVENT_TYPE::RECV;
-	//m_overEx.event_target_id = TARGET_IS_NONE;
-
-	ZeroMemory(&m_overEx.overlapped, sizeof(WSAOVERLAPPED));
-
-	m_viewListMtx.lock();
-	m_viewList.clear();
-	m_viewListMtx.unlock();
-
 	//wcscpy(m_PlayerID, L"");
 	//m_X = START_X;
 	//m_Y = START_Y;
 
-	m_socket = { 0 };
+	m_socket = 0;
 	ZeroMemory(&m_PacketBuf, sizeof(char));
+	m_PrevSize = 0;
+	m_SendBytes = 0;
 	m_isConnected = false;
+
+	Character::ClearCharacterInfo();
 }

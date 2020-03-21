@@ -4,12 +4,12 @@
 class Player : public Character
 {
 public:
-	Player(const string& name);
+	Player(const string&);
 	virtual ~Player();
 
 	virtual bool Initialize(void*);
 	virtual void Update();
-	void ClearPlayerInfo();
+	virtual void ClearCharacterInfo();
 
 	bool GetIsConnected()	const { return m_isConnected; }
 	void SetIsConnected(bool isConnected) { m_isConnected = isConnected; }
@@ -30,6 +30,5 @@ private:
 	int	 m_PrevSize;
 	int	 m_SendBytes;
 	bool m_isConnected;
-
 };
 
