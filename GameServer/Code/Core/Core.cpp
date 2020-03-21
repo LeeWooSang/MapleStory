@@ -2,7 +2,6 @@
 // 메모리 릭이 있는지 알려준다.
 #include <crtdbg.h>
 #include "../GameObject/Character/Player/Player.h"
-#include "../GameObject/Character/NPC/NPC.h"
 
 INIT_INSTACNE(Core)
 Core::Core()
@@ -31,6 +30,24 @@ Core::Core()
 
 Core::~Core()
 {
+	for (auto& character : m_characterList)
+	{
+		if (character != nullptr)
+		{
+			delete character;
+			character = nullptr;
+		}
+	}
+
+	for (auto& channel : m_channelList)
+	{
+		if (channel != nullptr)
+		{
+			delete channel;
+			channel = nullptr;
+		}
+	}
+
 	if (m_acceptThread.joinable() == true)
 		m_acceptThread.join();
 
@@ -66,6 +83,9 @@ bool Core::Initialize()
 
 	// accept 스레드 생성
 	m_acceptThread = thread{ &Core::AcceptClient, this };
+
+	for (int i = 0; i < MAX_CHANNEL; ++i)
+		m_channelList.emplace_back(new Channel(to_string(i) + "채널"));
 
 	// 플레이어 생성
 	for (int i = 0; i < MAX_USER; ++i)
@@ -139,7 +159,7 @@ void Core::ThreadPool()
 			else
 			{
 				cout << id << "번 클라이언트 나감" << endl;
-				Disconnect(static_cast<int>(id));
+				DisconnectServer(static_cast<int>(id));
 				continue;
 			}
 		}
@@ -148,7 +168,7 @@ void Core::ThreadPool()
 		if (io_byte == 0)
 		{
 			cout << id << "번 클라이언트 나감" << endl;
-			Disconnect(static_cast<int>(id));
+			DisconnectServer(static_cast<int>(id));
 			continue;
 		}
 
@@ -312,6 +332,7 @@ void Core::ProcessPacket(int id, char* buf)
 		{
 			CS_Packet_Move* packet = reinterpret_cast<CS_Packet_Move*>(buf);
 			m_characterList[id]->UpdatePosition(packet->m_direction);
+			UpdateViewList(id);
 		}
 	break;
 
@@ -320,228 +341,38 @@ void Core::ProcessPacket(int id, char* buf)
 	}
 }
 
-void Core::ProcessChannelLogin(unsigned char channel, int myID)
+void Core::ProcessLogin(unsigned char channel, int myID)
 {
-	//m_channelMtx.lock();
 	// 현재 채널에 몇명의 유저가 있는지 저장
-	int channelUser = m_channelList[channel].GetChannelCharacterList().size();
-
+	m_channelList[channel]->ChannelMtxLock();
 	// 채널에 들어 갈 수 있는지 체크해야함
-	//m_channelMtx.unlock();
-
-	if (channelUser >= MAX_CHANNEL_USER)
+	if (m_channelList[channel]->GetChannelUserSize() >= MAX_CHANNEL_USER)
 	{
+		m_channelList[channel]->ChannelMtxUnLock();
 		SendChannelLoginFailPacket(myID);
 		return;
 	}
 
-//	m_channelMtx.lock();
-	m_characterList[myID]->SetChannel(channel);
-	m_channelList[channel].AddPlayer(channel, reinterpret_cast<Player*>(m_characterList[myID]));
-	//m_channelMtx.unlock();
+	// 채널을 셋해줌
+	reinterpret_cast<Player*>(m_characterList[myID])->SetChannel(channel);
+	m_channelList[channel]->AddPlayerInChannel(myID, m_characterList[myID]);
+	m_channelList[channel]->ChannelMtxUnLock();
 	SendChannelLoginOkPacket(myID);
-	
-	// 너가 누구인지 보내주어야함
-	SendAddObjectPacket(myID, myID);
 
-	// 접속된 다른 유저에게도 내 정보를 보냄
-	for (int i = 0; i < MAX_USER; ++i)
-	{
-		if (i == myID)
-			continue;
-
-		if (reinterpret_cast<Player*>(m_characterList[i])->GetIsConnected() == false)
-			continue;
-
-		// 내가 들어왔을 때, 보이는 애들에게만 보냄(내 뷰리스트에 나를 넣음안됨)
-		// lock, unlock을 너무 자주하면 안됨
-		// 그러나 루프 밖으로 lock, unlock을  빼면 너무 길기 때문에, lock, unlock을 처리해하는 부분만 따로 처리
-		if (IsNearObject(i, myID) == false)
-			continue;
-
-		m_characterList[i]->ViewListMtxLock();
-		m_characterList[i]->AddIDInViewList(myID);
-		m_characterList[i]->ViewListMtxUnLock();
-		SendAddObjectPacket(i, myID);	
-	}
-
-	// 나에게 다른 애들 정보도 보내주어야 함
-	for (int i = 0; i < MAX_USER; ++i)
-	{
-		// 내정보는 안보내도됨
-		if (i == myID) 
-			continue;
-
-		if (reinterpret_cast<Player*>(m_characterList[i])->GetIsConnected() == false) 
-			continue;
-
-		if (IsNearObject(i, myID) == false)
-			continue;
-
-		m_characterList[myID]->ViewListMtxLock();
-		m_characterList[myID]->AddIDInViewList(i);
-		m_characterList[myID]->ViewListMtxUnLock();
-		SendAddObjectPacket(myID, i);
-	}
-
-	// 나에게 보이는 NPC 정보를 보냄
-	for (int i = NPC_ID_START; i < MAX_CHARACTER; ++i)
-	{
-		if (IsNearObject(myID, i) == false)
-			continue;
-
-		// 보이는 NPC를 깨운다.
-		WakeUpNPC(i);
-
-		m_characterList[myID]->ViewListMtxLock();
-		m_characterList[myID]->AddIDInViewList(i);
-		m_characterList[myID]->ViewListMtxUnLock();
-		SendAddObjectPacket(myID, i);
-	}
-
+	m_channelList[channel]->ProcessChannelLogin(myID);
 }
 
-void Core::UpdateObjectViewList(int myID)
+void Core::UpdateViewList(int myID)
 {
-	m_characterList[myID]->ViewListMtxLock();
-	// 이동 전 viewList
-	unordered_set<int> old_viewList = m_characterList[myID]->GetViewList();
-	m_characterList[myID]->ViewListMtxUnLock();
+	unsigned char channel = m_characterList[myID]->GetChannel();
 
-	// 이동 후 viewList
-	unordered_set<int> new_viewList;
-
-	for (int i = 0; i < MAX_USER; ++i)
-	{
-		// i에 해당하는 클라가 접속해있고, 
-		// 나하고, 상대하고 근처에 있는지, 
-		// 또한 나하고 id하고 같지 않을 때,
-		if (reinterpret_cast<Player*>(m_characterList[i])->GetIsConnected() == true && IsNearObject(myID, i) == true && i != myID)
-			new_viewList.emplace(i);
-	}
-
-	for (int i = NPC_ID_START; i < MAX_CHARACTER; ++i)
-	{
-		// i에 해당하는 클라가 접속해있고, 
-		// 나하고, 상대하고 근처에 있는지, 
-		// 또한 나하고 id하고 같지 않을 때,
-		if (IsNearObject(myID, i) == true)
-			new_viewList.emplace(i);
-	}
-
-	// 나와 근처에 있는 오브젝트들에 대해
-	for (auto id : new_viewList)
-	{
-		// 새로 시야에 들어옴
-		if (old_viewList.count(id) == 0)
-		{
-			m_characterList[myID]->ViewListMtxLock();
-			m_characterList[myID]->AddIDInViewList(id);
-			m_characterList[myID]->ViewListMtxUnLock();
-			SendAddObjectPacket(myID, id);
-			// 플레이어가 아니면, NPC를 깨워야함
-			if (IsPlayer(id) == false)
-			{
-				WakeUpNPC(id);
-				continue;
-			}
-
-			m_characterList[id]->ViewListMtxLock();
-			// viewList에 해당하는 id가 있으면, 
-			if (m_characterList[id]->GetViewList().count(id) != 0)
-			{
-				m_characterList[id]->ViewListMtxUnLock();
-				SendPositionPacket(id, myID);
-			}
-			// viewList에 해당하는 id가 없으면,
-			else
-			{
-				m_characterList[id]->AddIDInViewList(id);
-				m_characterList[id]->ViewListMtxUnLock();
-				SendAddObjectPacket(id, myID);
-			}
-		}
-
-		// old_viewList에 new_viewList에 있는 클라ID가 있을 때, (old, new 동시 존재)
-		else if (old_viewList.count(id) != 0)
-		{
-			if (IsPlayer(id) == false)
-				continue;
-
-			m_characterList[id]->ViewListMtxLock();
-			// viewList에 해당하는 id가 있으면, 
-			if (m_characterList[id]->GetViewList().count(myID) != 0)
-			{
-				m_characterList[id]->ViewListMtxUnLock();
-				SendPositionPacket(id, myID);
-			}
-			// viewList에 해당하는 id가 없으면,
-			else
-			{
-				m_characterList[id]->AddIDInViewList(myID);
-				m_characterList[id]->ViewListMtxUnLock();
-				SendAddObjectPacket(id, myID);
-			}
-		}
-	}
-
-	// 시야에서 사라짐
-	for (auto id : old_viewList)
-	{
-		if (new_viewList.count(id) != 0)
-			continue;
-
-		m_characterList[myID]->ViewListMtxLock();
-		m_characterList[myID]->RemoveIDInViewList(id);
-		m_characterList[myID]->ViewListMtxUnLock();
-		SendRemoveObjectPacket(myID, id);
-
-		if (IsPlayer(id) == false)
-			continue;
-
-		m_characterList[id]->ViewListMtxLock();
-		if (m_characterList[id]->GetViewList().count(myID) != 0)
-		{
-			m_characterList[id]->RemoveIDInViewList(myID);
-			m_characterList[id]->ViewListMtxUnLock();
-			SendRemoveObjectPacket(id, myID);
-		}
-
-		else
-			m_characterList[id]->ViewListMtxUnLock();
-	}
-
-	SendPositionPacket(myID, myID);
-
-	for (auto npc_id : new_viewList)
-	{
-		if (IsPlayer(npc_id))	continue;
-
-		OverEx* overEx = new OverEx;
-		//overEx->event_type = EV_PLAYER_MOVE;
-		//overEx->event_from_id = id;
-
-		// NPC에게만 전송
-		PostQueuedCompletionStatus(m_IOCP, 1, npc_id, &overEx->overlapped);
-	}
+	// 채널에 있는 오브젝트들 시야를 업데이트 해줌
+	m_channelList[channel]->UpdateObjectViewList(myID);
 }
 
-void Core::Disconnect(int id)
+void Core::DisconnectServer(int id)
 {
-	for (int i = 0; i < MAX_USER; ++i)
-	{
-		if (reinterpret_cast<Player*>(m_characterList[i])->GetIsConnected() == false)
-			continue;
-
-		m_characterList[i]->ViewListMtxLock();
-		if (m_characterList[i]->GetViewList().count(id) != 0)
-		{
-			m_characterList[i]->ViewListMtxUnLock();
-			SendRemoveObjectPacket(i, id);
-		}
-		else
-			m_characterList[i]->ViewListMtxUnLock();
-	}
+	m_channelList[id]->DisconnectChannel(id);
 
 	Player* player = reinterpret_cast<Player*>(m_characterList[id]);
 	player->ClearCharacterInfo();
@@ -563,42 +394,6 @@ int Core::CreatePlayerID()
 			}
 		}
 	}
-}
-
-bool Core::IsPlayer(int id)
-{
-	if (id >= 0 && id < MAX_USER)
-		return true;
-	return false;
-}
-
-bool Core::IsNearObject(int a, int b)
-{
-	unsigned char channel1 = m_characterList[a]->GetChannel();
-	unsigned char channel2 = m_characterList[b]->GetChannel();
-	if (channel1 != channel2)
-		return false;
-
-	int map1 = m_characterList[a]->GetMap();
-	int map2 = m_characterList[b]->GetMap();
-	if (map1 != map2)
-		return false;
-
-	int x1 = m_characterList[a]->GetX();
-	int x2 = m_characterList[b]->GetY();
-	int y1 = m_characterList[a]->GetY();
-	int y2 = m_characterList[b]->GetY();
-
-	if (VIEW_DISTANCE < abs(x1 - x2))
-		return false;
-	if (VIEW_DISTANCE < abs(y1 - y2))
-		return false;
-
-	return true;
-}
-
-void Core::WakeUpNPC(int)
-{
 }
 
 void Core::SendServerLoginOkPacket(int to)
@@ -637,33 +432,6 @@ void Core::SendChannelLoginFailPacket(int to)
 	packet.type = SC_PACKET_TYPE::SC_CHANNEL_LOGIN_FAIL;
 
 	SendPacket(to, reinterpret_cast<char*>(&packet));
-}
-
-void Core::SendPositionPacket(int to, int obj)
-{
-	SCPacket_Position packet;
-	packet.id = obj;
-	packet.size = sizeof(SCPacket_Position);
-	packet.type = SC_PACKET_TYPE::SC_POSITION;
-	packet.x = m_characterList[obj]->GetX();
-	packet.x = m_characterList[obj]->GetY();
-
-	SendPacket(to, reinterpret_cast<char*>(&packet));
-}
-
-void Core::SendRemoveObjectPacket(int to, int obj)
-{
-	SCPacket_Remove_Object packet;
-	packet.id = obj;
-	packet.size = sizeof(SCPacket_Remove_Object);
-	packet.type = SC_PACKET_TYPE::SC_REMOVE_OBJECT;
-
-	SendPacket(to, reinterpret_cast<char*>(&packet));
-}
-
-void Core::SendAddObjectPacket(int to, int obj)
-{
-
 }
 
 

@@ -5,7 +5,6 @@ constexpr unsigned short SERVER_PORT = 3500;
 constexpr unsigned short MAX_BUFFER = 1024;
 
 constexpr int MAX_CHANNEL = 10;
-constexpr int MAX_CHANNEL_USER = 100;
 
 constexpr int MAX_USER = 1000;
 

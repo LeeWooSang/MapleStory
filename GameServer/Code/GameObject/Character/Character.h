@@ -33,8 +33,8 @@ public:
 	void AddIDInViewList(int id) { m_viewList.emplace(id); }
 	void RemoveIDInViewList(int id) { m_viewList.erase(id); }
 
-	void SetChannel(unsigned char channel) { m_channel = channel; }
 	unsigned char GetChannel() const { return m_channel; }
+	void SetChannel(unsigned char channel) { m_channel = channel; }
 
 	int GetMap()	const { return m_map; }
 
@@ -53,7 +53,6 @@ protected:
 	unordered_set<int> m_viewList;
 
 	unsigned char m_channel;
-
 	int m_map;
 
 	int m_x;

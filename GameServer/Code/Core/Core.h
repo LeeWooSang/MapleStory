@@ -15,7 +15,9 @@ public:
 	bool Initialize();
 	bool Run();
 
+	const HANDLE& GetIOCPHandle()	const { return m_IOCP; }
 	enum EVENT_TYPE { RECV, SEND, QUIT };
+	void SendPacket(int, char*);
 
 private:
 	// 에러출력
@@ -25,32 +27,21 @@ private:
 	void AcceptClient();
 	
 	void RecvPacket(int);
-	void SendPacket(int, char*);
 
 	void ProcessPacket(int, char*);
 
-	void ProcessChannelLogin(unsigned char, int);
-	void UpdateObjectViewList(int);
+	void ProcessLogin(unsigned char, int);
+	void UpdateViewList(int);
 
-	void Disconnect(int);
+	void DisconnectServer(int);
 
 	int CreatePlayerID();
-	bool IsPlayer(int);
-	bool IsNearObject(int, int);
 
-	void WakeUpNPC(int);
-
-private:
-	// Send 함수 종류
 	void SendServerLoginOkPacket(int);
 	void SendServerLoginFailPacket(int);
 
 	void SendChannelLoginOkPacket(int);
 	void SendChannelLoginFailPacket(int);
-
-	void SendPositionPacket(int, int);
-	void SendRemoveObjectPacket(int, int);
-	void SendAddObjectPacket(int, int);
 
 private:
 	// 멤버 변수
@@ -61,5 +52,5 @@ private:
 	SOCKET m_listenSocket;
 
 	vector<class Character*> m_characterList;
-	vector<Channel> m_channelList;
+	vector<Channel*> m_channelList;
 };
