@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp" />
+    <ClCompile Include="..\Code\DataBase\DataBase.cpp" />
     <ClCompile Include="..\Code\GameObject\Channel\Channel.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Character.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\NPC\NPC.cpp" />
@@ -165,12 +166,14 @@
     <ClCompile Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.cpp" />
     <ClCompile Include="..\Code\GameObject\Status\Status.cpp" />
     <ClCompile Include="..\Code\GameObject\Union\Union.cpp" />
+    <ClCompile Include="..\Code\GameTimer\GameTimer.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\MapleConvenienceFunction\Code\Defines.h" />
     <ClInclude Include="..\..\MapleConvenienceFunction\Code\Macro.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
+    <ClInclude Include="..\Code\DataBase\DataBase.h" />
     <ClInclude Include="..\Code\GameObject\Channel\Channel.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
     <ClInclude Include="..\Code\GameObject\Character\NPC\NPC.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="..\Code\GameObject\Status\PlayerStatus\PlayerStatus.h" />
     <ClInclude Include="..\Code\GameObject\Status\Status.h" />
     <ClInclude Include="..\Code\GameObject\Union\Union.h" />
+    <ClInclude Include="..\Code\GameTimer\GameTimer.h" />
     <ClInclude Include="..\Code\Protocol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

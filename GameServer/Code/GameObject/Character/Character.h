@@ -8,8 +8,8 @@ struct OverEx
 	WSAOVERLAPPED	overlapped;
 	WSABUF					dataBuffer;
 	char							messageBuffer[MAX_BUFFER];
-	Core::EVENT_TYPE	event_type;
-	int								event_target_id;
+	Core::EVENT_TYPE	eventType;
+	int								myID;
 };
 
 class Character : public GameObject
@@ -45,8 +45,6 @@ public:
 
 protected:
 	class Status* m_stat;
-	
-	int m_ID;
 
 	OverEx	m_overEx;
 	mutex m_viewListMtx;

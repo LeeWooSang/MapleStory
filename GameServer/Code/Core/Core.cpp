@@ -1,11 +1,20 @@
 #include "Core.h"
 // 메모리 릭이 있는지 알려준다.
 #include <crtdbg.h>
+#include "../GameTimer/GameTimer.h"
+#include "../DataBase/DataBase.h"
 #include "../GameObject/Character/Player/Player.h"
+
+random_device seed;
+default_random_engine dre(seed());
+uniform_int_distribution<> randomPlayer(0, MAX_USER - 1);
+uniform_int_distribution<> randomTransaction(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STAUS_INFO, DB_TRANSACTION_TYPE::GET_PLAYER_INVENTORY_INFO);
 
 INIT_INSTACNE(Core)
 Core::Core()
 {
+	m_isRun = true;
+
 	m_IOCP = nullptr;
 	m_workerThread.reserve(WORKER_THREAD_SIZE);
 	m_workerThread.clear();
@@ -25,7 +34,7 @@ Core::Core()
 	//	Dumping objects ->
 	// {233} normal block at 0x000001469D91A680, 24 bytes long.
 	// 233 이라는 지점에서 릭이 생김	
-	//_CrtSetBreakAlloc(1061);
+	//_CrtSetBreakAlloc(23543);
 }
 
 Core::~Core()
@@ -48,14 +57,20 @@ Core::~Core()
 		}
 	}
 
+	if (m_dbThread.joinable() == true)
+		m_dbThread.join();
+	GET_INSTANCE(DataBase)->Release();
+
+	if (m_timerThread.joinable() == true)
+		m_timerThread.join();
+	GET_INSTANCE(GameTimer)->Release();
+
 	if (m_acceptThread.joinable() == true)
 		m_acceptThread.join();
 
 	for (auto& thd : m_workerThread)
-	{
 		if (thd.joinable() == true)
 			thd.join();
-	}
 
 	if (m_IOCP != nullptr)
 	{
@@ -77,12 +92,24 @@ bool Core::Initialize()
 	if (m_IOCP == nullptr)
 		return false;
 
+	bool check = true;
+
 	// 워커 스레드 생성
 	for (int i = 0; i < WORKER_THREAD_SIZE; ++i)
 		m_workerThread.emplace_back(thread{ &Core::ThreadPool, this });
 
 	// accept 스레드 생성
 	m_acceptThread = thread{ &Core::AcceptClient, this };
+
+	m_timerThread = thread{ &Core::Timer, this };
+
+	if (GET_INSTANCE(DataBase)->Initialize() == false)
+	{
+		cout << "DB Initialize Fail!!" << endl;
+		return false;
+	}
+	// DB 스레드 생성
+	m_dbThread = thread{ &Core::AccessDataBase, this };
 
 	for (int i = 0; i < MAX_CHANNEL; ++i)
 		m_channelList.emplace_back(new Channel(to_string(i) + "채널"));
@@ -99,20 +126,24 @@ bool Core::Run()
 {
 	if (KEY_DOWN(VK_ESCAPE))
 	{
+		m_isRun = false;
+
 		for (auto& thd : m_workerThread)
 		{
 			OverEx* overEx = new OverEx;
-			overEx->event_type = EVENT_TYPE::QUIT;
-
+			overEx->eventType = EVENT_TYPE::QUIT;
 			PostQueuedCompletionStatus(m_IOCP, 1, NULL, &overEx->overlapped);
 		}
-
 		cout << "WorkerThread is quit" << endl;
 
 		closesocket(m_listenSocket);
 		WSACleanup();
-
 		return false;
+	}
+
+	else if (KEY_DOWN(VK_CONTROL))
+	{
+		GET_INSTANCE(DataBase)->AddDBTransactionQueue(static_cast<DB_TRANSACTION_TYPE>(randomTransaction(dre)), randomPlayer(dre));
 	}
 
 	return true;
@@ -172,22 +203,75 @@ void Core::ThreadPool()
 			continue;
 		}
 
-		// recv와 send가 끝났을 때 처리
-		if (overEx->event_type == EVENT_TYPE::RECV)
+		switch (overEx->eventType)
 		{
+		case EVENT_TYPE::RECV:
+			{
+				Player* player = reinterpret_cast<Player*>(m_characterList[id]);
+				// 남은 패킷 크기(들어온 패킷 크기)
+				int rest_size = io_byte;
+				char* p = overEx->messageBuffer;
+				char packet_size = 0;
 
-		}
+				if (player->GetPrevSize() > 0)
+					packet_size = player->GetPacketBuf()[0];
 
-		else if (overEx->event_type == EVENT_TYPE::SEND)
-		{
+				while (rest_size > 0)
+				{
+					// 전에 남아있던 패킷이 없었다면, 현재 들어온 패킷을 저장
+					if (packet_size == 0)
+						packet_size = p[0];
 
-		}
+					// 패킷을 만들기 위한 크기?
+					int required = packet_size - player->GetPrevSize();
+					// 패킷을 만들 수 있다면, (현재 들어온 패킷의 크기가 required 보다 크면)
+					if (rest_size >= required)
+					{
+						memcpy(player->GetPacketBuf() + player->GetPrevSize(), p, required);
+						// 패킷 처리
+						ProcessPacket(static_cast<int>(id), player->GetPacketBuf());
 
-		else if (overEx->event_type == EVENT_TYPE::QUIT)
-		{
-			delete overEx;
+						rest_size -= required;
+						p += required;
+						packet_size = 0;
+					}
+					// 패킷을 만들 수 없다면,
+					else
+					{
+						// 현재 들어온 패킷의 크기만큼, 현재 들어온 패킷을 저장시킨다.?
+						memcpy(player->GetPacketBuf() + player->GetPrevSize(), p, rest_size);
+						rest_size = 0;
+					}
+				}
+				RecvPacket(static_cast<int>(id));
+			}
+			break;
+
+		case EVENT_TYPE::SEND:
+				delete overEx;
+			break;
+
+		case EVENT_TYPE::QUIT:
+			{
+				delete overEx;
+				return;
+			}
+
+		case EVENT_TYPE::PLAYER_STATUS_UPDATE:
+			{
+				GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STAUS_INFO, overEx->myID);
+				delete overEx;
+			}
+			break;
+
+		default:
+			{
+				ProcessEvent(overEx->eventType);
+				delete overEx;
+			}
 			break;
 		}
+				
 	}
 }
 
@@ -246,8 +330,8 @@ void Core::AcceptClient()
 			int error = WSAGetLastError();
 			if (error == 10004)
 			{
-				cout << "AcceptThread it quit" << endl;
-				return;
+				cout << "AcceptThread is quit" << endl;
+				break;
 			}
 
 			cout << "Error - Accept Failure" << endl;
@@ -265,9 +349,22 @@ void Core::AcceptClient()
 
 		RecvPacket(myID);
 	}
+}
 
-	closesocket(m_listenSocket);
-	WSACleanup();
+void Core::Timer()
+{
+	while (m_isRun)
+		GET_INSTANCE(GameTimer)->Update();
+
+	cout << "TimerThread is quit" << endl;
+}
+
+void Core::AccessDataBase()
+{
+	while (m_isRun)
+		GET_INSTANCE(DataBase)->Update();
+
+	cout << "DBThread is quit" << endl;
 }
 
 void Core::RecvPacket(int id)
@@ -300,7 +397,7 @@ void Core::SendPacket(int id, char* packet)
 	// 패킷의 내용을 버퍼에 복사
 	memcpy(over->messageBuffer, packet, packet[0]);
 	ZeroMemory(&(over->overlapped), sizeof(WSAOVERLAPPED));
-	over->event_type = EVENT_TYPE::SEND;
+	over->eventType = EVENT_TYPE::SEND;
 
 	if (WSASend(socket, &over->dataBuffer, 1, nullptr, 0, &(over->overlapped), nullptr) == SOCKET_ERROR)
 	{
@@ -324,7 +421,7 @@ void Core::ProcessPacket(int id, char* buf)
 	case CS_PACKET_TYPE::CS_CHANNEL_LOGIN:
 		{
 			CS_Packet_Channel_Login* packet = reinterpret_cast<CS_Packet_Channel_Login*>(buf);
-			packet->m_channel;
+			ProcessChannelLogin(packet->m_channel, id);
 		}
 		break;
 
@@ -341,7 +438,15 @@ void Core::ProcessPacket(int id, char* buf)
 	}
 }
 
-void Core::ProcessLogin(unsigned char channel, int myID)
+void Core::ProcessServerLogin(int id)
+{
+	// DB에 로그인한 ID가 없으면
+	SendServerLoginFailPacket(id);
+	// ID가 있으면
+	SendServerLoginOkPacket(id);
+}
+
+void Core::ProcessChannelLogin(unsigned char channel, int id)
 {
 	// 현재 채널에 몇명의 유저가 있는지 저장
 	m_channelList[channel]->ChannelMtxLock();
@@ -349,25 +454,38 @@ void Core::ProcessLogin(unsigned char channel, int myID)
 	if (m_channelList[channel]->GetChannelUserSize() >= MAX_CHANNEL_USER)
 	{
 		m_channelList[channel]->ChannelMtxUnLock();
-		SendChannelLoginFailPacket(myID);
+		SendChannelLoginFailPacket(id);
 		return;
 	}
 
 	// 채널을 셋해줌
-	reinterpret_cast<Player*>(m_characterList[myID])->SetChannel(channel);
-	m_channelList[channel]->AddPlayerInChannel(myID, m_characterList[myID]);
-	m_channelList[channel]->ChannelMtxUnLock();
-	SendChannelLoginOkPacket(myID);
+	reinterpret_cast<Player*>(m_characterList[id])->SetChannel(channel);
+	m_channelList[id]->AddPlayerInChannel(id, m_characterList[id]);
+	m_channelList[id]->ChannelMtxUnLock();
+	SendChannelLoginOkPacket(id);
 
-	m_channelList[channel]->ProcessChannelLogin(myID);
+	m_channelList[channel]->ProcessChannelLogin(id);
 }
 
-void Core::UpdateViewList(int myID)
+void Core::UpdateViewList(int id)
 {
-	unsigned char channel = m_characterList[myID]->GetChannel();
+	unsigned char channel = m_characterList[id]->GetChannel();
 
 	// 채널에 있는 오브젝트들 시야를 업데이트 해줌
-	m_channelList[channel]->UpdateObjectViewList(myID);
+	m_channelList[channel]->UpdateObjectViewList(id);
+}
+
+void Core::ProcessEvent(EVENT_TYPE& eventType)
+{
+	switch (eventType)
+	{
+	case EVENT_TYPE::HEAL:
+		cout << "Heal is now" << endl;
+		break;
+
+	default:
+		break;
+	}
 }
 
 void Core::DisconnectServer(int id)

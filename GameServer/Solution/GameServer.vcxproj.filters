@@ -48,6 +48,12 @@
     <Filter Include="Code\GameObject\Channel">
       <UniqueIdentifier>{92bbe527-03c8-4ccd-a03c-8e1913e8f0ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\DataBase">
+      <UniqueIdentifier>{b523de10-8e75-4e39-a7be-a2104781bc23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameTimer">
+      <UniqueIdentifier>{3bec41db-4c1f-4aac-84a4-a33d5d70548e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -94,6 +100,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Channel\Channel.cpp">
       <Filter>Code\GameObject\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\DataBase\DataBase.cpp">
+      <Filter>Code\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameTimer\GameTimer.cpp">
+      <Filter>Code\GameTimer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +159,12 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Channel\Channel.h">
       <Filter>Code\GameObject\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\DataBase\DataBase.h">
+      <Filter>Code\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameTimer\GameTimer.h">
+      <Filter>Code\GameTimer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

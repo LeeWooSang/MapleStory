@@ -13,9 +13,9 @@ Player::Player(const string& name)
 	m_inventory = nullptr;
 
 	m_socket = 0;
-	ZeroMemory(&m_PacketBuf, sizeof(char));
-	m_PrevSize = 0;
-	m_SendBytes = 0;
+	ZeroMemory(&m_packetBuf, sizeof(char));
+	m_prevSize = 0;
+	m_sendBytes = 0;
 	m_isConnected = false;
 }
 
@@ -122,9 +122,9 @@ void Player::ClearCharacterInfo()
 	//m_Y = START_Y;
 
 	m_socket = 0;
-	ZeroMemory(&m_PacketBuf, sizeof(char));
-	m_PrevSize = 0;
-	m_SendBytes = 0;
+	ZeroMemory(&m_packetBuf, sizeof(char));
+	m_prevSize = 0;
+	m_sendBytes = 0;
 	m_isConnected = false;
 
 	Character::ClearCharacterInfo();

@@ -5,12 +5,10 @@ Character::Character(const string& name)
 {
 	m_stat = nullptr;
 
-	m_ID = 0;
-
 	m_overEx.dataBuffer.len = MAX_BUFFER;
 	m_overEx.dataBuffer.buf = m_overEx.messageBuffer;
-	m_overEx.event_type = Core::EVENT_TYPE::RECV;
-	//m_overEx.event_target_id = TARGET_IS_NONE;
+	m_overEx.eventType = Core::EVENT_TYPE::RECV;
+	m_overEx.myID = 0;
 
 	ZeroMemory(&m_overEx.overlapped, sizeof(WSAOVERLAPPED));
 	m_viewList.clear();
@@ -36,11 +34,9 @@ void Character::Update()
 
 void Character::ClearCharacterInfo()
 {
-	m_ID = 0;
-
 	m_overEx.dataBuffer.len = MAX_BUFFER;
 	m_overEx.dataBuffer.buf = m_overEx.messageBuffer;
-	m_overEx.event_type = Core::EVENT_TYPE::RECV;
+	m_overEx.eventType = Core::EVENT_TYPE::RECV;
 	//m_overEx.event_target_id = TARGET_IS_NONE;
 
 	ZeroMemory(&m_overEx.overlapped, sizeof(WSAOVERLAPPED));
