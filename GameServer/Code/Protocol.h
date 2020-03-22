@@ -13,7 +13,6 @@ constexpr int MAX_NPC = 2000 * MAX_CHANNEL;
 
 constexpr int MAX_CHARACTER = MAX_USER + MAX_NPC;
 
-
 // ¸Ê °¡·Î Å©±â
 constexpr unsigned short	WORLD_WIDTH = 300;
 // ¸Ê ¼¼·Î Å©±â

@@ -9,7 +9,7 @@ NPC::~NPC()
 {
 }
 
-void NPC::ClearCharacterInfo()
+void NPC::ClearObjectInfo()
 {
-	Character::ClearCharacterInfo();
+	Character::ClearObjectInfo();
 }

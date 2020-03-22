@@ -5,24 +5,21 @@
 PlayerStatus::PlayerStatus(const string& name)
 	: Status(name)
 {
+	m_exp = 0;
 	m_MP = 0;
-
 	m_STR = 0;
 	m_DEX = 0;
 	m_INT = 0;
 	m_LUK = 0;
 
 	m_Damage = 0;
-
 	m_critical = 0;
 	m_criticalDamage = 0;
 	m_bossDamage = 0;
 	m_defenceIgnore = 0;
 
 	m_stance = 0;
-
 	m_starForce = 0;
-
 	m_arcaneSymbolList.clear();
 	m_totalArcaneForce = 0;
 }
@@ -39,9 +36,6 @@ PlayerStatus::~PlayerStatus()
 
 bool PlayerStatus::Initialize(void* p)
 {
-	if (p == nullptr)
-		return false;
-
 	Status::Initialize(p);
 
 	//ArcaneSymbol* Vanishingjourney = new ArcaneSymbol("아케인 심볼 : 소멸의 여로");
@@ -83,6 +77,29 @@ void PlayerStatus::Update()
 	ShowStat();
 }
 
+void PlayerStatus::ClearObjectInfo()
+{
+	m_exp = 0;
+	m_MP = 0;
+	m_STR = 0;
+	m_DEX = 0;
+	m_INT = 0;
+	m_LUK = 0;
+
+	m_Damage = 0;
+	m_critical = 0;
+	m_criticalDamage = 0;
+	m_bossDamage = 0;
+	m_defenceIgnore = 0;
+
+	m_stance = 0;
+	m_starForce = 0;
+	m_arcaneSymbolList.clear();
+	m_totalArcaneForce = 0;
+
+	Status::ClearObjectInfo();
+}
+
 void PlayerStatus::AddStat(int MaxHP, int MaxHP_Percent, int MaxMP_Percent, int STR, int DEX, int INT, int LUK)
 {
 	double tempHP_Percent = MaxHP_Percent;
@@ -106,6 +123,18 @@ void PlayerStatus::AddDetailStat(int critical, int criticalDamage, int bossDamag
 	m_criticalDamage += criticalDamage;
 	m_bossDamage += bossDamage;
 	m_defenceIgnore += defenceIgnore;
+}
+
+void PlayerStatus::SetDBdataToPlayerStatus(short level, __int64 exp, int hp, int mp, int STR, int DEX, int INT, int LUK)
+{
+	m_level = level;
+	m_exp = exp;
+	m_HP = hp;
+	m_MP = mp;
+	m_STR = STR;
+	m_DEX = DEX;
+	m_INT = INT;
+	m_LUK = LUK;
 }
 
 void PlayerStatus::ShowStat()	const

@@ -1,5 +1,6 @@
 #include "GameTimer.h"
 #include "../GameObject/Character/Character.h"
+#include "../DataBase/DataBase.h"
 
 INIT_INSTACNE(GameTimer)
 GameTimer::GameTimer()
@@ -29,6 +30,12 @@ void GameTimer::Update()
 
 		if (ev.m_startTime > chrono::high_resolution_clock::now())
 			break;
+
+		if (ev.m_eventType == Core::EVENT_TYPE::PLAYER_STATUS_UPDATE)
+		{
+			GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STATUS_INFO, ev.m_objID);
+			break;
+		}
 
 		m_timerQueueMtx.lock();
 		m_timerQueue.pop();

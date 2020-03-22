@@ -6,8 +6,12 @@
 
 enum DB_TRANSACTION_TYPE
 {
-	UPDATE_PLAYER_STAUS_INFO,
-	GET_PLAYER_INVENTORY_INFO
+	GET_PLAYER_STATUS_INFO,
+	GET_PLAYER_INVENTORY_INFO,
+
+	UPDATE_PLAYER_STATUS_INFO,
+
+	PLAYER_LOGOUT
 };
 
 struct DBTransaction
@@ -31,8 +35,15 @@ public:
 
 	void ProcessDBTransaction(DBTransaction&);
 	void AddDBTransactionQueue(DB_TRANSACTION_TYPE, int);
-	
-	bool GetInventoryInfo();
+
+	template <typename T>
+	const wstring& MakeStoredProcedure(wstring&, T, bool);
+	const wstring& MakeStoredProcedure(wstring&, const string&, bool);
+
+	bool GetPlayerStatusInfo(class Player*);
+	bool GetPlayerInventoryInfo(class Player*);
+	bool UpdatePlayerStatusInfo(class Player*);
+	bool PlayerLogout(class Player*);
 
 private:
 	void ErrorDisplay(RETCODE);
@@ -44,4 +55,5 @@ private:
 	queue<DBTransaction> m_dbTransactionQueue;
 	mutex m_dbTransactionQueueMtx;
 };
+
 

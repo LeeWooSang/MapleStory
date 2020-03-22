@@ -3,8 +3,6 @@
 Character::Character(const string& name)
 	: GameObject(name)
 {
-	m_stat = nullptr;
-
 	m_overEx.dataBuffer.len = MAX_BUFFER;
 	m_overEx.dataBuffer.buf = m_overEx.messageBuffer;
 	m_overEx.eventType = Core::EVENT_TYPE::RECV;
@@ -17,6 +15,8 @@ Character::Character(const string& name)
 	m_map = 0;
 	m_x = 0;
 	m_y = 0;
+
+	m_stat = nullptr;
 }
 
 Character::~Character()
@@ -32,7 +32,7 @@ void Character::Update()
 {
 }
 
-void Character::ClearCharacterInfo()
+void Character::ClearObjectInfo()
 {
 	m_overEx.dataBuffer.len = MAX_BUFFER;
 	m_overEx.dataBuffer.buf = m_overEx.messageBuffer;
@@ -49,6 +49,8 @@ void Character::ClearCharacterInfo()
 	m_map = 0;
 	m_x = 0;
 	m_y = 0;
+
+	GameObject::ClearObjectInfo();
 }
 
 void Character::UpdatePosition(char dir)

@@ -9,7 +9,7 @@ public:
 
 	virtual bool Initialize(void*);
 	virtual void Update();
-	virtual void ClearCharacterInfo();
+	virtual void ClearObjectInfo();
 
 	char* GetPacketBuf() { return m_packetBuf; }
 

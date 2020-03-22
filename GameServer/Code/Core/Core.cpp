@@ -8,7 +8,7 @@
 random_device seed;
 default_random_engine dre(seed());
 uniform_int_distribution<> randomPlayer(0, MAX_USER - 1);
-uniform_int_distribution<> randomTransaction(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STAUS_INFO, DB_TRANSACTION_TYPE::GET_PLAYER_INVENTORY_INFO);
+uniform_int_distribution<> randomTransaction(0, 4);
 
 INIT_INSTACNE(Core)
 Core::Core()
@@ -116,9 +116,19 @@ bool Core::Initialize()
 
 	// 플레이어 생성
 	for (int i = 0; i < MAX_USER; ++i)
-		m_characterList.emplace_back(new Player(""));
+	{
+		Player* player = new Player("");
+		m_characterList.emplace_back(player);
+		if (player->Initialize(nullptr) == false)
+			return false;
+	}
+
 
 	cout << "Server Initialize OK!!" << endl;
+
+	GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::GET_PLAYER_STATUS_INFO, 0);
+	GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STATUS_INFO, 0);
+
 	return true;
 }
 
@@ -256,13 +266,6 @@ void Core::ThreadPool()
 				delete overEx;
 				return;
 			}
-
-		case EVENT_TYPE::PLAYER_STATUS_UPDATE:
-			{
-				GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STAUS_INFO, overEx->myID);
-				delete overEx;
-			}
-			break;
 
 		default:
 			{
@@ -492,8 +495,8 @@ void Core::DisconnectServer(int id)
 {
 	m_channelList[id]->DisconnectChannel(id);
 
-	Player* player = reinterpret_cast<Player*>(m_characterList[id]);
-	player->ClearCharacterInfo();
+	// DB에 플레이어 Status 업데이트
+	GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::PLAYER_LOGOUT, id);
 }
 
 int Core::CreatePlayerID()

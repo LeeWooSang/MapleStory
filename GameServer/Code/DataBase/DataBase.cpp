@@ -1,6 +1,7 @@
 #include "DataBase.h"
 #include "../Core/Core.h"
 #include "../GameObject/Character/Player/Player.h"
+#include "../../Code/GameObject/Status/PlayerStatus/PlayerStatus.h"
 
 INIT_INSTACNE(DataBase)
 DataBase::DataBase()
@@ -117,12 +118,21 @@ void DataBase::ProcessDBTransaction(DBTransaction& transaction)
 
 	switch (transaction.m_type)
 	{
-	case DB_TRANSACTION_TYPE::UPDATE_PLAYER_STAUS_INFO:
-		cout << "Status of " << transaction.m_ID << " player update" << endl;
+	case DB_TRANSACTION_TYPE::GET_PLAYER_STATUS_INFO:
+		GetPlayerStatusInfo(player);
 		break;
 
 	case DB_TRANSACTION_TYPE::GET_PLAYER_INVENTORY_INFO:
 		cout << "Inventory of " << transaction.m_ID << " player get" << endl;
+		break;
+
+	case DB_TRANSACTION_TYPE::UPDATE_PLAYER_STATUS_INFO:
+		UpdatePlayerStatusInfo(player);
+		cout << "Status of " << transaction.m_ID << " player update" << endl;
+		break;
+
+	case DB_TRANSACTION_TYPE::PLAYER_LOGOUT:
+		PlayerLogout(player);
 		break;
 
 	default:
@@ -137,22 +147,132 @@ void DataBase::AddDBTransactionQueue(DB_TRANSACTION_TYPE type, int id)
 	m_dbTransactionQueueMtx.unlock();
 }
 
-bool DataBase::GetInventoryInfo()
+template <typename T>
+const wstring& DataBase::MakeStoredProcedure(wstring& functionName, T a, bool isBegin)
 {
+	wchar_t temp[MAX_STRLEN] = { 0, };
+
+	string name = typeid(T).name();
+	if (name == "short" || name == "int" || name == "__int64")
+	{
+		wcscpy(temp, const_cast<wchar_t*>(to_wstring(a).c_str()));
+	}
+
+	if (isBegin == true)
+		functionName += L" ";
+	else
+		functionName += L", ";
+
+	functionName += temp;
+
+	return functionName;
+}
+
+const wstring& DataBase::MakeStoredProcedure(wstring& functionName, const string& a, bool isBegin)
+{
+	wchar_t temp[MAX_STRLEN] = { 0, };
+	
+	mbstowcs(temp, const_cast<char*>(a.c_str()), a.length());
+
+	if (isBegin == true)
+		functionName += L" ";
+	else
+		functionName += L", ";
+
+	functionName += temp;
+
+	return functionName;
+}
+
+bool DataBase::GetPlayerStatusInfo(Player* player)
+{
+	PlayerStatus* stat = reinterpret_cast<PlayerStatus*>(player->GetStatus());
+
+	//string name = "이우상";
+	//wstring wname = L"";
+	//mbstowcs(const_cast<wchar_t*>(wname.c_str()), const_cast<char*>(name.c_str()), name.length());
+
+	string name = "이우상";
+	wchar_t wname[50] = { 0, };
+	mbstowcs(wname, const_cast<char*>(name.c_str()), name.length());
+
+	wstring ws = L"EXEC GetPlayerStatusInfo ";
+	ws += wname;
+
 	SQLRETURN retcode;
 
-	SQLWCHAR name[MAX_STRLEN];
-	SQLINTEGER length, level, size, exp;
-	SQLLEN cbName = 0, cbLength= 0, cbLevel = 0, cbSize = 0, cbExp = 0;
+	short level = 0;
+	__int64 exp = 0;
+	wchar_t jobName[MAX_STRLEN];
+	SQLINTEGER HP, MP, STR, DEX, INT, LUK;
+	SQLLEN cbLevel = 0, cbExp = 0, cbHP = 0, cbMP = 0, cbSTR = 0, cbDEX = 0, cbINT = 0, cbLUK = 0, cbJobName = 0;
 
-	wstring ws = L"EXEC InventoryInfo ";
+	retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR*)ws.c_str(), SQL_NTS);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+	{
+		retcode = SQLBindCol(m_Hstmt, 1, SQL_SMALLINT, &level, 0, &cbLevel);
+		retcode = SQLBindCol(m_Hstmt, 2, SQL_C_SBIGINT, &exp, 0, &cbExp);
+		retcode = SQLBindCol(m_Hstmt, 3, SQL_C_LONG, &HP, 0, &cbHP);
+		retcode = SQLBindCol(m_Hstmt, 4, SQL_C_LONG, &MP, 0, &cbMP);
+		retcode = SQLBindCol(m_Hstmt, 5, SQL_C_LONG, &STR, 0, &cbSTR);
+		retcode = SQLBindCol(m_Hstmt, 6, SQL_C_LONG, &DEX, 0, &cbDEX);
+		retcode = SQLBindCol(m_Hstmt, 7, SQL_C_LONG, &INT, 0, &cbINT);
+		retcode = SQLBindCol(m_Hstmt, 8, SQL_C_LONG, &LUK, 0, &cbLUK);
+		retcode = SQLBindCol(m_Hstmt, 9, SQL_C_CHAR, &jobName, MAX_STRLEN, &cbJobName);
+
+		while (true)
+		{
+			retcode = SQLFetch(m_Hstmt);
+
+			if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+			{
+				stat->SetDBdataToPlayerStatus(level, exp, HP, MP, STR, DEX, INT, LUK);
+			}
+
+			else if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
+			{
+				ErrorDisplay(retcode);
+				break;
+			}
+
+			else if (retcode == SQL_NO_DATA)
+			{
+				ErrorDisplay(retcode);
+				SQLCloseCursor(m_Hstmt);
+				return true;
+			}
+
+		}
+	}
+	else
+		ErrorDisplay(retcode);
+
+	SQLCloseCursor(m_Hstmt);
+
+	return false;
+}
+
+bool DataBase::GetPlayerInventoryInfo(Player* player)
+{
+	string name = player->GetName();
+	wstring wname = L"";
+	mbstowcs(const_cast<wchar_t*>(wname.c_str()), const_cast<char*>(name.c_str()), name.length());
+
+	wstring ws = L"EXEC GetPlayerInventoryInfo " + wname;
+
+	SQLRETURN retcode;
+
+	SQLWCHAR itemName[MAX_STRLEN];
+	SQLINTEGER length, level, size, exp;
+	SQLLEN cbItemName = 0, cbLength= 0, cbLevel = 0, cbSize = 0, cbExp = 0;
 
 	retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR*)ws.c_str(), SQL_NTS);
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
 	{
 		retcode = SQLBindCol(m_Hstmt, 1, SQL_C_LONG, &length, 100, &cbLength);
-		retcode = SQLBindCol(m_Hstmt, 2, SQL_C_CHAR, name, MAX_STRLEN, &cbName);
+		retcode = SQLBindCol(m_Hstmt, 2, SQL_C_CHAR, itemName, MAX_STRLEN, &cbItemName);
 		retcode = SQLBindCol(m_Hstmt, 3, SQL_C_LONG, &level, 100, &cbLevel);
 		retcode = SQLBindCol(m_Hstmt, 4, SQL_C_LONG, &size, 100, &cbSize);
 		retcode = SQLBindCol(m_Hstmt, 5, SQL_C_LONG, &exp, 100, &cbExp);
@@ -164,7 +284,7 @@ bool DataBase::GetInventoryInfo()
 			if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
 			{
 				name[length] = '\0';
-				string s = reinterpret_cast<char*>(name);
+				string s = reinterpret_cast<char*>(itemName);
 				cout << s << ", " << level << ", " << size << ", " << exp << endl;
 			}
 			
@@ -191,14 +311,60 @@ bool DataBase::GetInventoryInfo()
 	return false;
 }
 
-void DataBase::ErrorDisplay(RETCODE RetCode)
+bool DataBase::UpdatePlayerStatusInfo(Player* player)
+{
+	//string name = player->GetName();
+	string name = "이우상";
+	wchar_t wname[50] = { 0, };
+	mbstowcs(wname, const_cast<char*>(name.c_str()), name.length());
+
+	wstring comma = L", ";
+	wstring ws = L"EXEC UpdatePlayerStatusInfo";
+	//ws += wname;
+	MakeStoredProcedure(ws, name, true);
+	PlayerStatus* stat = reinterpret_cast<PlayerStatus*>(player->GetStatus());
+	MakeStoredProcedure(ws, stat->GetLevel(), false);
+	MakeStoredProcedure(ws, stat->GetExp(), false);
+	MakeStoredProcedure(ws, stat->GetHP(), false);
+	MakeStoredProcedure(ws, stat->GetMP(), false);
+	MakeStoredProcedure(ws, stat->GetSTR(), false);
+	MakeStoredProcedure(ws, stat->GetDEX(), false);
+	MakeStoredProcedure(ws, stat->GetINT(), false);
+	MakeStoredProcedure(ws, stat->GetLUK(), false);
+
+	SQLRETURN retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR *)ws.c_str(), SQL_NTS);
+	if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
+	{
+		ErrorDisplay(retcode);
+		SQLCloseCursor(m_Hstmt);
+		return false;
+	}
+
+	SQLCloseCursor(m_Hstmt);
+	return true;
+}
+
+bool DataBase::PlayerLogout(Player* player)
+{
+	string name = player->GetName();
+	wstring wname = L"";
+	mbstowcs(const_cast<wchar_t*>(wname.c_str()), const_cast<char*>(name.c_str()), name.length());
+
+	wstring ws = L"EXEC PlayerLogout " + wname;
+
+	player->ClearObjectInfo();
+
+	return true;
+}
+
+void DataBase::ErrorDisplay(RETCODE retCode)
 {
 	SQLSMALLINT iRec = 0;
 	SQLINTEGER  iError;
 	wchar_t       wszMessage[1000] = { 0, };
 	wchar_t       wszState[SQL_SQLSTATE_SIZE + 1];
 
-	if (RetCode == SQL_INVALID_HANDLE)
+	if (retCode == SQL_INVALID_HANDLE)
 	{
 		fwprintf(stderr, L"Invalid handle!\n");
 		return;

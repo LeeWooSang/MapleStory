@@ -1,6 +1,7 @@
 #include "Channel.h"
 #include "../Character/Player/Player.h"
 #include "../Character/NPC/NPC.h"
+#include "../../DataBase/DataBase.h"
 
 Channel::Channel(const string& name)
 	: GameObject(name)
@@ -87,11 +88,11 @@ void Channel::UpdateObjectViewList(int myID)
 {
 	m_channelCharacterList[myID]->ViewListMtxLock();
 	// 이동 전 viewList
-	unordered_set<int> old_viewList = m_channelCharacterList[myID]->GetViewList();
+	unordered_set<int> oldViewList = m_channelCharacterList[myID]->GetViewList();
 	m_channelCharacterList[myID]->ViewListMtxUnLock();
 
 	// 이동 후 viewList
-	unordered_set<int> new_viewList;
+	unordered_set<int> newViewList;
 
 	for (int i = 0; i < MAX_USER; ++i)
 	{
@@ -99,7 +100,7 @@ void Channel::UpdateObjectViewList(int myID)
 		// 나하고, 상대하고 근처에 있는지, 
 		// 또한 나하고 id하고 같지 않을 때,
 		if (reinterpret_cast<Player*>(m_channelCharacterList[i])->GetIsConnected() == true && IsNearObject(myID, i) == true && i != myID)
-			new_viewList.emplace(i);
+			newViewList.emplace(i);
 	}
 
 	for (int i = NPC_ID_START; i < MAX_CHARACTER; ++i)
@@ -108,14 +109,14 @@ void Channel::UpdateObjectViewList(int myID)
 		// 나하고, 상대하고 근처에 있는지, 
 		// 또한 나하고 id하고 같지 않을 때,
 		if (IsNearObject(myID, i) == true)
-			new_viewList.emplace(i);
+			newViewList.emplace(i);
 	}
 
 	// 나와 근처에 있는 오브젝트들에 대해
-	for (auto id : new_viewList)
+	for (auto id : newViewList)
 	{
 		// 새로 시야에 들어옴
-		if (old_viewList.count(id) == 0)
+		if (oldViewList.count(id) == 0)
 		{
 			m_channelCharacterList[myID]->ViewListMtxLock();
 			m_channelCharacterList[myID]->AddIDInViewList(id);
@@ -144,8 +145,8 @@ void Channel::UpdateObjectViewList(int myID)
 			}
 		}
 
-		// old_viewList에 new_viewList에 있는 클라ID가 있을 때, (old, new 동시 존재)
-		else if (old_viewList.count(id) != 0)
+		// oldViewList에 newViewList에 있는 클라ID가 있을 때, (old, new 동시 존재)
+		else if (oldViewList.count(id) != 0)
 		{
 			if (IsPlayer(id) == false)
 				continue;
@@ -168,9 +169,9 @@ void Channel::UpdateObjectViewList(int myID)
 	}
 
 	// 시야에서 사라짐
-	for (auto id : old_viewList)
+	for (auto id : oldViewList)
 	{
-		if (new_viewList.count(id) != 0)
+		if (newViewList.count(id) != 0)
 			continue;
 
 		m_channelCharacterList[myID]->ViewListMtxLock();
@@ -195,7 +196,7 @@ void Channel::UpdateObjectViewList(int myID)
 
 	SendPositionPacket(myID, myID);
 
-	for (auto npc_id : new_viewList)
+	for (auto npc_id : newViewList)
 	{
 		if (IsPlayer(npc_id))	continue;
 
@@ -210,6 +211,7 @@ void Channel::UpdateObjectViewList(int myID)
 
 void Channel::DisconnectChannel(int id)
 {
+	// viewList 정리
 	for (int i = 0; i < MAX_USER; ++i)
 	{
 		if (reinterpret_cast<Player*>(m_channelCharacterList[i])->GetIsConnected() == false)
@@ -224,6 +226,11 @@ void Channel::DisconnectChannel(int id)
 		else
 			m_channelCharacterList[i]->ViewListMtxUnLock();
 	}
+
+	// id 플레이어를 지워줌
+	m_channelMtx.lock();
+	m_channelCharacterList.erase(id);
+	m_channelMtx.unlock();
 }
 
 void Channel::WakeUpNPC(int id)

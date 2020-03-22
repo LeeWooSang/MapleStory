@@ -20,7 +20,7 @@ public:
 
 	virtual bool Initialize(void*);
 	virtual void Update();
-	virtual void ClearCharacterInfo();
+	virtual void ClearObjectInfo();
 
 	void UpdatePosition(char);
 
@@ -43,9 +43,9 @@ public:
 	int GetY() const { return m_y; }
 	void SetY(int y) { m_y = y; }
 
-protected:
-	class Status* m_stat;
+	class Status* GetStatus() { return m_stat; }
 
+protected:
 	OverEx	m_overEx;
 	mutex m_viewListMtx;
 	unordered_set<int> m_viewList;
@@ -55,5 +55,7 @@ protected:
 
 	int m_x;
 	int m_y;
+
+	class Status* m_stat;
 };
 

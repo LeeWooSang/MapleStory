@@ -21,6 +21,8 @@ Player::Player(const string& name)
 
 Player::~Player()
 {
+	ClearObjectInfo();
+
 	GET_INSTANCE(SkillManager)->Release();
 
 	if (m_stat != nullptr)
@@ -51,25 +53,23 @@ bool Player::Initialize(void* p)
 	if (m_uni->Initialize(nullptr) == false)
 		return false;
 
-	m_myCharacter = m_uni->GetMyCharacter("창원기전");
-	if (m_myCharacter == nullptr)
-		return false;
+	//m_myCharacter = m_uni->GetMyCharacter("창원기전");
+	//if (m_myCharacter == nullptr)
+	//	return false;
 
-	//인벤토리
-	unsigned char slotSize = 32;
-	m_inventory = new Inventory("인벤토리");
-	if (m_inventory->Initialize(reinterpret_cast<void*>(slotSize)) == false)
-		return false;
+	////인벤토리
+	//unsigned char slotSize = 32;
+	//m_inventory = new Inventory("인벤토리");
+	//if (m_inventory->Initialize(reinterpret_cast<void*>(slotSize)) == false)
+	//	return false;
 
 	// 스텟
 	m_stat = new PlayerStatus("스텟");
-	if (m_stat->Initialize(reinterpret_cast<void*>(m_myCharacter->m_level)) == false)
+	if (m_stat->Initialize(nullptr) == false)
 		return false;
 
 	//if (GET_INSTANCE(SkillManager)->Initialize() == false)
 	//	return false;
-
-	cout << "플레이어 초기화 완료" << endl;
 
 	return true;
 }
@@ -115,7 +115,7 @@ void Player::Update()
 	}
 }
 
-void Player::ClearCharacterInfo()
+void Player::ClearObjectInfo()
 {
 	//wcscpy(m_PlayerID, L"");
 	//m_X = START_X;
@@ -127,5 +127,5 @@ void Player::ClearCharacterInfo()
 	m_sendBytes = 0;
 	m_isConnected = false;
 
-	Character::ClearCharacterInfo();
+	Character::ClearObjectInfo();
 }

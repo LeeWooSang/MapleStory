@@ -1,11 +1,14 @@
 #pragma once
 #include "../GameObject.h"
 
+constexpr int MAX_HAVING_CHARACTER = 45;
+
 struct UnionCharaterInfo
 {
-	UnionCharaterInfo(const string& nickName, class Job* job, unsigned char level)
-		: m_nickName(nickName), m_job(job), m_level(level) {}
+	UnionCharaterInfo(bool isEmpty, const string& nickName, class Job* job, unsigned char level)
+		: m_isEmpty(isEmpty), m_nickName(nickName), m_job(job), m_level(level) {}
 
+	bool m_isEmpty;
 	string m_nickName;
 	class Job* m_job;
 	unsigned char m_level;

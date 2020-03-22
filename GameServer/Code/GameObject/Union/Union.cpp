@@ -11,20 +11,27 @@ Union::Union(const string& name)
 
 Union::~Union()
 {
-	//for (auto iter = m_unionCharacterList.begin(); iter != m_unionCharacterList.end(); ++iter)
-	//{
-	//	if ((*iter)->m_job == nullptr)
-	//		continue;
+	for (auto iter = m_unionCharacterList.begin(); iter != m_unionCharacterList.end();)
+	{
+		delete (*iter)->m_job;
+		(*iter)->m_job = nullptr;
 
-	//	delete (*iter)->m_job;
-	//	(*iter)->m_job = nullptr;
-	//}
-
-	//SAFE_DELETE_LIST(m_unionCharacterList);
+		delete (*iter);
+		iter = m_unionCharacterList.erase(iter);
+	}
 }
 
 bool Union::Initialize(void* p)
 {
+	for (int i = 0; i < MAX_HAVING_CHARACTER; ++i)
+	{
+		Job* job = new Job("");
+		if (job->Initialize(nullptr) == false)
+			return false;
+
+		m_unionCharacterList.emplace_back(new UnionCharaterInfo(false, "", job, 0));
+	}
+
 	//// 유니온 캐릭터 정보 저장
 	//auto characterInfo = GET_INSTANCE(Resource)->GetCharacterInfo();
 	//for (auto iter = characterInfo.begin(); iter != characterInfo.end(); ++iter)
