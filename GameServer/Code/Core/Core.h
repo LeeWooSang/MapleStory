@@ -2,7 +2,6 @@
 #include "../../../MapleConvenienceFunction/Code/Defines.h"
 #include "../../../MapleConvenienceFunction/Code/Macro.h"
 #include "../Protocol.h"
-#include "../GameObject/Channel/Channel.h"
 
 constexpr int WORKER_THREAD_SIZE = 4;
 constexpr int VIEW_DISTANCE = 3;
@@ -16,7 +15,17 @@ public:
 	bool Run();
 
 	const HANDLE& GetIOCPHandle()	const { return m_IOCP; }
-	enum EVENT_TYPE { RECV, SEND, QUIT, HEAL, PLAYER_STATUS_UPDATE };
+	enum EVENT_TYPE 
+	{ 
+		RECV, 	
+		SEND, 		
+		QUIT,
+		PLAYER_LOGIN_OK, 
+		PLAYER_LOGIN_FAIL, 
+		PLAYER_LOGOUT, 
+		PLAYER_STATUS_UPDATE 
+	};
+
 	void SendPacket(int, char*);
 
 	class Character* GetPlayer(int id) { return m_characterList[id]; }
@@ -34,10 +43,9 @@ private:
 
 	void ProcessPacket(int, char*);
 
-	void ProcessServerLogin(int);
-	void ProcessChannelLogin(unsigned char, int);
+	void ProcessChannelLogin(char, int);
 	void UpdateViewList(int);
-	void ProcessEvent(EVENT_TYPE&);
+	void ProcessEvent(EVENT_TYPE&, int);
 
 	void DisconnectServer(int);
 
@@ -63,5 +71,5 @@ private:
 	SOCKET m_listenSocket;
 
 	vector<class Character*> m_characterList;
-	vector<Channel*> m_channelList;
+	vector<class Channel*> m_channelList;
 };

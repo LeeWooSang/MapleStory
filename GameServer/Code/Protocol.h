@@ -48,19 +48,19 @@ enum SC_PACKET_TYPE
 
 #pragma pack(push, 1)
 // Client To Server
-struct CS_Packet_Server_Login
+struct CSPacket_Server_Login
 {
 	char m_size;
 	char m_type;
-	char* m_ID[30];
+	char m_ID[30];
 };
-struct CS_Packet_Channel_Login
+struct CSPacket_Channel_Login
 {
 	char m_size;
 	char m_type;
-	unsigned char m_channel;
+	char m_channel;
 };
-struct CS_Packet_Move
+struct CSPacket_Move
 {
 	char	m_size;
 	char	m_type;
@@ -90,7 +90,6 @@ struct SCPacket_Channel_Login_Fail
 	char size;
 	char type;
 };
-
 struct SCPacket_Position
 {
 	char size;

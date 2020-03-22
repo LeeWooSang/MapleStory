@@ -211,8 +211,12 @@ void Channel::UpdateObjectViewList(int myID)
 
 void Channel::DisconnectChannel(int id)
 {
+	m_channelMtx.lock();
+	size_t channelUser = m_channelCharacterList.size();
+	m_channelMtx.unlock();
+
 	// viewList Á¤¸®
-	for (int i = 0; i < MAX_USER; ++i)
+	for (int i = 0; i < channelUser; ++i)
 	{
 		if (reinterpret_cast<Player*>(m_channelCharacterList[i])->GetIsConnected() == false)
 			continue;

@@ -3,6 +3,7 @@
 #include <crtdbg.h>
 #include "../GameTimer/GameTimer.h"
 #include "../DataBase/DataBase.h"
+#include "../GameObject/Channel/Channel.h"
 #include "../GameObject/Character/Player/Player.h"
 
 random_device seed;
@@ -123,11 +124,7 @@ bool Core::Initialize()
 			return false;
 	}
 
-
 	cout << "Server Initialize OK!!" << endl;
-
-	GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::GET_PLAYER_STATUS_INFO, 0);
-	GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::UPDATE_PLAYER_STATUS_INFO, 0);
 
 	return true;
 }
@@ -269,7 +266,7 @@ void Core::ThreadPool()
 
 		default:
 			{
-				ProcessEvent(overEx->eventType);
+				ProcessEvent(overEx->eventType, static_cast<int>(id));
 				delete overEx;
 			}
 			break;
@@ -415,22 +412,23 @@ void Core::ProcessPacket(int id, char* buf)
 	{
 	case CS_PACKET_TYPE::CS_SERVER_LOGIN:
 		{
-			CS_Packet_Server_Login* packet = reinterpret_cast<CS_Packet_Server_Login*>(buf);
-
-			//m_characterList[id]->SetChannel(packet->m_channel);
+			CSPacket_Server_Login* packet = reinterpret_cast<CSPacket_Server_Login*>(buf);
+			reinterpret_cast<Player*>(m_characterList[id])->SetLoginID(packet->m_ID);
+			// db 스레드에게 넘김
+			GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::PLAYER_LOGIN, id);
 		}
 	break;
 
 	case CS_PACKET_TYPE::CS_CHANNEL_LOGIN:
 		{
-			CS_Packet_Channel_Login* packet = reinterpret_cast<CS_Packet_Channel_Login*>(buf);
+			CSPacket_Channel_Login* packet = reinterpret_cast<CSPacket_Channel_Login*>(buf);
 			ProcessChannelLogin(packet->m_channel, id);
 		}
 		break;
 
 	case CS_PACKET_TYPE::CS_MOVE:
 		{
-			CS_Packet_Move* packet = reinterpret_cast<CS_Packet_Move*>(buf);
+			CSPacket_Move* packet = reinterpret_cast<CSPacket_Move*>(buf);
 			m_characterList[id]->UpdatePosition(packet->m_direction);
 			UpdateViewList(id);
 		}
@@ -441,15 +439,7 @@ void Core::ProcessPacket(int id, char* buf)
 	}
 }
 
-void Core::ProcessServerLogin(int id)
-{
-	// DB에 로그인한 ID가 없으면
-	SendServerLoginFailPacket(id);
-	// ID가 있으면
-	SendServerLoginOkPacket(id);
-}
-
-void Core::ProcessChannelLogin(unsigned char channel, int id)
+void Core::ProcessChannelLogin(char channel, int id)
 {
 	// 현재 채널에 몇명의 유저가 있는지 저장
 	m_channelList[channel]->ChannelMtxLock();
@@ -463,8 +453,8 @@ void Core::ProcessChannelLogin(unsigned char channel, int id)
 
 	// 채널을 셋해줌
 	reinterpret_cast<Player*>(m_characterList[id])->SetChannel(channel);
-	m_channelList[id]->AddPlayerInChannel(id, m_characterList[id]);
-	m_channelList[id]->ChannelMtxUnLock();
+	m_channelList[channel]->AddPlayerInChannel(id, m_characterList[id]);
+	m_channelList[channel]->ChannelMtxUnLock();
 	SendChannelLoginOkPacket(id);
 
 	m_channelList[channel]->ProcessChannelLogin(id);
@@ -478,12 +468,19 @@ void Core::UpdateViewList(int id)
 	m_channelList[channel]->UpdateObjectViewList(id);
 }
 
-void Core::ProcessEvent(EVENT_TYPE& eventType)
+void Core::ProcessEvent(EVENT_TYPE& eventType, int id)
 {
 	switch (eventType)
 	{
-	case EVENT_TYPE::HEAL:
-		cout << "Heal is now" << endl;
+	case EVENT_TYPE::PLAYER_LOGIN_OK:
+		SendServerLoginOkPacket(id);
+		cout << "Login is OK" << endl;
+		break;
+
+	case EVENT_TYPE::PLAYER_LOGIN_FAIL:
+		reinterpret_cast<Player*>(m_characterList[id])->SetLoginID("");
+		SendServerLoginFailPacket(id);
+		cout << "Login is Fail" << endl;
 		break;
 
 	default:

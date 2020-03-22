@@ -106,6 +106,7 @@ void DataBase::Update()
 		// 큐에 가장 앞의 원소를 꺼냄
 		DBTransaction transaction = m_dbTransactionQueue.front();
 		m_dbTransactionQueue.pop();
+		cout << "DB_Queue size : " << m_dbTransactionQueue.size() << endl;
 		m_dbTransactionQueueMtx.unlock();
 
 		ProcessDBTransaction(transaction);
@@ -129,6 +130,21 @@ void DataBase::ProcessDBTransaction(DBTransaction& transaction)
 	case DB_TRANSACTION_TYPE::UPDATE_PLAYER_STATUS_INFO:
 		UpdatePlayerStatusInfo(player);
 		cout << "Status of " << transaction.m_ID << " player update" << endl;
+		break;
+
+	case DB_TRANSACTION_TYPE::PLAYER_LOGIN:
+		{
+			bool isLoginOk = PlayerLogin(player);
+			OverEx* overEx = new OverEx;
+			overEx->myID = transaction.m_ID;
+
+			if(isLoginOk == true)
+				overEx->eventType = Core::EVENT_TYPE::PLAYER_LOGIN_OK;
+			else
+				overEx->eventType = Core::EVENT_TYPE::PLAYER_LOGIN_FAIL;
+
+			PostQueuedCompletionStatus(GET_INSTANCE(Core)->GetIOCPHandle(), 1, transaction.m_ID, &overEx->overlapped);
+		}
 		break;
 
 	case DB_TRANSACTION_TYPE::PLAYER_LOGOUT:
@@ -261,13 +277,11 @@ bool DataBase::GetPlayerInventoryInfo(Player* player)
 
 	wstring ws = L"EXEC GetPlayerInventoryInfo " + wname;
 
-	SQLRETURN retcode;
-
 	SQLWCHAR itemName[MAX_STRLEN];
 	SQLINTEGER length, level, size, exp;
 	SQLLEN cbItemName = 0, cbLength= 0, cbLevel = 0, cbSize = 0, cbExp = 0;
 
-	retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR*)ws.c_str(), SQL_NTS);
+	SQLRETURN retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR*)ws.c_str(), SQL_NTS);
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
 	{
@@ -285,7 +299,6 @@ bool DataBase::GetPlayerInventoryInfo(Player* player)
 			{
 				name[length] = '\0';
 				string s = reinterpret_cast<char*>(itemName);
-				cout << s << ", " << level << ", " << size << ", " << exp << endl;
 			}
 			
 			else if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
@@ -313,16 +326,14 @@ bool DataBase::GetPlayerInventoryInfo(Player* player)
 
 bool DataBase::UpdatePlayerStatusInfo(Player* player)
 {
-	//string name = player->GetName();
-	string name = "이우상";
+	string name = player->GetName();
 	wchar_t wname[50] = { 0, };
 	mbstowcs(wname, const_cast<char*>(name.c_str()), name.length());
-
-	wstring comma = L", ";
-	wstring ws = L"EXEC UpdatePlayerStatusInfo";
-	//ws += wname;
-	MakeStoredProcedure(ws, name, true);
 	PlayerStatus* stat = reinterpret_cast<PlayerStatus*>(player->GetStatus());
+
+	wstring ws = L"EXEC UpdatePlayerStatusInfo";
+
+	MakeStoredProcedure(ws, name, true);
 	MakeStoredProcedure(ws, stat->GetLevel(), false);
 	MakeStoredProcedure(ws, stat->GetExp(), false);
 	MakeStoredProcedure(ws, stat->GetHP(), false);
@@ -342,6 +353,58 @@ bool DataBase::UpdatePlayerStatusInfo(Player* player)
 
 	SQLCloseCursor(m_Hstmt);
 	return true;
+}
+
+bool DataBase::PlayerLogin(Player* player)
+{
+	string id = player->GetLoginID();
+	wchar_t wname[50] = { 0, };
+	mbstowcs(wname, const_cast<char*>(id.c_str()), id.length());
+
+	wstring ws = L"EXEC PlayerLogin";
+	MakeStoredProcedure(ws, id, true);
+
+	SQLWCHAR loginID[MAX_STRLEN];
+	SQLINTEGER length;
+	SQLLEN cbLength = 0, cbLoginID = 0;
+
+	SQLRETURN retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR*)ws.c_str(), SQL_NTS);
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+	{
+		retcode = SQLBindCol(m_Hstmt, 1, SQL_C_LONG, &length, 0, &cbLength);
+		retcode = SQLBindCol(m_Hstmt, 2, SQL_C_CHAR, &loginID, MAX_STRLEN, &cbLoginID);
+
+		while (true)
+		{
+			retcode = SQLFetch(m_Hstmt);
+
+			if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+			{
+				loginID[length] = '\0';
+				player->SetLoginID(reinterpret_cast<char*>(loginID));
+			}
+
+			else if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
+			{
+				ErrorDisplay(retcode);
+				break;
+			}
+
+			else if (retcode == SQL_NO_DATA)
+			{
+				ErrorDisplay(retcode);
+				SQLCloseCursor(m_Hstmt);
+				return true;
+			}
+
+		}
+	}
+	else
+		ErrorDisplay(retcode);
+
+	SQLCloseCursor(m_Hstmt);
+
+	return false;
 }
 
 bool DataBase::PlayerLogout(Player* player)

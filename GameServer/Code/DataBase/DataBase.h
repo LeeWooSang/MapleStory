@@ -11,6 +11,7 @@ enum DB_TRANSACTION_TYPE
 
 	UPDATE_PLAYER_STATUS_INFO,
 
+	PLAYER_LOGIN,
 	PLAYER_LOGOUT
 };
 
@@ -43,6 +44,7 @@ public:
 	bool GetPlayerStatusInfo(class Player*);
 	bool GetPlayerInventoryInfo(class Player*);
 	bool UpdatePlayerStatusInfo(class Player*);
+	bool PlayerLogin(class Player*);
 	bool PlayerLogout(class Player*);
 
 private:

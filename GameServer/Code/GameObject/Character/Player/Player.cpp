@@ -12,6 +12,7 @@ Player::Player(const string& name)
 	m_uni = nullptr;
 	m_inventory = nullptr;
 
+	m_loginID.clear();
 	m_socket = 0;
 	ZeroMemory(&m_packetBuf, sizeof(char));
 	m_prevSize = 0;
@@ -121,6 +122,7 @@ void Player::ClearObjectInfo()
 	//m_X = START_X;
 	//m_Y = START_Y;
 
+	m_loginID.clear();
 	m_socket = 0;
 	ZeroMemory(&m_packetBuf, sizeof(char));
 	m_prevSize = 0;
