@@ -2,11 +2,11 @@
 #include <imm.h>
 #pragma comment(lib,"imm32.lib")
 #include "../D2DManager/D2DManager.h"
+#include "../Network/Network.h"
 
 INIT_INSTACNE(Input)
-
 Input::Input()
-	: m_IMEMode(IMEMODE::ENGLISH), m_IsActive(false), m_Comb(L""), m_CaretPos(0)
+	: m_IMEMode(IMEMODE::ENGLISH), m_IsActive(false), m_Comb(L"")
 {
 	m_TextList.clear();
 }
@@ -140,12 +140,16 @@ void Input::ProcessMouseMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 void Input::ProcessEnglish(HWND hWnd, WPARAM wParam)
 {
 	unsigned char key = static_cast<unsigned char>(m_TextList.size());
-	wstring text;
+
+	wstring text = L"";
 	text = static_cast<wchar_t>(wParam);
+	if (text == L"\r")
+	{
+		WStringToString();
+		return;
+	}
 
 	m_TextList.emplace_back(TextInfo(key, text));
-	
-	m_CaretPos = m_TextList.size();
 }
 
 void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
@@ -178,8 +182,6 @@ void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
 			unsigned char key = static_cast<unsigned char>(m_TextList.size());
 			wstring text = temp;
 			m_TextList.emplace_back(TextInfo(key, text));
-
-			m_CaretPos = m_TextList.size();
 			// 조합중인 글자는 지움
 			m_Comb.clear();
 		}
@@ -232,16 +234,6 @@ void Input::ChangeIMEMode(HWND hWnd, bool korean)
 
 void Input::ControlCaret(WPARAM wParam)
 {
-	if (wParam == VK_LEFT)
-	{
-		if (--m_CaretPos < 0)
-			m_CaretPos = 0;
-	}
-	else
-	{
-		if (++m_CaretPos > m_TextList.size())
-			m_CaretPos = m_TextList.size();
-	}
 }
 
 wstring Input::GetText() const
@@ -252,4 +244,22 @@ wstring Input::GetText() const
 		text += (*iter).m_Text;
 
 	return text;
+}
+
+void Input::WStringToString()
+{
+	string s = "";
+	for (auto data : m_TextList)
+	{
+		char temp[10] = { 0, };
+		wcstombs(temp, const_cast<wchar_t*>(data.m_Text.c_str()), data.m_Text.length());
+		s += temp;
+	}
+	GET_INSTANCE(Network)->SetServerIP(s);
+	GET_INSTANCE(Network)->Connect();
+}
+
+void Input::TextRender()
+{
+
 }

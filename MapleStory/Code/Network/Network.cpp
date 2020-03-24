@@ -44,8 +44,6 @@ bool Network::Initialize()
 		return false;
 	}
 
-	Connect();
-
 	return true;
 }
 
@@ -55,7 +53,8 @@ void Network::Connect()
 	SOCKADDR_IN serveraddr;
 	ZeroMemory(&serveraddr, sizeof(SOCKADDR_IN));
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+	//serveraddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+	serveraddr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
 	serveraddr.sin_port = htons(SERVER_PORT);
 
 	int result = WSAConnect(m_Socket, (SOCKADDR*)&serveraddr, sizeof(serveraddr), nullptr, nullptr, nullptr, nullptr);

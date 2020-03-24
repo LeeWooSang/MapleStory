@@ -23,7 +23,12 @@ class Network
 	void SendServerLoginPacket(char*);
 	void SendChannelLoginPacket(char);
 	void SendMovePacket(char);
+
+	void SetServerIP(const string& ip) { m_serverIP = ip; }
+
 private:
+	string m_serverIP;
+
 	SOCKET m_Socket;
 
 	WSABUF	m_sendWsaBuf;

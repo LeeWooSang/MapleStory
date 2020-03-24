@@ -15,6 +15,16 @@ Caret::~Caret()
 
 bool Caret::Initialize()
 {
+	m_width = 1.5f;
+	m_height = 25.f;
+	m_gap = 2.f;
+
+	m_startX = 10.f;
+	m_startY = 10.f;
+
+	m_endX = m_startX;
+	m_endY = m_startY + m_height;
+
 	return true;
 }
 
@@ -36,49 +46,38 @@ void Caret::Update(float elapsedTime)
 
 void Caret::Render()
 {
-	D2D_POINT_2F startPos;
-	startPos.x = 10;
-	startPos.y = 10;
+	if (GET_INSTANCE(Input)->GetIsActive() == false)
+		return;
 
-	D2D_POINT_2F endPos;
-	endPos.x = 10;
-	endPos.y = 100;
-	auto iter = GET_INSTANCE(D2DManager)->GetFontColorList().find("검은색");
+	D2D_POINT_2F startPos { m_startX, m_startY };
+	D2D_POINT_2F endPos{ m_endX, m_endY };
 
-	FontInfo info = GET_INSTANCE(D2DManager)->GetFontInfo("메이플");
-	// 보이는 시간
-	if (m_isEnable == true)
+	wstring text = GET_INSTANCE(Input)->GetText();
+	if (text.size() > 0)
 	{
-		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawLine(startPos, endPos, (*iter).second, 2.0f, 0);
+		IDWriteTextLayout* layout = nullptr;
+		HRESULT result = GET_INSTANCE(D2DManager)->GetWriteFactory()->CreateTextLayout
+		(
+			text.c_str(), 
+			text.length(), 
+			GET_INSTANCE(D2DManager)->GetFontInfo("메이플").m_pFont, 
+			4096.0f, 
+			4096.0f, 
+			&layout
+		);
 
+		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawTextLayout(startPos, layout, GET_INSTANCE(D2DManager)->GetFontColor("검은색"));
+
+		DWRITE_TEXT_METRICS metris;
+		layout->GetMetrics(&metris);
+		startPos.x += metris.width + m_gap;
+		endPos.x = startPos.x;
+
+		layout->Release();
 	}
 
-
-	//HRESULT result = info.m_pTextLayout->HitTestPoint(endPos.x, endPos.y, &isTrailingHit, &isInside, &metrics);
-	//if (result == S_OK)
-	//{
-	//	if (isTrailingHit)
-	//	{
-	//		cout << "충돌" << endl;
-	//	}
-	//}
-	DWRITE_HIT_TEST_METRICS metrics = { 0 };
-	BOOL isInside = false, isTrailingHit = false;
-
-	UINT32 textPos = 0;
-
-	DWRITE_TEXT_METRICS textMetrics;
-	info.m_pTextLayout->GetMetrics(&textMetrics);
-
-	
-
-	info.m_pTextLayout->HitTestTextPosition(metrics.textPosition, isTrailingHit, &endPos.x, &endPos.y, &metrics);
-
-	D2D_RECT_F texPos;
-	texPos.left = metrics.left;
-	texPos.top = metrics.top;
-	
-	GET_INSTANCE(D2DManager)->Render(GET_INSTANCE(Input)->GetText(), "메이플", "검은색", texPos);
+	if (m_isEnable)
+		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawLine(startPos, endPos, GET_INSTANCE(D2DManager)->GetFontColor("검은색"), m_width, 0);
 }
 
 void Caret::Release()

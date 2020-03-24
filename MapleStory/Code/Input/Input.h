@@ -31,8 +31,14 @@ class Input
 	void ChangeIMEMode(HWND, bool);
 	void ControlCaret(WPARAM);
 
+	void TextRender();
+
+	void SetIsActive(bool isActive) { m_IsActive = isActive; }
+	bool GetIsActive()	const { return m_IsActive; }
 	const wstring& GetComb() const { return m_Comb; }
 	wstring GetText() const;
+
+	void WStringToString();
 
 	enum IMEMODE { ENGLISH = 0x0000, KOREAN };
 
@@ -41,5 +47,4 @@ private:
 	bool m_IsActive;
 	wstring m_Comb;
 	list<TextInfo> m_TextList;
-	unsigned char m_CaretPos;
 };

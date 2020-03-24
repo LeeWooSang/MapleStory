@@ -342,6 +342,10 @@ void D2DManager::Render(const string& key, const XMFLOAT2& pos, int fx, int fy)
 void D2DManager::Render(const wstring& text, const string& font, const string& color, D2D1_RECT_F& pos)
 {
 	m_pRenderTarget->DrawTextW(text.c_str(), text.length(), m_FontInfoMap[font].m_pFont, &pos, m_FontColorMap[color]);
+}
 
-
+void D2DManager::TextLayoutRender(IDWriteTextLayout* layout, const wstring& text, D2D_POINT_2F& pos)
+{
+	HRESULT result = m_pWriteFactory->CreateTextLayout(text.c_str(), text.length(), m_FontInfoMap["메이플"].m_pFont, 4096.0f, 4096.0f, &layout);
+	m_pRenderTarget->DrawTextLayout(pos, layout, m_FontColorMap["검은색"]);
 }

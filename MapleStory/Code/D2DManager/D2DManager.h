@@ -61,13 +61,15 @@ class D2DManager
 	void Render(const string&, const XMFLOAT2&);
 	void Render(const string&, const XMFLOAT2&, int, int );
 	void Render(const wstring&, const string&, const string&, D2D1_RECT_F&);
+	void TextLayoutRender(IDWriteTextLayout*, const wstring&, D2D_POINT_2F&);
 
+	IDWriteFactory5* GetWriteFactory()	const { return m_pWriteFactory; }
 	 ID2D1HwndRenderTarget* GetRenderTarget() const { return m_pRenderTarget; }
 
 	 ImageInfo& GetTexture(string key) { return m_ImageInfoMap[key]; }
 
 	 const unordered_map<string, FontInfo>& GetFontInfoList()	const { return m_FontInfoMap; }
-	 const unordered_map<string, ID2D1SolidColorBrush*>& GetFontColorList()	const { return m_FontColorMap; }
+	 ID2D1SolidColorBrush* GetFontColor(const string& key)	 { return m_FontColorMap[key]; }
 
 	 FontInfo& GetFontInfo(const string& font) { return m_FontInfoMap[font]; }
 
@@ -90,5 +92,7 @@ private:
 	unordered_map<string, FontInfo>						m_FontInfoMap;
 	// 폰트 색상을 저장함
 	unordered_map<string, ID2D1SolidColorBrush*> m_FontColorMap;
+
+	float prev = 0.f;
 };
 

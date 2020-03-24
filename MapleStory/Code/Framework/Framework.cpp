@@ -32,6 +32,8 @@ bool Framework::Initialize(HWND hWnd)
 	GET_INSTANCE(GameTimer)->Reset();
 
 	m_caret = new Caret;
+	if (m_caret->Initialize() == false)
+		return false;
 
 	return true;
 }
@@ -60,7 +62,6 @@ void Framework::Render()
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->Clear(&clearcolor);
 
 	m_caret->Render();
-	//GET_INSTANCE(SceneManager)->Render();
 		
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->EndDraw();
 }
