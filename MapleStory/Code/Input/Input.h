@@ -17,9 +17,9 @@ class Input
 {
 	SINGLE_TONE(Input)
 
-	bool Initialize();
+	virtual bool Initialize();
 
-	LRESULT CALLBACK ProcessWindowMessage(HWND, UINT, WPARAM, LPARAM);
+	virtual LRESULT CALLBACK ProcessWindowMessage(HWND, UINT, WPARAM, LPARAM);
 
 	LRESULT ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM);
 	void ProcessMouseMessage(HWND, UINT, WPARAM, LPARAM);

@@ -66,6 +66,11 @@ class D2DManager
 
 	 ImageInfo& GetTexture(string key) { return m_ImageInfoMap[key]; }
 
+	 const unordered_map<string, FontInfo>& GetFontInfoList()	const { return m_FontInfoMap; }
+	 const unordered_map<string, ID2D1SolidColorBrush*>& GetFontColorList()	const { return m_FontColorMap; }
+
+	 FontInfo& GetFontInfo(const string& font) { return m_FontInfoMap[font]; }
+
 private:
 	void CreateGameFont();
 	void CreateGameFontColor();

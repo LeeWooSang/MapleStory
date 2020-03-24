@@ -12,4 +12,7 @@ class Framework
 private:
 	void Update(float);
 	void Render();
+
+	HWND	m_hWnd;
+	class Caret* m_caret;
 };

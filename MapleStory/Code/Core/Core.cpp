@@ -2,6 +2,7 @@
 #include <crtdbg.h>
 #include "../Framework/Framework.h"
 #include "../Network/Network.h"
+#include "../Input/Input.h"
 
 INIT_INSTACNE(Core)
 bool Core::m_isUpdate = true;
@@ -24,7 +25,9 @@ Core::Core()
 
 Core::~Core()
 {
+	GET_INSTANCE(Input)->Release();
 	GET_INSTANCE(Network)->Release();
+	GET_INSTANCE(Framework)->Release();
 
 	cout << "Core - 소멸자" << endl;
 }
@@ -57,8 +60,8 @@ bool Core::Initialize(HINSTANCE hInst)
 	if (GET_INSTANCE(Framework)->Initialize(m_hWnd) == false)
 		return false;
 
-	if (GET_INSTANCE(Network)->Initialize() == false)
-		return false;
+	//if (GET_INSTANCE(Network)->Initialize() == false)
+	//	return false;
 
 	::ShowWindow(m_hWnd, SW_SHOW);
 	::UpdateWindow(m_hWnd);
@@ -126,13 +129,10 @@ LRESULT Core::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 
 		case WM_PAINT:
+
 			hdc = ::BeginPaint(hWnd, &ps);
 			EndPaint(hWnd, &ps);
 			break;
-
-		//case WA_INACTIVE:
-		//	GET_INSTANCE(AutoInput)->ProcessWindowMessage(hWnd, message, wParam, lParam);
-		//	break;
 
 			// IME 사용
 		case WM_IME_COMPOSITION:
@@ -152,7 +152,7 @@ LRESULT Core::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONUP:
 		case WM_MOUSEMOVE:
-			//GET_INSTANCE(Input)->ProcessWindowMessage(hWnd, message, wParam, lParam);
+			GET_INSTANCE(Input)->ProcessWindowMessage(hWnd, message, wParam, lParam);
 			break;
 
 			// Network의 Recv처리

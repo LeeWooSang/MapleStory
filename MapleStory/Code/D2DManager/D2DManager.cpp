@@ -1,9 +1,6 @@
 #include "D2DManager.h"
-#include "../Camera/Camera.h"
 
 INIT_INSTACNE(D2DManager)
-
-
 D2DManager::D2DManager()
 	: m_pFactory(nullptr), m_pRenderTarget(nullptr), m_pWriteFactory(nullptr), m_pFontCollection(nullptr), m_pWICImagingFactory(nullptr)
 {
@@ -248,17 +245,17 @@ void D2DManager::CreateGameFontColor()
 
 void D2DManager::WorldToScreen(D2D1_RECT_F& screenPos, int sizeX, int sizeY, const XMFLOAT2& worldPos)
 {
-	D3D12_VIEWPORT viewport = GET_INSTANCE(Camera)->GetViewPort();
+	//D3D12_VIEWPORT viewport = GET_INSTANCE(Camera)->GetViewPort();
 
-	float x = ((worldPos.x + 1) * viewport.Width) / 2.0f;
-	float y = ((1 - worldPos.y) * viewport.Height) / 2.0f;
-	float gapX = sizeX * 0.5f;
-	float gapY = sizeY * 0.5f;
+	//float x = ((worldPos.x + 1) * viewport.Width) / 2.0f;
+	//float y = ((1 - worldPos.y) * viewport.Height) / 2.0f;
+	//float gapX = sizeX * 0.5f;
+	//float gapY = sizeY * 0.5f;
 
-	screenPos.left = x - gapX;
-	screenPos.top = y - gapY;
-	screenPos.right = x + gapX;
-	screenPos.bottom = y + gapY;
+	//screenPos.left = x - gapX;
+	//screenPos.top = y - gapY;
+	//screenPos.right = x + gapX;
+	//screenPos.bottom = y + gapY;
 }
 
 //void D2DManager::ScreenToWorld()
@@ -345,5 +342,6 @@ void D2DManager::Render(const string& key, const XMFLOAT2& pos, int fx, int fy)
 void D2DManager::Render(const wstring& text, const string& font, const string& color, D2D1_RECT_F& pos)
 {
 	m_pRenderTarget->DrawTextW(text.c_str(), text.length(), m_FontInfoMap[font].m_pFont, &pos, m_FontColorMap[color]);
-}
 
+
+}

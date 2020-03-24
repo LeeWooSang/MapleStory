@@ -144,16 +144,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp" />
+    <ClCompile Include="..\Code\D2DManager\D2DManager.cpp" />
     <ClCompile Include="..\Code\Framework\Framework.cpp" />
+    <ClCompile Include="..\Code\GameObject\Caret\Caret.cpp" />
+    <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
     <ClCompile Include="..\Code\GameTimer\GameTimer.cpp" />
+    <ClCompile Include="..\Code\Input\Input.cpp" />
+    <ClCompile Include="..\Code\Input\KeyboardInput\KeyboardInput.cpp" />
+    <ClCompile Include="..\Code\Input\MouseInput\MouseInput.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Network\Network.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\GameServer\Code\Protocol.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
+    <ClInclude Include="..\Code\D2DManager\D2DManager.h" />
     <ClInclude Include="..\Code\Framework\Framework.h" />
+    <ClInclude Include="..\Code\GameObject\Caret\Caret.h" />
+    <ClInclude Include="..\Code\GameObject\GameObject.h" />
     <ClInclude Include="..\Code\GameTimer\GameTimer.h" />
+    <ClInclude Include="..\Code\Input\Input.h" />
+    <ClInclude Include="..\Code\Input\KeyboardInput\KeyboardInput.h" />
+    <ClInclude Include="..\Code\Input\MouseInput\MouseInput.h" />
     <ClInclude Include="..\Code\Network\Network.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

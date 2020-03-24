@@ -25,6 +25,24 @@
     <Filter Include="Code\GameTimer">
       <UniqueIdentifier>{bbcf90b4-a83f-4e5b-9827-cbb89605575e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\D2DManager">
+      <UniqueIdentifier>{d53fd8b0-fd7b-4ba0-b787-d26d3be2677e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Input">
+      <UniqueIdentifier>{dfdd9315-2b4e-46bc-b8ef-3811e69743b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Input\MouseInput">
+      <UniqueIdentifier>{d1c2e60e-7fbd-489f-b4e8-b5df2a274d62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Input\KeyboardInput">
+      <UniqueIdentifier>{68e369ce-30fc-46b1-8172-0e35bfb47fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject">
+      <UniqueIdentifier>{ac2cc71a-6727-428b-b167-fad9eef3b7dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\Caret">
+      <UniqueIdentifier>{82eb9631-2ea9-4d88-a998-eea93862177d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -42,6 +60,24 @@
     <ClCompile Include="..\Code\GameTimer\GameTimer.cpp">
       <Filter>Code\GameTimer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\D2DManager\D2DManager.cpp">
+      <Filter>Code\D2DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Input\Input.cpp">
+      <Filter>Code\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Input\KeyboardInput\KeyboardInput.cpp">
+      <Filter>Code\Input\KeyboardInput</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Input\MouseInput\MouseInput.cpp">
+      <Filter>Code\Input\MouseInput</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\GameObject.cpp">
+      <Filter>Code\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Caret\Caret.cpp">
+      <Filter>Code\GameObject\Caret</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h">
@@ -58,6 +94,24 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameTimer\GameTimer.h">
       <Filter>Code\GameTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\D2DManager\D2DManager.h">
+      <Filter>Code\D2DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Input\Input.h">
+      <Filter>Code\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Input\KeyboardInput\KeyboardInput.h">
+      <Filter>Code\Input\KeyboardInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Input\MouseInput\MouseInput.h">
+      <Filter>Code\Input\MouseInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\GameObject.h">
+      <Filter>Code\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Caret\Caret.h">
+      <Filter>Code\GameObject\Caret</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
