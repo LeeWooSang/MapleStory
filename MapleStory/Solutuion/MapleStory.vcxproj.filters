@@ -117,14 +117,14 @@
     <ClCompile Include="..\Code\Collision\Collision.cpp">
       <Filter>Code\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Camera\Camera.cpp">
-      <Filter>Code\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp">
       <Filter>Code\GameObject\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Character\Character.cpp">
       <Filter>Code\GameObject\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Camera\Camera.cpp">
+      <Filter>Code\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,14 +182,14 @@
     <ClInclude Include="..\Code\Collision\Collision.h">
       <Filter>Code\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Camera\Camera.h">
-      <Filter>Code\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h">
       <Filter>Code\GameObject\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Character\Character.h">
       <Filter>Code\GameObject\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Camera\Camera.h">
+      <Filter>Code\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

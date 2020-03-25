@@ -1,9 +1,15 @@
 #include "GameObject.h"
+#include "../Camera/Camera.h"
 
 GameObject::GameObject(const string& name)
 	: m_name(name)
 {
 	m_worldMatrix = Matrix3x2F::Identity();
+	m_collider = nullptr;
+	m_angle = 0;
+	m_velocity = VECTOR2D(0.f, 0.f);
+	m_maxVelocity = VECTOR2D(0.f, 0.f);
+	m_gravity = VECTOR2D(0.f, 0.f);
 	m_isDrawBoundingBox = false;
 }
 
@@ -11,6 +17,74 @@ GameObject::~GameObject()
 {
 	if (m_collider)
 		delete m_collider;
+}
+
+bool GameObject::Initialize(TextureInfo info)
+{
+	if (GET_INSTANCE(D2DManager)->CreateTexture(m_name, info) == false)
+		return false;
+
+	m_collider = new AABBCollider(AABB(-info.m_width * 0.5f, -info.m_height * 0.5f, info.m_width * 0.5f, info.m_height * 0.5f));
+
+	m_isDrawBoundingBox = true;
+
+	return true;
+}
+
+void GameObject::Render()
+{
+	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(m_name);
+
+	Matrix3x2F transform = m_worldMatrix;
+
+	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
+
+	D2D1_RECT_F rect;
+	m_collider->GetAABB(&rect);
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(info.m_image, rect);
+	RenderBoundingBox();
+}
+
+void GameObject::RenderBoundingBox()
+{
+	if (m_isDrawBoundingBox == true && m_collider != nullptr)
+	{
+		switch (m_collider->GetType())
+		{
+		case COLLIDER_AABB:
+		{
+			D2D1_RECT_F boundRect;
+			AABBCollider* aabbCollider = reinterpret_cast<AABBCollider*>(m_collider);
+			//				pAABBCollider->GetBounds(&d2drcBounds);
+			aabbCollider->GetTransformedBounds(&m_worldMatrix, &boundRect);
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawRectangle(boundRect, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
+			break;
+		}
+		case COLLIDER_OOBB:
+		{
+			D2D1_RECT_F boundRect;
+			OOBBCollider* oobbCollider = reinterpret_cast<OOBBCollider*>(m_collider);
+			oobbCollider->GetBounds(&boundRect);
+			oobbCollider->GetTransformedBounds(&m_worldMatrix);
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawRectangle(boundRect, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
+			break;
+		}
+		case COLLIDER_CIRCLE:
+		{
+			CircleCollider* circleCollider = reinterpret_cast<CircleCollider*>(m_collider);
+			//				CIRCLE ccCircle = pCircleCollider->GetTransformedBounds(&m_d2dmtxWorld);
+			//				D2D1_ELLIPSE d2dEllipse = Ellipse(ccCircle.m_vCenter, ccCircle.m_fRadius, ccCircle.m_fRadius);
+			D2D1_ELLIPSE ellipse;
+			circleCollider->GetBounds(&ellipse);
+			//				pd2dRenderTarget->SetTransform((pCamera) ? pCamera->m_d2dmtxView : Matrix3x2F::Identity());
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawEllipse(ellipse, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
+			break;
+		}
+		}
+	}
 }
 
 VECTOR2D GameObject::GetRightVector() const

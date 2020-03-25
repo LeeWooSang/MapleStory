@@ -15,9 +15,10 @@ struct ViewPort
 
 class Camera
 {
-	SINGLE_TONE(Camera)
+	SINGLE_TONE(Camera);
+
 public:
-	 void Move(VECTOR2D& vShift) { m_positionVector += vShift; }
+	void Move(VECTOR2D&);
 	 void Rotate(float);
 	 void Update(float);
 

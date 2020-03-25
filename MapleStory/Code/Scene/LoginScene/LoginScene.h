@@ -12,6 +12,6 @@ public:
 	virtual void Render();
 
 private:
-
+	class Player* m_player;
 };
 

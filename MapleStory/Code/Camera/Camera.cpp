@@ -21,26 +21,9 @@ Camera::~Camera()
 {
 }
 
-void Camera::SetViewport(UINT xStart, UINT yStart, UINT nWidth, UINT nHeight, UINT nMinLayer, UINT nMaxLayer)
+void Camera::Move(VECTOR2D & vShift)
 {
-	m_viewport.m_xStart = xStart;
-	m_viewport.m_yStart = yStart;
-	m_viewport.m_nWidth = nWidth;
-	m_viewport.m_nHeight = nHeight;
-	m_viewport.m_nMinLayer = nMinLayer;
-	m_viewport.m_nMaxLayer = nMaxLayer;
-}
-
-void Camera::RegenerateViewMatrix()
-{
-	m_viewMatrix._11 = m_rightVector.x;
-	m_viewMatrix._21 = m_rightVector.y;
-
-	m_viewMatrix._12 = m_upVector.x;
-	m_viewMatrix._22 = m_upVector.y;
-
-	m_viewMatrix._31 = -(m_positionVector * m_rightVector);
-	m_viewMatrix._32 = -(m_positionVector * m_upVector);
+	m_positionVector += vShift; 
 }
 
 void Camera::Rotate(float delta)
@@ -59,36 +42,61 @@ void Camera::Rotate(float delta)
 
 void Camera::Update(float elapsedTime)
 {
+	RegenerateViewMatrix();
 }
 
-bool Camera::IsVisible(GameObject* pGameObject)
+void Camera::RegenerateViewMatrix()
 {
-	//if (pGameObject->m_pCollider)
-	//{
-	//	AABB rCamera(m_vPosition, m_vExtents);
-	//	switch (pGameObject->m_pCollider->GetType())
-	//	{
-	//	case COLLIDER_AABB:
-	//	{
-	//		CAABBCollider *pAABBCollider = (CAABBCollider *)pGameObject->m_pCollider;
-	//		pAABBCollider->Update(&pGameObject->m_d2dmtxWorld);
-	//		AABB rcAABB = pAABBCollider->GetTransformedBounds(&pGameObject->m_d2dmtxWorld, NULL);
-	//		return(rCamera.Intersect(&rcAABB));
-	//	}
-	//	case COLLIDER_OOBB:
-	//	{
-	//		COOBBCollider *pOOBBCollider = (COOBBCollider *)pGameObject->m_pCollider;
-	//		OOBB rcOOBB = pOOBBCollider->GetTransformedBounds(&pGameObject->m_d2dmtxWorld);
-	//		return(rCamera.Intersect(&rcOOBB));
-	//	}
-	//	case COLLIDER_CIRCLE:
-	//	{
-	//		CCircleCollider *pCircleCollider = (CCircleCollider *)pGameObject->m_pCollider;
-	//		CIRCLE ccCircle = pCircleCollider->GetTransformedBounds(&pGameObject->m_d2dmtxWorld);
-	//		return(rCamera.Intersect(&ccCircle));
-	//	}
-	//	}
-	//}
+	m_viewMatrix._11 = m_rightVector.x;
+	m_viewMatrix._21 = m_rightVector.y;
+
+	m_viewMatrix._12 = m_upVector.x;
+	m_viewMatrix._22 = m_upVector.y;
+
+	m_viewMatrix._31 = -(m_positionVector * m_rightVector);
+	m_viewMatrix._32 = -(m_positionVector * m_upVector);
+}
+
+bool Camera::IsVisible(GameObject* object)
+{
+	if (object->GetCollider() != nullptr)
+	{
+		AABB rcCamera(m_positionVector, m_extents);
+		switch (object->GetCollider()->GetType())
+		{
+		case COLLIDER_AABB:
+			{
+				AABBCollider* aabbCollider = reinterpret_cast<AABBCollider*>(object->GetCollider());
+				aabbCollider->Update(&object->GetWorldMatrix());
+				AABB rcAABB = aabbCollider->GetTransformedBounds(&object->GetWorldMatrix(), nullptr);
+				return(rcCamera.Intersect(&rcAABB));
+			}
+
+		case COLLIDER_OOBB:
+			{
+				OOBBCollider* oobbCollider = reinterpret_cast<OOBBCollider*>(object->GetCollider());
+				OOBB rcOOBB = oobbCollider->GetTransformedBounds(&object->GetWorldMatrix());
+				return rcCamera.Intersect(&rcOOBB);
+			}
+
+		case COLLIDER_CIRCLE:
+			{
+				CircleCollider* circleCollider = reinterpret_cast<CircleCollider*>(object->GetCollider());
+				CIRCLE ccCircle = circleCollider->GetTransformedBounds(&object->GetWorldMatrix());
+				return rcCamera.Intersect(&ccCircle);
+			}
+		}
+	}
 
 	return true;
+}
+
+void Camera::SetViewport(UINT xStart, UINT yStart, UINT nWidth, UINT nHeight, UINT nMinLayer, UINT nMaxLayer)
+{
+	m_viewport.m_xStart = xStart;
+	m_viewport.m_yStart = yStart;
+	m_viewport.m_nWidth = nWidth;
+	m_viewport.m_nHeight = nHeight;
+	m_viewport.m_nMinLayer = nMinLayer;
+	m_viewport.m_nMaxLayer = nMaxLayer;
 }

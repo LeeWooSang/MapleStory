@@ -267,13 +267,13 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CAABBCollider : public Collider
+class AABBCollider : public Collider
 {
 public:
-	CAABBCollider() : Collider(COLLIDER_AABB) { m_rcBounds = AABB(VECTOR2D(0.0f, 0.0f), VECTOR2D(0.0f, 0.0f)); }
-	CAABBCollider(AABB& rcBounds) : Collider(COLLIDER_AABB) { m_rcBounds = rcBounds; }
-	CAABBCollider(ID2D1Geometry *pd2dGeometry);
-	virtual ~CAABBCollider();
+	AABBCollider() : Collider(COLLIDER_AABB) { m_rcBounds = AABB(VECTOR2D(0.0f, 0.0f), VECTOR2D(0.0f, 0.0f)); }
+	AABBCollider(AABB& rcBounds) : Collider(COLLIDER_AABB) { m_rcBounds = rcBounds; }
+	AABBCollider(ID2D1Geometry *pd2dGeometry);
+	virtual ~AABBCollider();
 
 	AABB							m_rcBounds;					
 	AABB							m_rcTransformedBounds;					
@@ -289,13 +289,13 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class COOBBCollider : public Collider
+class OOBBCollider : public Collider
 {
 public:
-	COOBBCollider() : Collider(COLLIDER_OOBB) { m_rcBounds = OOBB(VECTOR2D(0.0f, 0.0f), VECTOR2D(0.0f, 0.0f), 0.0f); }
-	COOBBCollider(OOBB& rcBounds) : Collider(COLLIDER_OOBB) { m_rcBounds = rcBounds; }
-	COOBBCollider(ID2D1Geometry *pd2dGeometry);
-	virtual ~COOBBCollider();
+	OOBBCollider() : Collider(COLLIDER_OOBB) { m_rcBounds = OOBB(VECTOR2D(0.0f, 0.0f), VECTOR2D(0.0f, 0.0f), 0.0f); }
+	OOBBCollider(OOBB& rcBounds) : Collider(COLLIDER_OOBB) { m_rcBounds = rcBounds; }
+	OOBBCollider(ID2D1Geometry *pd2dGeometry);
+	virtual ~OOBBCollider();
 
 	OOBB							m_rcBounds;					
 	OOBB							m_rcTransformedBounds;					
@@ -311,13 +311,13 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-class CCircleCollider : public Collider
+class CircleCollider : public Collider
 {
 public:
-	CCircleCollider() : Collider(COLLIDER_CIRCLE) { m_ccBounds = CIRCLE(VECTOR2D(0.0f, 0.0f), 0.0f); }
-	CCircleCollider(CIRCLE& ccBounds) : Collider(COLLIDER_CIRCLE) { m_ccBounds = ccBounds; }
-	CCircleCollider(ID2D1Geometry *pd2dGeometry);
-	virtual ~CCircleCollider();
+	CircleCollider() : Collider(COLLIDER_CIRCLE) { m_ccBounds = CIRCLE(VECTOR2D(0.0f, 0.0f), 0.0f); }
+	CircleCollider(CIRCLE& ccBounds) : Collider(COLLIDER_CIRCLE) { m_ccBounds = ccBounds; }
+	CircleCollider(ID2D1Geometry *pd2dGeometry);
+	virtual ~CircleCollider();
 
 	CIRCLE							m_ccBounds;					
 	CIRCLE							m_ccTransformedBounds;					

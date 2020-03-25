@@ -329,23 +329,23 @@ bool CIRCLE::Intersect(VECTOR2D *pvMoving, AABB *pAABB)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-CAABBCollider::CAABBCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDER_AABB)
+AABBCollider::AABBCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDER_AABB)
 {
 	D2D1_RECT_F d2drcBounds = { 0.0f, 0.0f, 0.0f, 0.0f }; 
 	if (pd2dGeometry) pd2dGeometry->GetBounds(NULL, &d2drcBounds); 
 	m_rcBounds = AABB(d2drcBounds);
 }
 
-CAABBCollider::~CAABBCollider()
+AABBCollider::~AABBCollider()
 {
 }
 
-void CAABBCollider::Update(Matrix3x2F *pd2dmtxTransform)
+void AABBCollider::Update(Matrix3x2F *pd2dmtxTransform)
 {
 	m_rcTransformedBounds = m_rcBounds.Transform(pd2dmtxTransform);
 }
 
-AABB CAABBCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
+AABB AABBCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
 {
 	if (pd2drcBounds)
 	{
@@ -357,7 +357,7 @@ AABB CAABBCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
 	return(m_rcBounds);
 }
 
-AABB CAABBCollider::GetBounds(D2D1_RECT_F *pd2drcBounds) 
+AABB AABBCollider::GetBounds(D2D1_RECT_F *pd2drcBounds) 
 { 
 	if (pd2drcBounds)
 	{
@@ -369,7 +369,7 @@ AABB CAABBCollider::GetBounds(D2D1_RECT_F *pd2drcBounds)
 	return(m_rcBounds); 
 }
 
-AABB CAABBCollider::GetTransformedBounds(Matrix3x2F *pd2dmtxTransform, D2D1_RECT_F *pd2drcBounds) 
+AABB AABBCollider::GetTransformedBounds(Matrix3x2F *pd2dmtxTransform, D2D1_RECT_F *pd2drcBounds) 
 { 
 	m_rcTransformedBounds = m_rcBounds.Transform(pd2dmtxTransform); 
 	if (pd2drcBounds)
@@ -382,26 +382,26 @@ AABB CAABBCollider::GetTransformedBounds(Matrix3x2F *pd2dmtxTransform, D2D1_RECT
 	return(m_rcTransformedBounds); 
 }
 
-bool CAABBCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
+bool AABBCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
 {
 	bool bCollided = false;
 	switch (pOtherCollider->GetType())
 	{
 		case COLLIDER_AABB:
 		{
-			CAABBCollider *pOtherAABBCollider = (CAABBCollider *)pOtherCollider;
+			AABBCollider *pOtherAABBCollider = (AABBCollider *)pOtherCollider;
 			bCollided = m_rcTransformedBounds.Intersect(&pOtherAABBCollider->m_rcTransformedBounds);
 			break;
 		}
 		case COLLIDER_OOBB:
 		{
-			CAABBCollider *pOtherAABBCollider = (CAABBCollider *)pOtherCollider;
+			AABBCollider *pOtherAABBCollider = (AABBCollider *)pOtherCollider;
 			bCollided = m_rcTransformedBounds.Intersect(&pOtherAABBCollider->m_rcTransformedBounds);
 			break;
 		}
 		case COLLIDER_CIRCLE:
 		{
-			CCircleCollider *pOtherCircleCollider = (CCircleCollider *)pOtherCollider;
+			CircleCollider *pOtherCircleCollider = (CircleCollider *)pOtherCollider;
 			bCollided = m_rcTransformedBounds.Intersect(&pOtherCircleCollider->m_ccTransformedBounds);
 			break;
 		}
@@ -411,23 +411,23 @@ bool CAABBCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-COOBBCollider::COOBBCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDER_OOBB)
+OOBBCollider::OOBBCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDER_OOBB)
 {
 	D2D1_RECT_F d2drcBounds = { 0.0f, 0.0f, 0.0f, 0.0f }; 
 	if (pd2dGeometry) pd2dGeometry->GetBounds(NULL, &d2drcBounds); 
 	m_rcBounds = OOBB(d2drcBounds);
 }
 
-COOBBCollider::~COOBBCollider()
+OOBBCollider::~OOBBCollider()
 {
 }
 
-void COOBBCollider::Update(Matrix3x2F *pd2dmtxTransform)
+void OOBBCollider::Update(Matrix3x2F *pd2dmtxTransform)
 {
 	m_rcTransformedBounds = m_rcBounds.Transform(pd2dmtxTransform);
 }
 
-AABB COOBBCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
+AABB OOBBCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
 {
 	if (pd2drcBounds)
 	{
@@ -439,7 +439,7 @@ AABB COOBBCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
 	return(m_rcBounds.GetAABB());
 }
 
-OOBB COOBBCollider::GetBounds(D2D1_RECT_F *pd2drcBounds) 
+OOBB OOBBCollider::GetBounds(D2D1_RECT_F *pd2drcBounds) 
 { 
 	if (pd2drcBounds)
 	{
@@ -451,26 +451,26 @@ OOBB COOBBCollider::GetBounds(D2D1_RECT_F *pd2drcBounds)
 	return(m_rcBounds); 
 }
 
-bool COOBBCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
+bool OOBBCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
 {
 	bool bCollided = false;
 	switch (pOtherCollider->GetType())
 	{
 		case COLLIDER_AABB:
 		{
-			CAABBCollider *pOtherAABBCollider = (CAABBCollider *)pOtherCollider;
+			AABBCollider *pOtherAABBCollider = (AABBCollider *)pOtherCollider;
 			bCollided = m_rcTransformedBounds.Intersect(&pOtherAABBCollider->m_rcTransformedBounds);
 			break;
 		}
 		case COLLIDER_OOBB:
 		{
-			COOBBCollider *pOtherOOBBCollider = (COOBBCollider *)pOtherCollider;
+			OOBBCollider *pOtherOOBBCollider = (OOBBCollider *)pOtherCollider;
 			bCollided = m_rcTransformedBounds.Intersect(&pOtherOOBBCollider->m_rcTransformedBounds);
 			break;
 		}
 		case COLLIDER_CIRCLE:
 		{
-			CCircleCollider *pOtherCircleCollider = (CCircleCollider *)pOtherCollider;
+			CircleCollider *pOtherCircleCollider = (CircleCollider *)pOtherCollider;
 			bCollided = m_rcTransformedBounds.Intersect(&pOtherCircleCollider->m_ccTransformedBounds);
 			break;
 		}
@@ -480,7 +480,7 @@ bool COOBBCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-CCircleCollider::CCircleCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDER_CIRCLE)
+CircleCollider::CircleCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDER_CIRCLE)
 {
 	D2D1_RECT_F d2drcBounds = { 0.0f, 0.0f, 0.0f, 0.0f }; 
 	if (pd2dGeometry) pd2dGeometry->GetBounds(NULL, &d2drcBounds); 
@@ -488,16 +488,16 @@ CCircleCollider::CCircleCollider(ID2D1Geometry *pd2dGeometry) : Collider(COLLIDE
 	m_ccBounds = CIRCLE(rcOOBB.m_vCenter, rcOOBB.m_vExtents.Length());
 }
 
-CCircleCollider::~CCircleCollider()
+CircleCollider::~CircleCollider()
 {
 }
 
-void CCircleCollider::Update(Matrix3x2F *pd2dmtxTransform)
+void CircleCollider::Update(Matrix3x2F *pd2dmtxTransform)
 {
 	m_ccTransformedBounds = m_ccBounds.Transform(pd2dmtxTransform);
 }
 
-AABB CCircleCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
+AABB CircleCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
 {
 	if (pd2drcBounds)
 	{
@@ -509,7 +509,7 @@ AABB CCircleCollider::GetAABB(D2D1_RECT_F *pd2drcBounds)
 	return(m_ccBounds.GetAABB());
 }
 
-CIRCLE CCircleCollider::GetBounds(D2D1_ELLIPSE *pd2dEllipse)
+CIRCLE CircleCollider::GetBounds(D2D1_ELLIPSE *pd2dEllipse)
 {
 	if (pd2dEllipse)
 	{
@@ -518,26 +518,26 @@ CIRCLE CCircleCollider::GetBounds(D2D1_ELLIPSE *pd2dEllipse)
 	return(m_ccBounds);
 }
 
-bool CCircleCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
+bool CircleCollider::Intersect(Collider *pOtherCollider, float *pfDistance)
 {
 	bool bCollided = false;
 	switch (pOtherCollider->GetType())
 	{
 		case COLLIDER_AABB:
 		{
-			CAABBCollider *pOtherAABBCollider = (CAABBCollider *)pOtherCollider;
+			AABBCollider *pOtherAABBCollider = (AABBCollider *)pOtherCollider;
 			bCollided = m_ccTransformedBounds.Intersect(&pOtherAABBCollider->m_rcTransformedBounds);
 			break;
 		}
 		case COLLIDER_OOBB:
 		{
-			COOBBCollider *pOtherOOBBCollider = (COOBBCollider *)pOtherCollider;
+			OOBBCollider *pOtherOOBBCollider = (OOBBCollider *)pOtherCollider;
 			bCollided = m_ccTransformedBounds.Intersect(&pOtherOOBBCollider->m_rcTransformedBounds);
 			break;
 		}
 		case COLLIDER_CIRCLE:
 		{
-			CCircleCollider *pOtherCircleCollider = (CCircleCollider *)pOtherCollider;
+			CircleCollider *pOtherCircleCollider = (CircleCollider *)pOtherCollider;
 			bCollided = m_ccTransformedBounds.Intersect(&pOtherCircleCollider->m_ccTransformedBounds);
 			break;
 		}

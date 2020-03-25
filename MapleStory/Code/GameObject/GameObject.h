@@ -9,10 +9,14 @@ public:
 	GameObject(const string&);
 	virtual ~GameObject();
 
-	virtual bool Initialize(TextureInfo) = 0;
+	virtual bool Initialize(TextureInfo);
 	virtual void Update(float) = 0;
-	virtual void Render() = 0;
+	virtual void Render();
+	void RenderBoundingBox();
 
+	 Matrix3x2F& GetWorldMatrix() { return m_worldMatrix; }
+	
+	Collider* GetCollider()	 { return m_collider; }
 	void SetCollider(Collider* collider) { m_collider = collider; }
 
 	VECTOR2D GetRightVector() const;
@@ -34,6 +38,8 @@ protected:
 	float m_angle;
 
 	VECTOR2D m_velocity;
+	VECTOR2D m_maxVelocity;
+
 	VECTOR2D m_gravity;
 
 	bool m_isDrawBoundingBox;

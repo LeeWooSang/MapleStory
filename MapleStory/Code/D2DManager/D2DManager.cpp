@@ -102,12 +102,24 @@ bool D2DManager::CreateTexture(const string& key, TextureInfo& info)
 	if (result != S_OK)
 		return false;
 	
+	IWICBitmapSource* wicSource = pFrameDecode;
+
+	IWICBitmapFlipRotator* flipRotator = nullptr;
+	result = m_pWICImagingFactory->CreateBitmapFlipRotator(&flipRotator);
+	if (result != S_OK)
+		return false;
+
+	result = flipRotator->Initialize(wicSource, WICBitmapTransformFlipVertical);
+	if (result != S_OK)
+		return false;
+	wicSource = flipRotator;
+
 	IWICFormatConverter* pFormatConverter;
 	result = m_pWICImagingFactory->CreateFormatConverter(&pFormatConverter);
 	if (result != S_OK)
 		return false;
-
-	result = pFormatConverter->Initialize(pFrameDecode, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeCustom);
+	//result = pFormatConverter->Initialize(pFrameDecode, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeCustom);
+	result = pFormatConverter->Initialize(wicSource, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeMedianCut);
 	if (result != S_OK)
 		return false;
 
@@ -123,6 +135,9 @@ bool D2DManager::CreateTexture(const string& key, TextureInfo& info)
 
 	if (pFormatConverter)
 		pFormatConverter->Release();
+
+	if (flipRotator)
+		flipRotator->Release();
 
 	m_ImageInfoMap.emplace(key, info);
 

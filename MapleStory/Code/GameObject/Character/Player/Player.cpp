@@ -4,13 +4,22 @@
 Player::Player(const string& name) 
 	: Character(name)
 {
+	m_positionVector = VECTOR2D(0.0f, 0.0f);
+	m_rightVector = VECTOR2D(1.0f, 0.0f);
+	m_upVector = VECTOR2D(0.0f, -1.0f);
+
+	//m_rot = VECTOR2D(0.0f, 0.0f);
+	//m_center = VECTOR2D(0.0f, 0.0f);
+
+	m_pPlayerUpdatedContext = NULL;
+	m_pCameraUpdatedContext = NULL;
 }
 
 Player::~Player()
 {
 }
 
-bool Player::Initialize()
+bool Player::Initialize(TextureInfo info)
 {
 	//if (GET_INSTANCE(D2DManager)->CreateTexture("Action", ImageInfo(L"../Resource/Textures/Character/Action.png", 900, 100, ANIMATION_FRAME::ACTION_FRAME, 1, 0, 0, 150, 150)) == false)
 	//	return false;
@@ -20,20 +29,29 @@ bool Player::Initialize()
 	//if (GET_INSTANCE(D2DManager)->CreateTexture("RagingBlow", ImageInfo(L"../Resource/Textures/Skill/Effect/RagingBlow.png", 5850, 380, ANIMATION_FRAME::RAGINGBLOW_FRAME, 1, 0, 0, 380, 380)) == false)
 	//	return false;
 
+	GameObject::Initialize(info);
+	m_friction = 50.f;
+	m_gravity = VECTOR2D(0.f, 0.f);
+	m_maxVelocity = VECTOR2D(125.f, 125.f);
+	m_positionVector = VECTOR2D(0.f, 0.f);
+	RegenerateWorldMatrix();
+
 	return true;
 }
 
 void Player::Update(float elapsedTime)
 {
+	Move(elapsedTime);
+
 	m_velocity += m_gravity * elapsedTime;
 	float length = m_velocity.Length();
 	if (!::IsZero(length))
 	{
-		if (m_velocity.x > m_vMaxVelocity.x)
-			m_velocity.x *= (m_vMaxVelocity.x / length);
+		if (m_velocity.x > m_maxVelocity.x)
+			m_velocity.x *= (m_maxVelocity.x / length);
 
-		if (m_velocity.y > m_vMaxVelocity.y)
-			m_velocity.y *= (m_vMaxVelocity.y / length);
+		if (m_velocity.y > m_maxVelocity.y)
+			m_velocity.y *= (m_maxVelocity.y / length);
 
 		Move(m_velocity * elapsedTime, false);
 
@@ -41,13 +59,11 @@ void Player::Update(float elapsedTime)
 		//	OnPlayerUpdated(elapsedTime);
 	}
 
-	if (m_camera) 
-		m_camera->Update(elapsedTime);
+	GET_INSTANCE(Camera)->Update(elapsedTime);
 
 	//if (m_pCameraUpdatedContext) 
 	//	OnCameraUpdated(elapsedTime);
 
-	m_camera->RegenerateViewMatrix();
 
 	if (!::IsZero(m_friction))
 	{
@@ -66,64 +82,7 @@ void Player::Update(float elapsedTime)
 
 void Player::Render()
 {
-	Matrix3x2F transform = m_worldMatrix;
-	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
-	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
-
-	D2D1_RECT_F rect;
-	m_collider->GetAABB(&rect);
-
-	//GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(m_pd2dBitmap, rect);
-
-	//if (m_pd2dGeometry && m_pd2dsbrFill)
-	//	pd2dRenderTarget->FillGeometry(m_pd2dGeometry, m_pd2dsbrFill);
-	//if (m_pd2dGeometry && m_pd2dsbrDraw)
-	//	pd2dRenderTarget->DrawGeometry(m_pd2dGeometry, m_pd2dsbrDraw);
-	//
-	if (m_isDrawBoundingBox == true && m_collider != nullptr)
-	{
-		switch (m_collider->GetType())
-		{
-			case COLLIDER_AABB:
-			{
-				D2D1_RECT_F d2drcBounds;
-				CAABBCollider *pAABBCollider = reinterpret_cast<CAABBCollider*>(m_collider);
-				//				pAABBCollider->GetBounds(&d2drcBounds);
-				pAABBCollider->GetTransformedBounds(&m_worldMatrix, &d2drcBounds);
-
-				if (m_camera != nullptr)
-					GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(m_camera->GetViewMatrix());
-				else
-					GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(Matrix3x2F::Identity());
-
-				//pd2dRenderTarget->DrawRectangle(d2drcBounds, m_pd2dsbrBounds);
-				break;
-			}
-
-		case COLLIDER_OOBB:
-			{
-				D2D1_RECT_F boundRect;
-				COOBBCollider *pOOBBCollider = reinterpret_cast<COOBBCollider*>(m_collider);
-				pOOBBCollider->GetBounds(&boundRect);
-				//				pAABBCollider->GetTransformedBounds(&m_d2dmtxWorld, &d2drcBounds);
-				//				pd2dRenderTarget->SetTransform((pCamera) ? pCamera->m_d2dmtxView : Matrix3x2F::Identity());
-				//pd2dRenderTarget->DrawRectangle(d2drcBounds, m_pd2dsbrBounds);
-				break;
-			}
-
-		case COLLIDER_CIRCLE:
-			{
-				CCircleCollider *pCircleCollider = reinterpret_cast<CCircleCollider*>(m_collider);
-				//				CIRCLE ccCircle = pCircleCollider->GetTransformedBounds(&m_d2dmtxWorld);
-				//				D2D1_ELLIPSE d2dEllipse = Ellipse(ccCircle.m_vCenter, ccCircle.m_fRadius, ccCircle.m_fRadius);
-				D2D1_ELLIPSE d2dEllipse;
-				pCircleCollider->GetBounds(&d2dEllipse);
-				//				pd2dRenderTarget->SetTransform((pCamera) ? pCamera->m_d2dmtxView : Matrix3x2F::Identity());
-				//pd2dRenderTarget->DrawEllipse(d2dEllipse, m_pd2dsbrBounds);
-				break;
-			}
-		}
-	}
+	GameObject::Render();
 }
 
 void Player::RegenerateWorldMatrix()
@@ -138,6 +97,45 @@ void Player::RegenerateWorldMatrix()
 	m_worldMatrix._32 = m_positionVector.y;
 }
 
+void Player::Move(float elapsedTime)
+{
+	char dir = 0;
+	float distance = elapsedTime * 100;
+
+	VECTOR2D shift = VECTOR2D(0.f, 0.f);
+
+	if (KEY_DOWN(VK_RIGHT))
+	{
+		dir |= DIRECTION::RIGHT;
+		shift += m_rightVector * distance;
+	}
+
+	if (KEY_DOWN(VK_LEFT))
+	{
+		dir |= DIRECTION::LEFT;
+		shift -= m_rightVector * distance;
+	}
+
+	if (KEY_DOWN(VK_UP))
+	{
+		dir |= DIRECTION::UP;
+		shift += m_upVector * distance;
+	}
+
+	if (KEY_DOWN(VK_DOWN))
+	{
+		dir |= DIRECTION::DOWN;
+		shift -= m_upVector * distance;
+	}
+
+	if(dir)
+		Move(shift, true);
+}
+
+//void Player::Move(char direction, VECTO distance, bool velocity)
+//{
+//}
+
 void Player::Move(VECTOR2D& shift, bool updateVelocity)
 {
 	if (updateVelocity == true)
@@ -147,6 +145,8 @@ void Player::Move(VECTOR2D& shift, bool updateVelocity)
 	{
 		m_positionVector += shift;
 		RegenerateWorldMatrix();
-		m_camera->Move(shift);
+
+		GET_INSTANCE(Camera)->Move(shift);
+
 	}
 }
