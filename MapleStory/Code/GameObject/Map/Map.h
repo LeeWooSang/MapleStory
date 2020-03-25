@@ -4,11 +4,11 @@
 class Map : public GameObject
 {
 public:
-	Map();
+	Map(const string&);
 	virtual ~Map();
 
-	virtual bool Initialize() override;
-	virtual void Update(float) override;
-	virtual void Render() override;
-	virtual void Release() override;
+	virtual bool Initialize(TextureInfo);
+	virtual void Update(float);
+	virtual void Render();
+
 };

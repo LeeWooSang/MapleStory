@@ -1,51 +1,41 @@
 #include "SceneManager.h"
-#include "../GameObject/Player/Player.h"
-#include "InGameScene/InGameScene.h"
+#include "LoginScene/LoginScene.h"
+#include "../Camera/Camera.h"
 
 INIT_INSTACNE(SceneManager)
-
 SceneManager::SceneManager()
 {
+	m_gameState = GAME_STATE::LOGIN_SCENE;
 }
 
 SceneManager::~SceneManager()
 {
-	SAFE_DELETE_MAP(m_SceneList);
-
-	cout << "SceneManager - ¼Ò¸êÀÚ" << endl;
+	SAFE_DELETE_MAP(m_sceneList);
+	GET_INSTANCE(Camera)->Release();
 }
 
 bool SceneManager::Initialize()
 {
-	InGameScene* pInGameScene = new InGameScene;
-	if (pInGameScene->Initialize() == false)
+	LoginScene* loginSc = new LoginScene;
+	m_sceneList.emplace(GAME_STATE::LOGIN_SCENE, loginSc);
+	if (loginSc->Initialize() == false)
 		return false;
-	m_SceneList.emplace("InGameScene", pInGameScene);
-
-	return true;
 }
 
 void SceneManager::Update(float elapsedTime)
 {
-	for (auto iter = m_SceneList.begin(); iter != m_SceneList.end(); ++iter)
-	{
-		(*iter).second->Update(elapsedTime);
-	}
+	auto iter = m_sceneList.find(m_gameState);
+	if (iter == m_sceneList.end())
+		return;
+
+	(*iter).second->Update(elapsedTime);
 }
 
 void SceneManager::Render()
 {
-	for (auto iter = m_SceneList.begin(); iter != m_SceneList.end(); ++iter)
-	{
-		(*iter).second->Render();
-	}
-}
+	auto iter = m_sceneList.find(m_gameState);
+	if (iter == m_sceneList.end())
+		return;
 
-InGameScene* SceneManager::GetInGameScene() const
-{
-	auto iter = m_SceneList.find("InGameScene");
-	if (iter != m_SceneList.end())
-		return reinterpret_cast<InGameScene*>((*iter).second);
-
-	return nullptr;
+	(*iter).second->Render();
 }

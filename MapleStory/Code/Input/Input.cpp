@@ -6,21 +6,84 @@
 
 INIT_INSTACNE(Input)
 Input::Input()
-	: m_IMEMode(IMEMODE::ENGLISH), m_IsActive(false), m_Comb(L"")
 {
-	m_TextList.clear();
+	m_isActive = false;
+	m_IMEMode = IMEMODE::ENGLISH;
+	m_comb.clear();
+	m_textList.clear();
+
+	m_width = 0.f;
+	m_height = 0.f;
+	m_gap = 0.f;
+	m_startX = 0.f;
+	m_startY = 0.f;
+	m_endX = 0.f;
+	m_endY = 0.f;
 }
 
 Input::~Input()
 {
-	m_TextList.clear();
-
-	cout << "Input - 소멸자" << endl;
+	m_textList.clear();
 }
 
 bool Input::Initialize()
 {
+	m_width = 1.5f;
+	m_height = 25.f;
+	m_gap = 2.f;
+
+	m_startX = 10.f;
+	m_startY = 10.f;
+
+	m_endX = m_startX;
+	m_endY = m_startY + m_height;
+
 	return true;
+}
+
+void Input::Update(float elapsedTime)
+{
+	m_enableTime += elapsedTime;
+
+	if (m_isEnable == true && m_enableTime > 0.8f)
+	{
+		m_isEnable = false;
+		m_enableTime = 0.f;
+	}
+
+	if (m_isEnable == false && m_enableTime > 0.5f)
+	{
+		m_isEnable = true;
+	}
+}
+
+void Input::Render()
+{
+	if (m_isActive == false)
+		return;
+
+	D2D_POINT_2F startPos{ m_startX, m_startY };
+	D2D_POINT_2F endPos{ m_endX, m_endY };
+
+	wstring text = GetText();
+	if (text.size() > 0)
+	{
+		IDWriteTextLayout* layout = nullptr;
+		HRESULT result = GET_INSTANCE(D2DManager)->GetWriteFactory()->CreateTextLayout(text.c_str(), static_cast<UINT32>(text.length()), 
+			GET_INSTANCE(D2DManager)->GetFontInfo("메이플").m_pFont, 4096.0f, 4096.0f, &layout);
+
+		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawTextLayout(startPos, layout, GET_INSTANCE(D2DManager)->GetFontColor("검은색"));
+
+		DWRITE_TEXT_METRICS metris;
+		layout->GetMetrics(&metris);
+		startPos.x += metris.width + m_gap;
+		endPos.x = startPos.x;
+
+		layout->Release();
+	}
+
+	if (m_isEnable)
+		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawLine(startPos, endPos, GET_INSTANCE(D2DManager)->GetFontColor("검은색"), m_width, 0);
 }
 
 LRESULT Input::ProcessWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -62,7 +125,7 @@ LRESULT Input::ProcessKeyboardMessage(HWND hWnd, UINT message, WPARAM wParam, LP
 			switch (wParam)
 			{
 			case VK_RETURN:
-				m_IsActive = !m_IsActive;
+				m_isActive = !m_isActive;
 				break;
 
 			case VK_ESCAPE:
@@ -72,7 +135,7 @@ LRESULT Input::ProcessKeyboardMessage(HWND hWnd, UINT message, WPARAM wParam, LP
 		}
 	}
 
-	if (m_IsActive == true)
+	if (m_isActive == true)
 	{
 		switch (message)
 		{
@@ -139,7 +202,7 @@ void Input::ProcessMouseMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 
 void Input::ProcessEnglish(HWND hWnd, WPARAM wParam)
 {
-	unsigned char key = static_cast<unsigned char>(m_TextList.size());
+	unsigned char key = static_cast<unsigned char>(m_textList.size());
 
 	wstring text = L"";
 	text = static_cast<wchar_t>(wParam);
@@ -149,7 +212,7 @@ void Input::ProcessEnglish(HWND hWnd, WPARAM wParam)
 		return;
 	}
 
-	m_TextList.emplace_back(TextInfo(key, text));
+	m_textList.emplace_back(TextInfo(key, text));
 }
 
 void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
@@ -166,7 +229,7 @@ void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
 		{
 			ImmGetCompositionStringW(himc, GCS_COMPSTR, temp, len);
 			temp[len] = 0;
-			m_Comb = temp;
+			m_comb = temp;
 		}
 	}
 
@@ -179,11 +242,11 @@ void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
 			ImmGetCompositionStringW(himc, GCS_RESULTSTR, temp, len);
 			temp[len] = 0;
 
-			unsigned char key = static_cast<unsigned char>(m_TextList.size());
+			unsigned char key = static_cast<unsigned char>(m_textList.size());
 			wstring text = temp;
-			m_TextList.emplace_back(TextInfo(key, text));
+			m_textList.emplace_back(TextInfo(key, text));
 			// 조합중인 글자는 지움
-			m_Comb.clear();
+			m_comb.clear();
 		}
 	}
 
@@ -192,21 +255,21 @@ void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
 
 void Input::DeleteText()
 {
-	if (m_TextList.size() > 0)
+	if (m_textList.size() > 0)
 	{
-		//for (auto iter = m_TextList.begin(); iter != m_TextList.end(); )
+		//for (auto iter = m_textList.begin(); iter != m_textList.end(); )
 		//{
 		//	if ((*iter).m_Key == m_CaretPos - 1)
 		//	{
-		//		iter = m_TextList.erase(iter);
+		//		iter = m_textList.erase(iter);
 		//		--m_CaretPos;
 		//	}
 
 		//	else
 		//		++iter;
 		//}
-		auto iter = m_TextList.end();
-		m_TextList.erase(--iter);
+		auto iter = m_textList.end();
+		m_textList.erase(--iter);
 	}
 }
 
@@ -240,7 +303,7 @@ wstring Input::GetText() const
 {
 	wstring text = L"";
 
-	for (auto iter = m_TextList.begin(); iter != m_TextList.end(); ++iter)
+	for (auto iter = m_textList.begin(); iter != m_textList.end(); ++iter)
 		text += (*iter).m_Text;
 
 	return text;
@@ -249,7 +312,7 @@ wstring Input::GetText() const
 void Input::WStringToString()
 {
 	string s = "";
-	for (auto data : m_TextList)
+	for (auto data : m_textList)
 	{
 		char temp[10] = { 0, };
 		wcstombs(temp, const_cast<wchar_t*>(data.m_Text.c_str()), data.m_Text.length());
@@ -257,9 +320,4 @@ void Input::WStringToString()
 	}
 	GET_INSTANCE(Network)->SetServerIP(s);
 	GET_INSTANCE(Network)->Connect();
-}
-
-void Input::TextRender()
-{
-
 }

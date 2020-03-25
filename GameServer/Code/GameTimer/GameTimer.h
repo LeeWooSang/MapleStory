@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../MapleConvenienceFunction/Code/Macro.h"
-#include "../../../MapleConvenienceFunction/Code/Defines.h"
+#include "../../../MapleStory/Code/Macro.h"
+#include "../Defines.h"
 #include "../Core/Core.h"
 
 struct TimerEvent

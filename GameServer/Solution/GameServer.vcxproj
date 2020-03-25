@@ -170,10 +170,10 @@
     <ClCompile Include="..\Code\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\MapleConvenienceFunction\Code\Defines.h" />
     <ClInclude Include="..\..\MapleConvenienceFunction\Code\Macro.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
     <ClInclude Include="..\Code\DataBase\DataBase.h" />
+    <ClInclude Include="..\Code\Defines.h" />
     <ClInclude Include="..\Code\GameObject\Channel\Channel.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
     <ClInclude Include="..\Code\GameObject\Character\NPC\NPC.h" />

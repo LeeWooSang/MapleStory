@@ -5,12 +5,19 @@
 class SceneManager
 {
 	SINGLE_TONE(SceneManager)
-
+		
+public:
 	bool Initialize();
 	void Update(float);
 	void Render();
 
-	class InGameScene* GetInGameScene() const;
+	enum GAME_STATE { LOGIN_SCENE, };
+
+	void SetGameState(GAME_STATE state) { m_gameState = state; }
+
 private:
-	unordered_map<string, class Scene*> m_SceneList;
+	GAME_STATE m_gameState;
+
+	unordered_map<int, class Scene*> m_sceneList;
 };
+

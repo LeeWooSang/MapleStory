@@ -1,12 +1,11 @@
 #include "Core.h"
 #include <crtdbg.h>
 #include "../Framework/Framework.h"
-#include "../Network/Network.h"
 #include "../Input/Input.h"
+#include "../Network/Network.h"
 
 INIT_INSTACNE(Core)
 bool Core::m_isUpdate = true;
-
 Core::Core()
 	: m_hInstance(nullptr), m_hWnd(nullptr), m_ClassName(L"MapleStory")
 {
@@ -20,13 +19,12 @@ Core::Core()
 	//	Dumping objects ->
 	// {233} normal block at 0x000001469D91A680, 24 bytes long.
 	// 233 이라는 지점에서 릭이 생김	
-	//_CrtSetBreakAlloc(451);
+	//_CrtSetBreakAlloc(270);
 }
 
 Core::~Core()
 {
 	GET_INSTANCE(Input)->Release();
-	GET_INSTANCE(Network)->Release();
 	GET_INSTANCE(Framework)->Release();
 
 	cout << "Core - 소멸자" << endl;
@@ -58,9 +56,6 @@ bool Core::Initialize(HINSTANCE hInst)
 	SetWindowPos(m_hWnd, HWND_TOPMOST, posX, posY, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);
 
 	if (GET_INSTANCE(Framework)->Initialize(m_hWnd) == false)
-		return false;
-
-	if (GET_INSTANCE(Network)->Initialize() == false)
 		return false;
 
 	::ShowWindow(m_hWnd, SW_SHOW);

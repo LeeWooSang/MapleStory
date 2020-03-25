@@ -11,7 +11,7 @@ class GameTimer
 	void Stop();
 	void Reset();
 
-    unsigned int GetFrameRate(wchar_t*, int);
+	unsigned int GetFrameRate()	const { return m_nCurrentFrameRate; }
 	float GetElapsedTime() const { return m_ElapsedTime; }
 	float GetTotalTime();
 

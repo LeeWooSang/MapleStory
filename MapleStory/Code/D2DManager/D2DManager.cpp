@@ -11,7 +11,7 @@ D2DManager::~D2DManager()
 	//갖고 있는 비트맵이미지를 모두 지움
 	for (auto iter = m_ImageInfoMap.begin(); iter != m_ImageInfoMap.end(); )
 	{
-		(*iter).second.m_Bitmap->Release();
+		(*iter).second.m_image->Release();
 		iter = m_ImageInfoMap.erase(iter);
 	}
 	m_ImageInfoMap.clear();
@@ -82,7 +82,7 @@ bool D2DManager::Initialize(HWND hWnd)
 	return true;
 }
 
-bool D2DManager::CreateTexture(const string& key, ImageInfo info)
+bool D2DManager::CreateTexture(const string& key, TextureInfo& info)
 {
 	// [ Bitmap 이미지 초기화 방법 ] 
 	// 1. Com객체 초기화
@@ -93,7 +93,7 @@ bool D2DManager::CreateTexture(const string& key, ImageInfo info)
 	// 6. Bitmap 생성
 
 	IWICBitmapDecoder* pBitmapDecoder;
-	HRESULT result = m_pWICImagingFactory->CreateDecoderFromFilename(info.m_FilePath.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &pBitmapDecoder);
+	HRESULT result = m_pWICImagingFactory->CreateDecoderFromFilename(info.m_path.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &pBitmapDecoder);
 	if (result != S_OK)
 		return false;
 
@@ -111,7 +111,7 @@ bool D2DManager::CreateTexture(const string& key, ImageInfo info)
 	if (result != S_OK)
 		return false;
 
-	result = m_pRenderTarget->CreateBitmapFromWicBitmap(pFormatConverter, &info.m_Bitmap);
+	result = m_pRenderTarget->CreateBitmapFromWicBitmap(pFormatConverter, &info.m_image);
 	if (result != S_OK)
 		return false;
 
@@ -198,7 +198,7 @@ void D2DManager::CreateGameFont()
 			// 폰트를 중앙에 정렬시키기
 			result = pFont[i]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 			result = pFont[i]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-			result = m_pWriteFactory->CreateTextLayout(wstr.c_str(), wstr.length(), pFont[i], 1024.0f, 1024.0f, &pTextLayout[i]);
+			result = m_pWriteFactory->CreateTextLayout(wstr.c_str(), static_cast<UINT32>(wstr.length()), pFont[i], 1024.0f, 1024.0f, &pTextLayout[i]);
 
 			m_FontInfoMap.emplace("피오피동글", FontInfo(pFont[i], pTextLayout[i], fontSize));
 		}
@@ -206,7 +206,7 @@ void D2DManager::CreateGameFont()
 		{
 			result = pFont[i]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 			result = pFont[i]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
-			result = m_pWriteFactory->CreateTextLayout(wstr.c_str(), wstr.length(), pFont[i], 4096.0f, 4096.0f, &pTextLayout[i]);
+			result = m_pWriteFactory->CreateTextLayout(wstr.c_str(), static_cast<UINT32>(wstr.length()), pFont[i], 4096.0f, 4096.0f, &pTextLayout[i]);
 
 			m_FontInfoMap.emplace("메이플", FontInfo(pFont[i], pTextLayout[i], fontSize));
 		}
@@ -243,109 +243,7 @@ void D2DManager::CreateGameFontColor()
 	m_FontColorMap.emplace("주황색", pColor[index++]);
 }
 
-void D2DManager::WorldToScreen(D2D1_RECT_F& screenPos, int sizeX, int sizeY, const XMFLOAT2& worldPos)
-{
-	//D3D12_VIEWPORT viewport = GET_INSTANCE(Camera)->GetViewPort();
-
-	//float x = ((worldPos.x + 1) * viewport.Width) / 2.0f;
-	//float y = ((1 - worldPos.y) * viewport.Height) / 2.0f;
-	//float gapX = sizeX * 0.5f;
-	//float gapY = sizeY * 0.5f;
-
-	//screenPos.left = x - gapX;
-	//screenPos.top = y - gapY;
-	//screenPos.right = x + gapX;
-	//screenPos.bottom = y + gapY;
-}
-
-//void D2DManager::ScreenToWorld()
-//{
-//	D3D12_VIEWPORT viewport = GET_INSTANCE(Camera)->GetViewPort();
-//
-//	m_WorldPosition.x = (((2.0f * m_ScreenPosition.x) / viewport.Width) - 1) / 1;
-//	m_WorldPosition.y = -(((2.0f * m_ScreenPosition.y) / viewport.Height) - 1) / 1;
-//}
-
-void D2DManager::Render(const XMFLOAT2& pos)
-{
-	for (auto iter = m_ImageInfoMap.begin(); iter != m_ImageInfoMap.end(); )
-	{
-		D2D1_RECT_F screenPos = { 0 };
-		WorldToScreen(screenPos, (*iter).second.m_SizeX, (*iter).second.m_SizeY, pos);
-		m_pRenderTarget->DrawBitmap((*iter).second.m_Bitmap, screenPos);
-	}
-}
-
-void D2DManager::Render(const string& key, const XMFLOAT2& pos)
-{
-	auto iter = m_ImageInfoMap.find(key);
-	if (iter != m_ImageInfoMap.end())
-	{
-		D2D1_RECT_F screenPos = { 0 };
-		WorldToScreen(screenPos, (*iter).second.m_SizeX, (*iter).second.m_SizeY, pos);
-
-		int width = (*iter).second.m_WidthPixel;
-		int height = (*iter).second.m_HeightPixel;
-
-		int totalX = (*iter).second.m_TotalFrameX;
-		int totalY = (*iter).second.m_TotalFrameY;
-
-		int frameX = (*iter).second.m_FrameXNum;
-		int frameY = (*iter).second.m_FrameYNum;
-
-		D2D1_RECT_F framePos;
-		//< 전체크기를 전체X프레임으로 나눠 앞으로 뿌려줄 X프레임의 크기를 구한다.
-		int nX = width / totalX;
-		//< 전체크기를 전체Y프레임으로 나눠 앞으로 뿌려줄 Y프레임의 크기를 구한다.
-		int nY = height / totalY;
-
-		//< 최종적으로 뿌릴 위치를 담는다. 
-		framePos.left = static_cast<float>(nX * frameX);
-		framePos.top = static_cast<float>(nY * frameY);
-		framePos.right = static_cast<float>(framePos.left + nX);
-		framePos.bottom = static_cast<float>(framePos.top + nY);
-
-		m_pRenderTarget->DrawBitmap((*iter).second.m_Bitmap, screenPos, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, framePos);
-	}
-}
-
-void D2DManager::Render(const string& key, const XMFLOAT2& pos, int fx, int fy)
-{
-	auto iter = m_ImageInfoMap.find(key);
-	if (iter != m_ImageInfoMap.end())
-	{
-		D2D1_RECT_F screenPos = { 0 };
-		WorldToScreen(screenPos, (*iter).second.m_SizeX, (*iter).second.m_SizeY, pos);
-
-		int width = (*iter).second.m_WidthPixel;
-		int height = (*iter).second.m_HeightPixel;
-
-		int totalX = (*iter).second.m_TotalFrameX;
-		int totalY = (*iter).second.m_TotalFrameY;
-
-		D2D1_RECT_F framePos;
-		//< 전체크기를 전체X프레임으로 나눠 앞으로 뿌려줄 X프레임의 크기를 구한다.
-		int nX = width / totalX;
-		//< 전체크기를 전체Y프레임으로 나눠 앞으로 뿌려줄 Y프레임의 크기를 구한다.
-		int nY = height / totalY;
-
-		//< 최종적으로 뿌릴 위치를 담는다. 
-		framePos.left = static_cast<float>(nX * fx);
-		framePos.top = static_cast<float>(nY * fy);
-		framePos.right = static_cast<float>(framePos.left + nX);
-		framePos.bottom = static_cast<float>(framePos.top + nY);
-
-		m_pRenderTarget->DrawBitmap((*iter).second.m_Bitmap, screenPos, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, framePos);
-	}
-}
-
 void D2DManager::Render(const wstring& text, const string& font, const string& color, D2D1_RECT_F& pos)
 {
-	m_pRenderTarget->DrawTextW(text.c_str(), text.length(), m_FontInfoMap[font].m_pFont, &pos, m_FontColorMap[color]);
-}
-
-void D2DManager::TextLayoutRender(IDWriteTextLayout* layout, const wstring& text, D2D_POINT_2F& pos)
-{
-	HRESULT result = m_pWriteFactory->CreateTextLayout(text.c_str(), text.length(), m_FontInfoMap["메이플"].m_pFont, 4096.0f, 4096.0f, &layout);
-	m_pRenderTarget->DrawTextLayout(pos, layout, m_FontColorMap["검은색"]);
+	m_pRenderTarget->DrawTextW(text.c_str(), static_cast<UINT32>(text.length()), m_FontInfoMap[font].m_pFont, &pos, m_FontColorMap[color]);
 }

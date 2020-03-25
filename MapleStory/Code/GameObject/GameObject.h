@@ -1,25 +1,40 @@
 #pragma once
 #include "../Defines.h"
+#include "../D2DManager/D2DManager.h"
+#include "../Collision/Collision.h"
 
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(const string&);
 	virtual ~GameObject();
 
-	virtual bool Initialize() = 0;
+	virtual bool Initialize(TextureInfo) = 0;
 	virtual void Update(float) = 0;
 	virtual void Render() = 0;
-	virtual void Release() = 0;
 
-	const XMFLOAT2& GetWorldPosition()	const { return m_WorldPosition; }
-	void SetWorldPosition(const XMFLOAT2& pos) { m_WorldPosition = pos; }
+	void SetCollider(Collider* collider) { m_collider = collider; }
 
-	int GetID()		const { return m_ID; }
-	void SetID(int id) { m_ID = id; }
+	VECTOR2D GetRightVector() const;
+	void SetRightVector(VECTOR2D);
+
+	VECTOR2D GetUpVector()	const;
+	void SetUpVector(VECTOR2D);
+
+	VECTOR2D GetPositionVector()	const;
+	void SetPosition(VECTOR2D);
+
+	VECTOR2D GetSize(Matrix3x2F* pd2dmtxTransform = nullptr);
 
 protected:
-	XMFLOAT2 m_WorldPosition;
-	float m_Speed;
-	int m_ID;
+	string m_name;
+	Matrix3x2F m_worldMatrix;
+	class Collider* m_collider;
+
+	float m_angle;
+
+	VECTOR2D m_velocity;
+	VECTOR2D m_gravity;
+
+	bool m_isDrawBoundingBox;
 };

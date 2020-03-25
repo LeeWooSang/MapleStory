@@ -1,33 +1,59 @@
 #pragma once
 #include "../Macro.h"
 #include "../Defines.h"
-#include "../Network/Network.h"
+#include "../Collision/Collision.h"
 
-constexpr float ASPECT_RATIO = float(FRAME_BUFFER_WIDTH) / float(FRAME_BUFFER_HEIGHT);
+struct ViewPort
+{
+	UINT							m_xStart;
+	UINT							m_yStart;
+	UINT							m_nWidth;
+	UINT							m_nHeight;
+	UINT							m_nMinLayer;
+	UINT							m_nMaxLayer;
+};
 
 class Camera
 {
 	SINGLE_TONE(Camera)
+public:
+	 void Move(VECTOR2D& vShift) { m_positionVector += vShift; }
+	 void Rotate(float);
+	 void Update(float);
 
-	bool Initialize();
-	void Update(char, float);
-	bool Move(const XMFLOAT2&);
+	void RegenerateViewMatrix();
+	bool IsVisible(class GameObject*);
 
-	void GenerateProjectionMatrix(float, float, float, float);
+	const Matrix3x2F& GetViewMatrix() const { return m_viewMatrix; }
 
-	const D3D12_VIEWPORT& GetViewPort()	const { return m_ViewPort; }
-	const XMFLOAT4X4& GetProjectionMatrix()	const { return m_ProjectionMatrix; }
+	VECTOR2D GetRightVector() { return(m_rightVector); }
+	VECTOR2D GetPosition()	const { return m_positionVector; }
+	VECTOR2D GetUpVector() { return m_upVector; }
 
-	const XMFLOAT2& GetWorldPosition()	const { return m_WorldPosition; }
-	void SetWorldPosition(const XMFLOAT2& pos) { m_WorldPosition = pos; }
+	VECTOR2D GetExtents()	const { return m_extents; }
+	void SetExtents(VECTOR2D& extents) { m_extents = extents; m_positionVector -= 0.5f * m_extents; }
 
-	void SetTarget(class GameObject* target);
+	float GetTimeLag()	const { return(m_timeLag); }
+	void SetTimeLag(float timeLag) { m_timeLag = timeLag; }
+
+	const ViewPort& GetViewport()	const { return m_viewport; }
+	void SetViewport(UINT xStart, UINT yStart, UINT nWidth, UINT nHeight, UINT nMinLayer, UINT nMaxLayer);
 
 private:
-	D3D12_VIEWPORT m_ViewPort;
-	XMFLOAT4X4 m_ProjectionMatrix;
+	Matrix3x2F m_viewMatrix;
 
-	XMFLOAT2 m_WorldPosition;
+	VECTOR2D m_positionVector;
+	VECTOR2D m_rightVector;
+	VECTOR2D m_upVector;
 
-	class GameObject* m_Target;
+	float m_angle;
+	float m_timeLag;
+
+	//Matrix3x2F m_d2dmtxProjection;
+
+	ViewPort m_viewport;
+	VECTOR2D m_extents;
 };
+
+
+

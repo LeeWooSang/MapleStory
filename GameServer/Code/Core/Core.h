@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../MapleConvenienceFunction/Code/Defines.h"
-#include "../../../MapleConvenienceFunction/Code/Macro.h"
+#include "../../../MapleStory/Code/Macro.h"
+#include "../Defines.h"
 #include "../Protocol.h"
 
 constexpr int WORKER_THREAD_SIZE = 4;

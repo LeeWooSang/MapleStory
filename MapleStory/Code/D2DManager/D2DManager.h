@@ -5,30 +5,27 @@
 constexpr int MAX_FONT_COUNT = 2;
 constexpr int MAX_COLOR_COUNT = 8;
 
-struct ImageInfo
+struct TextureInfo
 {
-	ImageInfo()
-		: m_FilePath(L""), m_Bitmap(nullptr), m_WidthPixel(0), m_HeightPixel(0), m_TotalFrameX(0), m_TotalFrameY(0), m_FrameXNum(0), m_FrameYNum(0), m_SizeX(0), m_SizeY(0) {}
-	ImageInfo(wstring path, int width, int height, int totalX, int totalY, int frameX, int frameY, int sizeX, int sizeY)
-		: m_FilePath(path), m_Bitmap(nullptr), m_WidthPixel(width), m_HeightPixel(height), m_TotalFrameX(totalX), m_TotalFrameY(totalY), m_FrameXNum(frameX), m_FrameYNum(frameY), m_SizeX(sizeX), m_SizeY(sizeY) {}
+	TextureInfo()
+		: m_path(L""), m_image(nullptr), m_width(0), m_height(0), m_totalFrameX(0), m_totalFrameY(0), m_frameX(0), m_frameY(0) {}
+	TextureInfo(const wstring& path, int width, int height, int totalX, int totalY, int frameX, int frameY)
+		: m_path(path), m_image(nullptr), m_width(width), m_height(height), m_totalFrameX(totalX), m_totalFrameY(totalY), m_frameX(frameX), m_frameY(frameY) {}
 
-	wstring m_FilePath;
-	ID2D1Bitmap* m_Bitmap;
+	wstring m_path;
+	ID2D1Bitmap* m_image;
 
-	int m_WidthPixel;
-	int m_HeightPixel;
+	int m_width;
+	int m_height;
 
 	// 총 가로 몇프레임
-	int m_TotalFrameX;
+	int m_totalFrameX;
 	// 총 세로 몇프레임
-	int m_TotalFrameY;
+	int m_totalFrameY;
 
 	// 현재 프레임
-	int m_FrameXNum;
-	int m_FrameYNum;
-
-	int m_SizeX;
-	int m_SizeY;
+	int m_frameX;
+	int m_frameY;
 };
 
 struct FontInfo
@@ -52,25 +49,17 @@ class D2DManager
 
 	bool Initialize(HWND);
 
-	bool CreateTexture(const string&, ImageInfo);
+	bool CreateTexture(const string&, TextureInfo&);
 
-	void WorldToScreen(D2D1_RECT_F&, int, int, const XMFLOAT2&);
-	//void ScreenToWorld();
-
-	void Render(const XMFLOAT2&);
-	void Render(const string&, const XMFLOAT2&);
-	void Render(const string&, const XMFLOAT2&, int, int );
 	void Render(const wstring&, const string&, const string&, D2D1_RECT_F&);
-	void TextLayoutRender(IDWriteTextLayout*, const wstring&, D2D_POINT_2F&);
 
 	IDWriteFactory5* GetWriteFactory()	const { return m_pWriteFactory; }
 	 ID2D1HwndRenderTarget* GetRenderTarget() const { return m_pRenderTarget; }
 
-	 ImageInfo& GetTexture(string key) { return m_ImageInfoMap[key]; }
-
 	 const unordered_map<string, FontInfo>& GetFontInfoList()	const { return m_FontInfoMap; }
 	 ID2D1SolidColorBrush* GetFontColor(const string& key)	 { return m_FontColorMap[key]; }
 
+	 const TextureInfo& GetTexture(string key) { return m_ImageInfoMap[key]; }
 	 FontInfo& GetFontInfo(const string& font) { return m_FontInfoMap[font]; }
 
 private:
@@ -87,7 +76,7 @@ private:
 	IWICImagingFactory*			m_pWICImagingFactory;
 
 	// 이미지를 저장함
-	unordered_map<string, ImageInfo>						m_ImageInfoMap;
+	unordered_map<string, TextureInfo>						m_ImageInfoMap;
 	// 폰트를 저장함
 	unordered_map<string, FontInfo>						m_FontInfoMap;
 	// 폰트 색상을 저장함

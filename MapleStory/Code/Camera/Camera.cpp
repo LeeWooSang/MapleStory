@@ -1,107 +1,94 @@
 #include "Camera.h"
 #include "../GameObject/GameObject.h"
-#include "../Network/Network.h"
-#include "../D2DManager/D2DManager.h"
 
 INIT_INSTACNE(Camera)
-
 Camera::Camera()
-	: m_Target(nullptr)
 {
-	m_ViewPort = { 0, 0, FRAME_BUFFER_WIDTH , FRAME_BUFFER_HEIGHT, 0.0f, 1.0f };
-	m_ProjectionMatrix = Matrix4x4::Identity();
+	m_viewMatrix = Matrix3x2F::Identity();
+
+	m_rightVector = VECTOR2D(1.0f, 0.0f);
+	m_upVector = VECTOR2D(0.0f, 1.0f);
+	m_positionVector = VECTOR2D(0.0f, 0.0f);
+
+	m_angle = 0.0f;
+
+	m_viewport = { 0 };
+
+	m_extents = VECTOR2D(0.0f, 0.0f);
 }
 
 Camera::~Camera()
 {
-	cout << "카메라 - 소멸자" << endl;
 }
 
-bool Camera::Initialize()
+void Camera::SetViewport(UINT xStart, UINT yStart, UINT nWidth, UINT nHeight, UINT nMinLayer, UINT nMaxLayer)
 {
-	GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 60.0f);
-
-	return true;
+	m_viewport.m_xStart = xStart;
+	m_viewport.m_yStart = yStart;
+	m_viewport.m_nWidth = nWidth;
+	m_viewport.m_nHeight = nHeight;
+	m_viewport.m_nMinLayer = nMinLayer;
+	m_viewport.m_nMaxLayer = nMaxLayer;
 }
 
-void Camera::Update(char dir, float elapsedTime)
+void Camera::RegenerateViewMatrix()
 {
-	if (m_Target)
+	m_viewMatrix._11 = m_rightVector.x;
+	m_viewMatrix._21 = m_rightVector.y;
+
+	m_viewMatrix._12 = m_upVector.x;
+	m_viewMatrix._22 = m_upVector.y;
+
+	m_viewMatrix._31 = -(m_positionVector * m_rightVector);
+	m_viewMatrix._32 = -(m_positionVector * m_upVector);
+}
+
+void Camera::Rotate(float delta)
+{
+	if (!::IsZero(delta))
 	{
-		XMFLOAT2 pos = m_Target->GetWorldPosition();
-
-		if (Move(pos) == false)
-			return;
-
-		if (dir & DIRECTION::RIGHT)
-			m_WorldPosition.x -= elapsedTime;
-	
-		else if (dir & DIRECTION::LEFT)
-			m_WorldPosition.x += elapsedTime;
-
-		if (dir & DIRECTION::UP)
-			pos.y -= elapsedTime;
-
-		else if (dir & DIRECTION::DOWN)
-			pos.y += elapsedTime;
-
-		//m_WorldPosition = pos;
-
-		//float size = 0.5f;
-
-		//float leftArea = (-FRAME_BUFFER_WIDTH * 0.5) * size;
-		//float topArea = (FRAME_BUFFER_HEIGHT * 0.5f) * size;
-		//float rightArea = (FRAME_BUFFER_WIDTH * 0.5f) * size;
-		//float bottomArea = (-FRAME_BUFFER_HEIGHT * 0.5f) * size;
-
-		////float leftArea = (-WORLD::WIDTH * 0.5f) * size;
-		////float topArea = (WORLD::HEIGHT * 0.5f) * size;
-		////float rightArea = (WORLD::WIDTH * 0.5f) * size;
-		////float bottomArea = (-WORLD::HEIGHT * 0.5f) * size;
-
-		//if (pos.x <= leftArea)
-		//	pos.x = leftArea;
-
-		//else if (pos.x >= rightArea)
-		//	pos.x = rightArea;
-
-		//if (pos.y >= topArea)
-		//	pos.y = topArea;
-
-		//else if (pos.y <= bottomArea)
-		//	pos.y = bottomArea;
-
-		//m_WorldPosition = pos;
+		m_angle += delta;
+		Matrix3x2F d2dmtxRotate;
+		d2dmtxRotate = Matrix3x2F::Rotation(delta, Point2F(0.0f, 0.0f));
+		m_rightVector = m_rightVector.Transform(&d2dmtxRotate);
+		m_rightVector = m_rightVector.Normalize();
+		m_upVector = m_upVector.Transform(&d2dmtxRotate);
+		m_upVector = m_upVector.Normalize();
 	}
 }
 
-bool Camera::Move(const XMFLOAT2& pos)
+void Camera::Update(float elapsedTime)
 {
-	if (pos.x > 0.3f)
-		return true;
-
-	if (pos.x < -0.3f)
-		return true;
-
-	if (pos.y > 0.3f)
-		return true;
-
-	if (pos.y < -0.3f)
-		return true;
-
-	return false;
 }
 
-void Camera::GenerateProjectionMatrix(float nearPlaneDistance, float farPlaneDistance, float aspectRatio, float fOVAngle)
+bool Camera::IsVisible(GameObject* pGameObject)
 {
-	m_ProjectionMatrix = Matrix4x4::PerspectiveFovLH(XMConvertToRadians(fOVAngle), aspectRatio, nearPlaneDistance, farPlaneDistance);
-}
+	//if (pGameObject->m_pCollider)
+	//{
+	//	AABB rCamera(m_vPosition, m_vExtents);
+	//	switch (pGameObject->m_pCollider->GetType())
+	//	{
+	//	case COLLIDER_AABB:
+	//	{
+	//		CAABBCollider *pAABBCollider = (CAABBCollider *)pGameObject->m_pCollider;
+	//		pAABBCollider->Update(&pGameObject->m_d2dmtxWorld);
+	//		AABB rcAABB = pAABBCollider->GetTransformedBounds(&pGameObject->m_d2dmtxWorld, NULL);
+	//		return(rCamera.Intersect(&rcAABB));
+	//	}
+	//	case COLLIDER_OOBB:
+	//	{
+	//		COOBBCollider *pOOBBCollider = (COOBBCollider *)pGameObject->m_pCollider;
+	//		OOBB rcOOBB = pOOBBCollider->GetTransformedBounds(&pGameObject->m_d2dmtxWorld);
+	//		return(rCamera.Intersect(&rcOOBB));
+	//	}
+	//	case COLLIDER_CIRCLE:
+	//	{
+	//		CCircleCollider *pCircleCollider = (CCircleCollider *)pGameObject->m_pCollider;
+	//		CIRCLE ccCircle = pCircleCollider->GetTransformedBounds(&pGameObject->m_d2dmtxWorld);
+	//		return(rCamera.Intersect(&ccCircle));
+	//	}
+	//	}
+	//}
 
-void Camera::SetTarget(GameObject* target)
-{
-	if (m_Target)
-		m_Target = nullptr;
-
-	m_Target = target;
-	m_WorldPosition = m_Target->GetWorldPosition();
+	return true;
 }

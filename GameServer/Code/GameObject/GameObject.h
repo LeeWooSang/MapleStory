@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../MapleConvenienceFunction/Code/Defines.h"
+#include "../Defines.h"
 
 class GameObject
 {

@@ -18,6 +18,8 @@ class Input
 	SINGLE_TONE(Input)
 
 	virtual bool Initialize();
+	void Update(float);
+	void Render();
 
 	virtual LRESULT CALLBACK ProcessWindowMessage(HWND, UINT, WPARAM, LPARAM);
 
@@ -31,11 +33,9 @@ class Input
 	void ChangeIMEMode(HWND, bool);
 	void ControlCaret(WPARAM);
 
-	void TextRender();
-
-	void SetIsActive(bool isActive) { m_IsActive = isActive; }
-	bool GetIsActive()	const { return m_IsActive; }
-	const wstring& GetComb() const { return m_Comb; }
+	void SetIsActive(bool isActive) { m_isActive = isActive; }
+	bool GetIsActive()	const { return m_isActive; }
+	const wstring& GetComb() const { return m_comb; }
 	wstring GetText() const;
 
 	void WStringToString();
@@ -43,8 +43,24 @@ class Input
 	enum IMEMODE { ENGLISH = 0x0000, KOREAN };
 
 private:
+	bool m_isActive;
 	unsigned long m_IMEMode;
-	bool m_IsActive;
-	wstring m_Comb;
-	list<TextInfo> m_TextList;
+	wstring m_comb;
+	list<TextInfo> m_textList;
+
+	float m_enableTime;
+	bool m_isEnable;
+
+	// 굵기
+	float m_width;
+	// 높이
+	float m_height;
+	//글 간격
+	float m_gap;
+
+	float m_startX;
+	float m_startY;
+
+	float m_endX;
+	float m_endY;
 };

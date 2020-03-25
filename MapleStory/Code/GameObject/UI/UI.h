@@ -4,13 +4,13 @@
 class UI : public GameObject
 {
 public:
-	UI();
+	UI(const string&);
 	virtual ~UI();
 
-	virtual bool Initialize() = 0;
-	virtual void Update(float) override;
-	virtual void Render() override;
-	virtual void Release() override;
+	virtual bool Initialize(TextureInfo);
+	virtual void Update(float);
+	virtual void Render();
 
 protected:
+
 };

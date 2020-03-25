@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../MapleConvenienceFunction/Code/Macro.h"
-#include "../../../MapleConvenienceFunction/Code/Defines.h"
+#include "../../../MapleStory/Code/Macro.h"
+#include "../Defines.h"
 #include <sqlext.h>
 #pragma comment(lib, "odbc32.lib")
 

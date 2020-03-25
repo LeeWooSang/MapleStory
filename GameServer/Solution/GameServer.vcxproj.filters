@@ -112,9 +112,6 @@
     <ClInclude Include="..\Code\Core\Core.h">
       <Filter>Code\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\MapleConvenienceFunction\Code\Defines.h">
-      <Filter>Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\MapleConvenienceFunction\Code\Macro.h">
       <Filter>Code</Filter>
     </ClInclude>
@@ -165,6 +162,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameTimer\GameTimer.h">
       <Filter>Code\GameTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Defines.h">
+      <Filter>Code</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

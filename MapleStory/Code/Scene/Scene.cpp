@@ -1,18 +1,18 @@
 #include "Scene.h"
-#include "../Network/Network.h"
 #include "../GameObject/GameObject.h"
+
+Scene::Scene()
+{
+	m_objectList.clear();
+}
 
 Scene::~Scene()
 {
-}
-
-GameObject* Scene::FindObject(int id) const 
-{
-	for (auto iter = m_ObjectList.begin(); iter != m_ObjectList.end(); ++iter)
+	for (auto iter = m_objectList.begin(); iter != m_objectList.end(); )
 	{
-		if ((*iter)->GetID() == id)
-			return (*iter);
+		delete (*iter).second;
+		iter = m_objectList.erase(iter);
 	}
-
-	return nullptr;
+	m_objectList.clear();
 }
+

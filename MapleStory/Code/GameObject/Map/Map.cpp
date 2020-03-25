@@ -1,22 +1,19 @@
 #include "Map.h"
-#include "../../D2DManager/D2DManager.h"
 #include "../../Camera/Camera.h"
 
-Map::Map()
-	: GameObject()
+Map::Map(const string& name)
+	: GameObject(name)
 {
 }
 
 Map::~Map()
 {
-	cout << "Map - ¼Ò¸êÀÚ" << endl;
 }
 
-bool Map::Initialize()
+bool Map::Initialize(TextureInfo info)
 {
-	if (GET_INSTANCE(D2DManager)->CreateTexture("Map", ImageInfo(L"../Resource/Textures/Map/Login.png", 795, 560, 1, 1, 0, 0, 1200, 800)) == false)
+	if (GET_INSTANCE(D2DManager)->CreateTexture(m_name, info) == false)
 		return false;
-
 
 	return true;
 }
@@ -26,11 +23,15 @@ void Map::Update(float elapsedTime)
 }
 
 void Map::Render()
-{
-	//GET_INSTANCE(D2DManager)->Render("Player", GET_INSTANCE(Camera)->GetWorldPosition(), static_cast<int>(m_Frame), 0);
-	GET_INSTANCE(D2DManager)->Render("Map", GET_INSTANCE(Camera)->GetWorldPosition());
-}
+{	
+	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(m_name);
 
-void Map::Release()
-{
+	Matrix3x2F transform = m_worldMatrix;
+
+	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
+
+	D2D1_RECT_F rect;
+	m_collider->GetAABB(&rect);
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(info.m_image, rect);
 }

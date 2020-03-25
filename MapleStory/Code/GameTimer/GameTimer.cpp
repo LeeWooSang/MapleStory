@@ -73,17 +73,6 @@ void GameTimer::Tick(float fps)
 		m_ElapsedTime /= m_nSampleCount;
 }
 
-unsigned int GameTimer::GetFrameRate(wchar_t* lpszString, int nCharacters)
-{
-    if (lpszString)
-    {
-        _itow_s(m_nCurrentFrameRate, lpszString, nCharacters, 10);
-        wcscat_s(lpszString, nCharacters, L" FPS");
-    } 
-
-    return m_nCurrentFrameRate;
-}
-
 float GameTimer::GetTotalTime()
 {
 	if (m_bStopped) 

@@ -1,38 +1,38 @@
 #include "Framework.h"
 #include "../D2DManager/D2DManager.h"
 #include "../GameTimer/GameTimer.h"
-#include "../GameObject/Caret/Caret.h"
+#include "../Network/Network.h"
+#include "../Scene/SceneManager.h"
 
 INIT_INSTACNE(Framework)
 Framework::Framework()
 {
+	m_hwnd = nullptr;
+	m_titleName.clear();
 }
 
 Framework::~Framework()
 {
-	if (m_caret != nullptr)
-	{
-		delete m_caret;
-		m_caret = nullptr;
-	}
-
+	GET_INSTANCE(SceneManager)->Release();
+	GET_INSTANCE(Network)->Release();
 	GET_INSTANCE(GameTimer)->Release();
 	GET_INSTANCE(D2DManager)->Release();
-
-	cout << "Framework - ¼Ò¸êÀÚ" << endl;
 }
 
 bool Framework::Initialize(HWND hWnd)
 {
-	m_hWnd = hWnd;
+	m_hwnd = hWnd;
+	m_titleName = L"MapleStory ";
 
 	if (GET_INSTANCE(D2DManager)->Initialize(hWnd) == false)
 		return false;
 
 	GET_INSTANCE(GameTimer)->Reset();
 
-	m_caret = new Caret;
-	if (m_caret->Initialize() == false)
+	if (GET_INSTANCE(Network)->Initialize() == false)
+		return false;
+
+	if (GET_INSTANCE(SceneManager)->Initialize() == false)
 		return false;
 
 	return true;
@@ -40,28 +40,26 @@ bool Framework::Initialize(HWND hWnd)
 
 void Framework::Run()
 {
-	float elapsedTime = 0.f;
+	GET_INSTANCE(GameTimer)->Tick(0);
 
-	GET_INSTANCE(GameTimer)->Tick(60.0);
-	elapsedTime = GET_INSTANCE(GameTimer)->GetElapsedTime();
-
-	Update(elapsedTime);
+	Update(GET_INSTANCE(GameTimer)->GetElapsedTime());
 	Render();
+
+	wstring titleName = m_titleName + to_wstring(GET_INSTANCE(GameTimer)->GetFrameRate()) + L" FPS";
+	::SetWindowText(m_hwnd, const_cast<wchar_t*>(titleName.c_str()));
 }
 
 void Framework::Update(float elapsedTime)
 {
-	m_caret->Update(elapsedTime);
+	GET_INSTANCE(SceneManager)->Update(elapsedTime);
 }
 
 void Framework::Render()
 {
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->BeginDraw();
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
-	D2D1_COLOR_F clearcolor = D2D1_COLOR_F{ 1.f, 1.f, 1.f, 1.f };
-	GET_INSTANCE(D2DManager)->GetRenderTarget()->Clear(&clearcolor);
-
-	m_caret->Render();
+	GET_INSTANCE(SceneManager)->Render();
 		
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->EndDraw();
 }
