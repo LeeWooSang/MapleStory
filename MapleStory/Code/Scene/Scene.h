@@ -10,6 +10,7 @@ public:
 	virtual bool Initialize() = 0;
 	virtual void Update(float) = 0;
 	virtual void Render() = 0;
+	virtual bool Collision(const string&) = 0;
 
 protected:
 	unordered_map<string, class GameObject*> m_objectList;

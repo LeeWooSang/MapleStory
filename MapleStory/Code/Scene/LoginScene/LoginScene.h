@@ -10,6 +10,7 @@ public:
 	virtual bool Initialize();
 	virtual void Update(float);
 	virtual void Render();
+	virtual bool Collision(const string&);
 
 private:
 	class Player* m_player;

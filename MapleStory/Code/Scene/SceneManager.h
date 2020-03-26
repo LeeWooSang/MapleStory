@@ -15,6 +15,8 @@ public:
 
 	void SetGameState(GAME_STATE state) { m_gameState = state; }
 
+	class Scene* GetScene()	{ return m_sceneList[m_gameState]; }
+
 private:
 	GAME_STATE m_gameState;
 

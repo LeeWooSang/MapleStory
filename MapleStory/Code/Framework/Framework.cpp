@@ -2,6 +2,7 @@
 #include "../D2DManager/D2DManager.h"
 #include "../GameTimer/GameTimer.h"
 #include "../Network/Network.h"
+#include "../Camera/Camera.h"
 #include "../Scene/SceneManager.h"
 
 INIT_INSTACNE(Framework)
@@ -14,6 +15,7 @@ Framework::Framework()
 Framework::~Framework()
 {
 	GET_INSTANCE(SceneManager)->Release();
+	GET_INSTANCE(Camera)->Release();
 	GET_INSTANCE(Network)->Release();
 	GET_INSTANCE(GameTimer)->Release();
 	GET_INSTANCE(D2DManager)->Release();
@@ -30,6 +32,9 @@ bool Framework::Initialize(HWND hWnd)
 	GET_INSTANCE(GameTimer)->Reset();
 
 	if (GET_INSTANCE(Network)->Initialize() == false)
+		return false;
+
+	if (GET_INSTANCE(Camera)->Initialize() == false)
 		return false;
 
 	if (GET_INSTANCE(SceneManager)->Initialize() == false)

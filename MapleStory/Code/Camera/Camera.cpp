@@ -21,6 +21,23 @@ Camera::~Camera()
 {
 }
 
+bool Camera::Initialize()
+{
+	m_extents = VECTOR2D(static_cast<float>(FRAME_BUFFER_WIDTH), static_cast<float>(FRAME_BUFFER_HEIGHT));
+	m_positionVector -= 0.5f * m_extents;
+
+	m_viewport.m_xStart = 0;
+	m_viewport.m_yStart = 0;
+	m_viewport.m_nWidth = FRAME_BUFFER_WIDTH;
+	m_viewport.m_nHeight = FRAME_BUFFER_HEIGHT;
+	m_viewport.m_nMinLayer = 0;
+	m_viewport.m_nMaxLayer = 1;
+
+	RegenerateViewMatrix();
+
+	return true;
+}
+
 void Camera::Move(VECTOR2D & vShift)
 {
 	m_positionVector += vShift; 

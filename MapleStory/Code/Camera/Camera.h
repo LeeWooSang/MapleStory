@@ -18,9 +18,10 @@ class Camera
 	SINGLE_TONE(Camera);
 
 public:
+	bool Initialize();
 	void Move(VECTOR2D&);
-	 void Rotate(float);
-	 void Update(float);
+	void Rotate(float);
+	void Update(float);
 
 	void RegenerateViewMatrix();
 	bool IsVisible(class GameObject*);

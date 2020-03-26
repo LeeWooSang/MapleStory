@@ -108,7 +108,8 @@ bool D2DManager::CreateTexture(const string& key, TextureInfo& info)
 	result = m_pWICImagingFactory->CreateBitmapFlipRotator(&flipRotator);
 	if (result != S_OK)
 		return false;
-
+	
+	//result = flipRotator->Initialize(wicSource, WICBitmapTransformFlipHorizontal);
 	result = flipRotator->Initialize(wicSource, WICBitmapTransformFlipVertical);
 	if (result != S_OK)
 		return false;

@@ -1,0 +1,35 @@
+#include "LoginUI.h"
+
+LoginUI::LoginUI(const string& name)
+	: UI(name)
+{
+}
+
+LoginUI::~LoginUI()
+{
+}
+
+bool LoginUI::Initialize(TextureInfo info)
+{
+	if (GameObject::Initialize(info) == false)
+		return false;
+
+	m_worldMatrix._21 = 0.f;
+	m_worldMatrix._22 = -1.f;
+
+	return true;
+}
+
+void LoginUI::Update(float)
+{
+}
+
+void LoginUI::Render()
+{
+	GameObject::Render();
+}
+
+void LoginUI::Input()
+{
+
+}

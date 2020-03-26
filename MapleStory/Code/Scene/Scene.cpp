@@ -15,4 +15,3 @@ Scene::~Scene()
 	}
 	m_objectList.clear();
 }
-

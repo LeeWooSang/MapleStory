@@ -30,6 +30,8 @@ public:
 
 	VECTOR2D GetSize(Matrix3x2F* pd2dmtxTransform = nullptr);
 
+	void SetIsDrawBoundingBox(bool value) { m_isDrawBoundingBox = value; }
+
 protected:
 	string m_name;
 	Matrix3x2F m_worldMatrix;

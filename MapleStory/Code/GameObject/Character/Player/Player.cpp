@@ -29,7 +29,9 @@ bool Player::Initialize(TextureInfo info)
 	//if (GET_INSTANCE(D2DManager)->CreateTexture("RagingBlow", ImageInfo(L"../Resource/Textures/Skill/Effect/RagingBlow.png", 5850, 380, ANIMATION_FRAME::RAGINGBLOW_FRAME, 1, 0, 0, 380, 380)) == false)
 	//	return false;
 
-	GameObject::Initialize(info);
+	if (GameObject::Initialize(info) == false)
+		return false;
+
 	m_friction = 50.f;
 	m_gravity = VECTOR2D(0.f, 0.f);
 	m_maxVelocity = VECTOR2D(125.f, 125.f);

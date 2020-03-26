@@ -1,8 +1,9 @@
 #include "LoginScene.h"
-#include "../../Camera/Camera.h"
 #include "../../Input/Input.h"
 #include "../../GameObject/Map/Map.h"
 #include "../../GameObject/Character/Player/Player.h"
+#include "../../GameObject/UI/LoginUI/LoginUI.h"
+#include "../../Camera/Camera.h"
 
 LoginScene::LoginScene()
 {
@@ -16,9 +17,6 @@ LoginScene::~LoginScene()
 
 bool LoginScene::Initialize()
 {
-	GET_INSTANCE(Camera)->SetExtents(VECTOR2D(float(FRAME_BUFFER_WIDTH), float(FRAME_BUFFER_HEIGHT)));
-	GET_INSTANCE(Camera)->SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0, 1);
-
 	string name = "";
 
 	name = "Background";
@@ -40,29 +38,53 @@ bool LoginScene::Initialize()
 	m_objectList.emplace(name, grade);
 	if (grade->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/GameGrade.png", 65, 75, 1, 1, 0, 0)) == false)
 		return false;
-	grade->SetPosition(VECTOR2D(600.f, 0.f));
+	grade->SetPosition(VECTOR2D(365.f, -260.f));
 
 	name = "Logo";
 	Map* logo = new Map(name);
 	m_objectList.emplace(name, logo);
 	if (logo->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/Logo.png", 306, 152, 1, 1, 0, 0)) == false)
 		return false;
-	logo->SetPosition(VECTOR2D(200.f, 150.f));
+	logo->SetPosition(VECTOR2D(0.f, -165.f));
 
-	name = "Player";
-	m_player = new Player(name);
-	if(m_player->Initialize(TextureInfo(L"../Resource/Textures/Character/Player.png", 133, 144, 1, 1, 0, 0)) == false)
+	name = "InputBackground";
+	LoginUI* inputBackground = new LoginUI(name);
+	m_objectList.emplace(name, inputBackground);
+	if (inputBackground->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/InputBackground.png", 244, 158, 1, 1, 0, 0)) == false)
 		return false;
+	inputBackground->SetPosition(VECTOR2D(0.f, 0.f));
+
+	name = "IDInput";
+	LoginUI* idInput = new LoginUI(name);
+	m_objectList.emplace(name, idInput);
+	if (idInput->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/IDInput1.png", 160, 23, 1, 1, 0, 0)) == false)
+		return false;
+	idInput->SetPosition(VECTOR2D(-25.f, -27.f));
+
+	name = "PWInput";
+	LoginUI* pwInput = new LoginUI(name);
+	m_objectList.emplace(name, pwInput);
+	if (pwInput->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/PWInput.png", 160, 23, 1, 1, 0, 0)) == false)
+		return false;
+	pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
+
+	//name = "Player";
+	//m_player = new Player(name);
+	//if(m_player->Initialize(TextureInfo(L"../Resource/Textures/Character/Player.png", 133, 144, 1, 1, 0, 0)) == false)
+	//	return false;
 
 	return true;
 }
 
 void LoginScene::Update(float elapsedTime)
 {
+	Collision("IDInput");
+
 	for (auto object : m_objectList)
 		object.second->Update(elapsedTime);
 
-	m_player->Update(elapsedTime);
+	if (m_player != nullptr)
+		m_player->Update(elapsedTime);
 
 	GET_INSTANCE(Input)->Update(elapsedTime);
 }
@@ -71,11 +93,47 @@ void LoginScene::Render()
 {
 	for (auto object : m_objectList)
 	{
-		if(GET_INSTANCE(Camera)->IsVisible(object.second) == true)
+		//if(GET_INSTANCE(Camera)->IsVisible(object.second) == true)
 			object.second->Render();
 	}
 
-	m_player->Render();
+	//if(m_player != nullptr)
+	//	m_player->Render();
 
 	GET_INSTANCE(Input)->Render();
 }
+
+bool LoginScene::Collision(const string& key)
+{
+	if (GET_INSTANCE(Input)->KeyOnceCheck(KEY_TYPE::MOUSE_LBUTTON) == false)
+		return false;
+
+	auto iter = m_objectList.find(key);
+	if (iter == m_objectList.end())
+		return false;
+
+	Matrix3x2F worldView = (*iter).second->GetWorldMatrix() * GET_INSTANCE(Camera)->GetViewMatrix();
+	VECTOR2D pos = VECTOR2D(worldView._31, worldView._32);
+
+	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(key);
+
+	int minX = pos.x - info.m_width * 0.5f;
+	int minY = pos.y - info.m_height * 0.5f;
+	int maxX = minX + info.m_width;
+	int maxY = minY + info.m_height;
+
+	POINT mousePos = GET_INSTANCE(Input)->GetMousePos();
+	if (minX > mousePos.x)
+		return false;
+	else if (maxX < mousePos.x)
+		return false;
+	else if (minY > mousePos.y)
+		return false;
+	else if (maxY < mousePos.y)
+		return false;
+
+	cout << "충돌한 곳에서 마우스 누름" << endl;
+
+	return true;
+}
+

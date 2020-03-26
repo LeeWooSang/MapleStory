@@ -31,12 +31,6 @@
     <Filter Include="Code\Input">
       <UniqueIdentifier>{dfdd9315-2b4e-46bc-b8ef-3811e69743b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Input\MouseInput">
-      <UniqueIdentifier>{d1c2e60e-7fbd-489f-b4e8-b5df2a274d62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Input\KeyboardInput">
-      <UniqueIdentifier>{68e369ce-30fc-46b1-8172-0e35bfb47fd2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\GameObject">
       <UniqueIdentifier>{ac2cc71a-6727-428b-b167-fad9eef3b7dc}</UniqueIdentifier>
     </Filter>
@@ -52,9 +46,6 @@
     <Filter Include="Code\GameObject\Map">
       <UniqueIdentifier>{d05b8dd3-e94f-4a0e-85a9-e4d35f1e5169}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\GameObject\UI\LoginUI">
-      <UniqueIdentifier>{fcf6fb07-b8ce-41fe-aefe-4f499fb4de56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Collision">
       <UniqueIdentifier>{b34ef4bb-7293-4b91-add9-c4095ec758c2}</UniqueIdentifier>
     </Filter>
@@ -66,6 +57,9 @@
     </Filter>
     <Filter Include="Code\GameObject\Character\Player">
       <UniqueIdentifier>{1f4f239b-2959-4158-9695-753d6d7e0d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\UI\LoginUI">
+      <UniqueIdentifier>{22c39442-dc2d-4947-9949-5fb840726466}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -89,12 +83,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\Input\Input.cpp">
       <Filter>Code\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\Input\KeyboardInput\KeyboardInput.cpp">
-      <Filter>Code\Input\KeyboardInput</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\Input\MouseInput\MouseInput.cpp">
-      <Filter>Code\Input\MouseInput</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\GameObject.cpp">
       <Filter>Code\GameObject</Filter>
@@ -126,6 +114,9 @@
     <ClCompile Include="..\Code\Camera\Camera.cpp">
       <Filter>Code\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\GameObject\UI\LoginUI\LoginUI.cpp">
+      <Filter>Code\GameObject\UI\LoginUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h">
@@ -148,12 +139,6 @@
     </ClInclude>
     <ClInclude Include="..\Code\Input\Input.h">
       <Filter>Code\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Code\Input\KeyboardInput\KeyboardInput.h">
-      <Filter>Code\Input\KeyboardInput</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Code\Input\MouseInput\MouseInput.h">
-      <Filter>Code\Input\MouseInput</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\GameObject.h">
       <Filter>Code\GameObject</Filter>
@@ -190,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\Camera\Camera.h">
       <Filter>Code\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\UI\LoginUI\LoginUI.h">
+      <Filter>Code\GameObject\UI\LoginUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

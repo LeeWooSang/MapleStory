@@ -1,6 +1,5 @@
 #include "SceneManager.h"
 #include "LoginScene/LoginScene.h"
-#include "../Camera/Camera.h"
 
 INIT_INSTACNE(SceneManager)
 SceneManager::SceneManager()
@@ -11,7 +10,6 @@ SceneManager::SceneManager()
 SceneManager::~SceneManager()
 {
 	SAFE_DELETE_MAP(m_sceneList);
-	GET_INSTANCE(Camera)->Release();
 }
 
 bool SceneManager::Initialize()

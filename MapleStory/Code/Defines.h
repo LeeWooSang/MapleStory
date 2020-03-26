@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <array>
 #include <vector>
 #include <list>
 #include <unordered_map>

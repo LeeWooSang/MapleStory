@@ -3,6 +3,12 @@
 
 class MouseInput : public Input
 {
-	virtual bool Initialize() override;
-	virtual LRESULT CALLBACK ProcessWindowMessage(HWND, UINT, WPARAM, LPARAM) override;
+	SINGLE_TONE(MouseInput)
+
+public:
+	virtual bool Initialize();
+	virtual LRESULT CALLBACK ProcessWindowMessage(HWND, UINT, LPARAM);
+
+	void Pos();
+
 };

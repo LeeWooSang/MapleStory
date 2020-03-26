@@ -58,6 +58,9 @@ bool Core::Initialize(HINSTANCE hInst)
 	if (GET_INSTANCE(Framework)->Initialize(m_hWnd) == false)
 		return false;
 
+	if (GET_INSTANCE(Input)->Initialize() == false)
+		return false;
+
 	::ShowWindow(m_hWnd, SW_SHOW);
 	::UpdateWindow(m_hWnd);
 

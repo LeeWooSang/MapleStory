@@ -11,7 +11,8 @@ Map::~Map()
 
 bool Map::Initialize(TextureInfo info)
 {
-	GameObject::Initialize(info);
+	if (GameObject::Initialize(info) == false)
+		return false;
 
 	m_worldMatrix._21 = 0.f;
 	m_worldMatrix._22 = -1.f;
