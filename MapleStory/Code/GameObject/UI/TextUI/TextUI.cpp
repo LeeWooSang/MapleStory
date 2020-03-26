@@ -21,21 +21,28 @@ TextUI::~TextUI()
 {
 }
 
-bool TextUI::Initialize(const VECTOR2D& pos)
+bool TextUI::Initialize(GameObject* target)
 {
+	Matrix3x2F worldView = target->GetWorldMatrix() * GET_INSTANCE(Camera)->GetViewMatrix();
+	VECTOR2D pos = VECTOR2D(worldView._31, worldView._32);
+
+	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(target->GetName());
+	int minX = pos.x - info.m_width * 0.5f;
+	int minY = pos.y - info.m_height * 0.5f;
+	int maxX = minX + info.m_width;
+	int maxY = minY + info.m_height;
+
 	m_width = 1.5f;
-	m_height = 25.f;
+	m_height = info.m_height;
 	m_gap = 2.f;
 
-	m_startX = pos.x;
-	m_startY = pos.y;
-	//m_startX = 10.f;
-	//m_startY = 10.f;
+	m_startX = minX;
+	m_startY = minY;
 
 	m_worldMatrix._21 = 0.f;
 	m_worldMatrix._22 = -1.f;
-	m_worldMatrix._31 = m_startX;
-	m_worldMatrix._32 = m_startY;
+	m_worldMatrix._31 = 0.f;
+	m_worldMatrix._32 = 0.f;
 
 	m_endX = m_startX;
 	m_endY = m_startY + m_height;
@@ -68,13 +75,13 @@ void TextUI::Render()
 	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
 
-	//GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(Matrix3x2F::Identity());
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(Matrix3x2F::Identity());
 
 	D2D_POINT_2F startPos;
 	//startPos.x = m_worldMatrix._31;
 	//startPos.y = m_worldMatrix._32;
-	startPos.x = 0.f;
-	startPos.y = 0.f;
+	startPos.x = m_startX;
+	startPos.y = m_startY;
 
 	D2D_POINT_2F endPos;
 	endPos.x = startPos.x;

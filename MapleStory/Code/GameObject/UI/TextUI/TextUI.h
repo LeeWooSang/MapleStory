@@ -7,7 +7,7 @@ public:
 	TextUI(const string&);
 	virtual ~TextUI();
 
-	virtual bool Initialize(const VECTOR2D&);
+	virtual bool Initialize(GameObject*);
 	virtual void Update(float);
 	virtual void Render();
 

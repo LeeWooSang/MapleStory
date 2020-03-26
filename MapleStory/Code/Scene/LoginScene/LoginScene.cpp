@@ -48,12 +48,12 @@ bool LoginScene::Initialize()
 		return false;
 	logo->SetPosition(VECTOR2D(0.f, -165.f));
 
-	//name = "InputBackground";
-	//LoginUI* inputBackground = new LoginUI(name);
-	//m_objectList.emplace(name, inputBackground);
-	//if (inputBackground->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/InputBackground.png", 244, 158, 1, 1, 0, 0)) == false)
-	//	return false;
-	//inputBackground->SetPosition(VECTOR2D(0.f, 0.f));
+	name = "InputBackground";
+	LoginUI* inputBackground = new LoginUI(name);
+	m_objectList.emplace(name, inputBackground);
+	if (inputBackground->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/InputBackground.png", 244, 158, 1, 1, 0, 0)) == false)
+		return false;
+	inputBackground->SetPosition(VECTOR2D(0.f, 0.f));
 	
 	name = "IDInput";
 	LoginUI* idInput = new LoginUI(name);
@@ -62,12 +62,21 @@ bool LoginScene::Initialize()
 		return false;
 	idInput->SetPosition(VECTOR2D(-25.f, -27.f));
 
-	//name = "PWInput";
-	//LoginUI* pwInput = new LoginUI(name);
-	//m_objectList.emplace(name, pwInput);
-	//if (pwInput->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/PWInput.png", 160, 23, 1, 1, 0, 0)) == false)
+	name = "PWInput";
+	LoginUI* pwInput = new LoginUI(name);
+	m_objectList.emplace(name, pwInput);
+	if (pwInput->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/PWInput.png", 160, 23, 1, 1, 0, 0)) == false)
+		return false;
+	pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
+
+	name = "IDText";
+	//TextUI* text = new TextUI(name);
+	//m_objectList.emplace(name, text);
+	//if (text->Initialize(idInput) == false)
 	//	return false;
-	//pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
+	m_text = new TextUI(name);
+	if (m_text->Initialize(idInput) == false)
+		return false;
 
 	//name = "Player";
 	//m_player = new Player(name);
@@ -95,6 +104,9 @@ void LoginScene::Update(float elapsedTime)
 	for (auto object : m_objectList)
 		object.second->Update(elapsedTime);
 
+	if (m_text)
+		m_text->Update(elapsedTime);
+
 	if (m_player != nullptr)
 		m_player->Update(elapsedTime);
 }
@@ -106,6 +118,9 @@ void LoginScene::Render()
 		//if(GET_INSTANCE(Camera)->IsVisible(object.second) == true)
 			object.second->Render();
 	}
+
+	if (m_text)
+		m_text->Render();
 
 	if(m_player != nullptr)
 		m_player->Render();

@@ -15,6 +15,8 @@ public:
 	virtual void Render();
 	void RenderBoundingBox();
 
+	const string& GetName()	const { return m_name; }
+
 	 Matrix3x2F& GetWorldMatrix() { return m_worldMatrix; }
 	
 	Collider* GetCollider()	 { return m_collider; }

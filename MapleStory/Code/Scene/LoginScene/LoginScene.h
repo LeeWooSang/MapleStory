@@ -14,5 +14,6 @@ public:
 
 private:
 	class Player* m_player;
+	class TextUI* m_text;
 };
 
