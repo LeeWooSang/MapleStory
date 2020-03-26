@@ -166,6 +166,7 @@
     <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
     <ClCompile Include="..\Code\GameObject\Map\Map.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\LoginUI\LoginUI.cpp" />
+    <ClCompile Include="..\Code\GameObject\UI\TextUI\TextUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\UI.cpp" />
     <ClCompile Include="..\Code\GameTimer\GameTimer.cpp" />
     <ClCompile Include="..\Code\Input\Input.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="..\Code\GameObject\GameObject.h" />
     <ClInclude Include="..\Code\GameObject\Map\Map.h" />
     <ClInclude Include="..\Code\GameObject\UI\LoginUI\LoginUI.h" />
+    <ClInclude Include="..\Code\GameObject\UI\TextUI\TextUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\UI.h" />
     <ClInclude Include="..\Code\GameTimer\GameTimer.h" />
     <ClInclude Include="..\Code\Input\Input.h" />

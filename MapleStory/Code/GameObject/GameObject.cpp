@@ -19,6 +19,11 @@ GameObject::~GameObject()
 		delete m_collider;
 }
 
+bool GameObject::Initialize()
+{
+	return true;
+}
+
 bool GameObject::Initialize(TextureInfo info)
 {
 	if (GET_INSTANCE(D2DManager)->CreateTexture(m_name, info) == false)
@@ -36,7 +41,6 @@ void GameObject::Render()
 	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(m_name);
 
 	Matrix3x2F transform = m_worldMatrix;
-
 	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
 

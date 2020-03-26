@@ -3,6 +3,7 @@
 #include "../../GameObject/Map/Map.h"
 #include "../../GameObject/Character/Player/Player.h"
 #include "../../GameObject/UI/LoginUI/LoginUI.h"
+#include "../../GameObject/UI/TextUI/TextUI.h"
 #include "../../Camera/Camera.h"
 
 LoginScene::LoginScene()
@@ -47,13 +48,13 @@ bool LoginScene::Initialize()
 		return false;
 	logo->SetPosition(VECTOR2D(0.f, -165.f));
 
-	name = "InputBackground";
-	LoginUI* inputBackground = new LoginUI(name);
-	m_objectList.emplace(name, inputBackground);
-	if (inputBackground->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/InputBackground.png", 244, 158, 1, 1, 0, 0)) == false)
-		return false;
-	inputBackground->SetPosition(VECTOR2D(0.f, 0.f));
-
+	//name = "InputBackground";
+	//LoginUI* inputBackground = new LoginUI(name);
+	//m_objectList.emplace(name, inputBackground);
+	//if (inputBackground->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/InputBackground.png", 244, 158, 1, 1, 0, 0)) == false)
+	//	return false;
+	//inputBackground->SetPosition(VECTOR2D(0.f, 0.f));
+	
 	name = "IDInput";
 	LoginUI* idInput = new LoginUI(name);
 	m_objectList.emplace(name, idInput);
@@ -61,12 +62,12 @@ bool LoginScene::Initialize()
 		return false;
 	idInput->SetPosition(VECTOR2D(-25.f, -27.f));
 
-	name = "PWInput";
-	LoginUI* pwInput = new LoginUI(name);
-	m_objectList.emplace(name, pwInput);
-	if (pwInput->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/PWInput.png", 160, 23, 1, 1, 0, 0)) == false)
-		return false;
-	pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
+	//name = "PWInput";
+	//LoginUI* pwInput = new LoginUI(name);
+	//m_objectList.emplace(name, pwInput);
+	//if (pwInput->Initialize(TextureInfo(L"../Resource/Textures/Map/Login/PWInput.png", 160, 23, 1, 1, 0, 0)) == false)
+	//	return false;
+	//pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
 
 	//name = "Player";
 	//m_player = new Player(name);
@@ -78,15 +79,24 @@ bool LoginScene::Initialize()
 
 void LoginScene::Update(float elapsedTime)
 {
-	Collision("IDInput");
+	bool result = Collision("IDInput");
+	if(result == true)
+	{
+		if (GET_INSTANCE(Input)->KeyOnceCheck(KEY_TYPE::MOUSE_LBUTTON) == true)
+			GET_INSTANCE(Input)->SetIsActive(true);
+	}
+
+	else 
+	{
+		if (GET_INSTANCE(Input)->KeyOnceCheck(KEY_TYPE::MOUSE_LBUTTON) == true)
+			GET_INSTANCE(Input)->SetIsActive(false);
+	}
 
 	for (auto object : m_objectList)
 		object.second->Update(elapsedTime);
 
 	if (m_player != nullptr)
 		m_player->Update(elapsedTime);
-
-	GET_INSTANCE(Input)->Update(elapsedTime);
 }
 
 void LoginScene::Render()
@@ -97,17 +107,12 @@ void LoginScene::Render()
 			object.second->Render();
 	}
 
-	//if(m_player != nullptr)
-	//	m_player->Render();
-
-	GET_INSTANCE(Input)->Render();
+	if(m_player != nullptr)
+		m_player->Render();
 }
 
 bool LoginScene::Collision(const string& key)
 {
-	if (GET_INSTANCE(Input)->KeyOnceCheck(KEY_TYPE::MOUSE_LBUTTON) == false)
-		return false;
-
 	auto iter = m_objectList.find(key);
 	if (iter == m_objectList.end())
 		return false;
@@ -131,8 +136,6 @@ bool LoginScene::Collision(const string& key)
 		return false;
 	else if (maxY < mousePos.y)
 		return false;
-
-	cout << "충돌한 곳에서 마우스 누름" << endl;
 
 	return true;
 }

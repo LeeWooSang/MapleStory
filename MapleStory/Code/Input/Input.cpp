@@ -14,14 +14,6 @@ Input::Input()
 	m_comb.clear();
 	m_textList.clear();
 
-	m_width = 0.f;
-	m_height = 0.f;
-	m_gap = 0.f;
-	m_startX = 0.f;
-	m_startY = 0.f;
-	m_endX = 0.f;
-	m_endY = 0.f;
-
 	m_mousePos.x = 0;
 	m_mousePos.y = 0;
 }
@@ -33,16 +25,6 @@ Input::~Input()
 
 bool Input::Initialize()
 {
-	m_width = 1.5f;
-	m_height = 25.f;
-	m_gap = 2.f;
-
-	m_startX = 10.f;
-	m_startY = 10.f;
-
-	m_endX = m_startX;
-	m_endY = m_startY + m_height;
-
 	m_keyStateList[KEY_TYPE::NONE].m_keyType = KEY_TYPE::NONE;
 	m_keyStateList[KEY_TYPE::KEYBOARD_LEFT].m_keyType = VK_LEFT;
 	m_keyStateList[KEY_TYPE::KEYBOARD_RIGHT].m_keyType = VK_RIGHT;
@@ -52,53 +34,6 @@ bool Input::Initialize()
 	m_keyStateList[KEY_TYPE::MOUSE_RBUTTON].m_keyType = VK_RBUTTON;
 
 	return true;
-}
-
-void Input::Update(float elapsedTime)
-{
-	m_enableTime += elapsedTime;
-
-	if (m_isEnable == true && m_enableTime > 0.8f)
-	{
-		m_isEnable = false;
-		m_enableTime = 0.f;
-	}
-
-	if (m_isEnable == false && m_enableTime > 0.5f)
-	{
-		m_isEnable = true;
-	}
-}
-
-void Input::Render()
-{
-	if (m_isActive == false)
-		return;
-
-	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(Matrix3x2F::Identity());
-
-	D2D_POINT_2F startPos{ m_startX, m_startY };
-	D2D_POINT_2F endPos{ m_endX, m_endY };
-
-	wstring text = GetText();
-	if (text.size() > 0)
-	{
-		IDWriteTextLayout* layout = nullptr;
-		HRESULT result = GET_INSTANCE(D2DManager)->GetWriteFactory()->CreateTextLayout(text.c_str(), static_cast<UINT32>(text.length()), 
-			GET_INSTANCE(D2DManager)->GetFontInfo("메이플").m_pFont, 4096.0f, 4096.0f, &layout);
-
-		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawTextLayout(startPos, layout, GET_INSTANCE(D2DManager)->GetFontColor("검은색"));
-
-		DWRITE_TEXT_METRICS metris;
-		layout->GetMetrics(&metris);
-		startPos.x += metris.width + m_gap;
-		endPos.x = startPos.x;
-
-		layout->Release();
-	}
-
-	if (m_isEnable)
-		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawLine(startPos, endPos, GET_INSTANCE(D2DManager)->GetFontColor("검은색"), m_width, 0);
 }
 
 LRESULT Input::ProcessWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

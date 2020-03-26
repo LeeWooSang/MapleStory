@@ -10,6 +10,11 @@ UI::~UI()
 	cout << "UI - ¼Ò¸êÀÚ" << endl;
 }
 
+bool UI::Initialize()
+{
+	return true;
+}
+
 bool UI::Initialize(TextureInfo info)
 {
 	return true;
