@@ -10,7 +10,6 @@ public:
 	virtual bool Initialize(TextureInfo);
 	virtual void Update(float);
 	virtual void Render();
-	void TextRender();
 
 	virtual void Input();
 

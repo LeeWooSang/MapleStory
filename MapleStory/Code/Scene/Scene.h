@@ -10,9 +10,11 @@ public:
 	virtual bool Initialize() = 0;
 	virtual void Update(float) = 0;
 	virtual void Render() = 0;
-	virtual bool Collision(const string&) = 0;
+	virtual bool CheckCollision(int, int&) = 0;
+	virtual void ProcessCollision(int, int) = 0;
 
 protected:
 	unordered_map<string, class GameObject*> m_objectList;
+	vector<class GameObject*> m_objectVector;
 };
 

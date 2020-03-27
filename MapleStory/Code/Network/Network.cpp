@@ -197,7 +197,7 @@ void Network::ServerLogin()
 	string id;
 	cout << "로그인 아이디 입력 : ";
 	cin >> id;
-	SendServerLoginPacket(const_cast<char*>(id.c_str()));
+	//SendServerLoginPacket(const_cast<char*>(id.c_str()));
 }
 
 void Network::ChannelLogin()
@@ -208,12 +208,13 @@ void Network::ChannelLogin()
 	SendChannelLoginPacket(static_cast<char>(channel));
 }
 
-void Network::SendServerLoginPacket(char* id)
+void Network::SendServerLoginPacket(char* id, char* pw)
 {
 	CSPacket_Server_Login* packet = reinterpret_cast<CSPacket_Server_Login*>(m_sendBuf);
 	packet->m_size = sizeof(CSPacket_Server_Login);
 	packet->m_type = CS_PACKET_TYPE::CS_SERVER_LOGIN;
 	strcpy(packet->m_ID, id);
+	strcpy(packet->m_PW, pw);
 
 	m_sendWsaBuf.len = sizeof(CSPacket_Server_Login);
 

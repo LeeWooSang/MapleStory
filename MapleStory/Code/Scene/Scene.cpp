@@ -4,6 +4,7 @@
 Scene::Scene()
 {
 	m_objectList.clear();
+	m_objectVector.clear();
 }
 
 Scene::~Scene()
@@ -14,4 +15,11 @@ Scene::~Scene()
 		iter = m_objectList.erase(iter);
 	}
 	m_objectList.clear();
+
+	for (auto& object : m_objectVector)
+	{
+		if(object != nullptr)
+			delete object;
+	}
+	m_objectVector.clear();
 }

@@ -26,11 +26,3 @@ private:
 	LPVOID m_pPlayerUpdatedContext;
 	LPVOID m_pCameraUpdatedContext;
 };
-
-enum DIRECTION
-{
-	RIGHT = 0x0001,
-	LEFT = 0x0002,
-	UP = 0x0004,
-	DOWN = 0x0008
-};

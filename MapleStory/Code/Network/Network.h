@@ -20,7 +20,7 @@ class Network
 	void SetMyID(int id) { m_myID = id; }
 	int GetMyID()	const { return m_myID; }
 
-	void SendServerLoginPacket(char*);
+	void SendServerLoginPacket(char*, char*);
 	void SendChannelLoginPacket(char);
 	void SendMovePacket(char);
 

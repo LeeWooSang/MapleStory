@@ -1,6 +1,20 @@
 #pragma once
 #include "../Scene.h"
 
+enum OBJECT_KEY_TYPE
+{
+	BACKGROUND_KEY,
+	FRAME_KEY,
+	GAMEGRADE_KEY,
+	LOGO_KEY,
+	INPUT_BACKGROUND_KEY,
+	LOGIN_BUTTON_KEY,
+	ID_INPUT_KEY,
+	PW_INPUT_KEY
+};
+
+constexpr int MAX_OBJECT_TYPE = 7;
+
 class LoginScene : public Scene
 {
 public:
@@ -10,10 +24,46 @@ public:
 	virtual bool Initialize();
 	virtual void Update(float);
 	virtual void Render();
-	virtual bool Collision(const string&);
+	virtual bool CheckCollision(int, int&);
+	virtual void ProcessCollision(int, int);
 
 private:
 	class Player* m_player;
-	class TextUI* m_text;
 };
 
+enum OBJECT_TYPE
+{
+	LOGIN_BUTTON = 0x0001,
+	ID_INPUT = 0x0002,
+	PW_INPUT = 0x0004
+};
+
+enum COLLISION_TYPE
+{
+	NO_COLLISION = 0x0010,
+	COLLISION = 0x0020
+};
+
+enum MOUSE_TYPE
+{
+	NO_CLICLK = 0x0100,
+	CLICK = 0x0200
+};
+
+enum PROCESS_OBJECT_COLLISION_TYPE
+{
+	LOGIN_BUTTON_NO_COLLISION_AND_NO_CLICK = 0x0111,
+	LOGIN_BUTTON_NO_COLLISION_AND_CLICK = 0x0211,
+	LOGIN_BUTTON_COLLISION_AND_NO_CLICK = 0x0121,
+	LOGIN_BUTTON_COLLISION_AND_CLICK = 0x221,
+
+	ID_INPUT_NO_COLLISION_AND_NO_CLICK = 0x0112,
+	ID_INPUT_NO_COLLISION_AND_CLICK = 0x0212,
+	ID_INPUT_COLLISION_AND_NO_CLICK = 0x0122,
+	ID_INPUT_COLLISION_AND_CLICK = 0x0222,
+
+	PW_INPUT_NO_COLLISION_AND_NO_CLICK = 0x0114,
+	PW_INPUT_NO_COLLISION_AND_CLICK = 0x0214,
+	PW_INPUT_COLLISION_AND_NO_CLICK = 0x0124,
+	PW_INPUT_COLLISION_AND_CLICK = 0x0224
+};

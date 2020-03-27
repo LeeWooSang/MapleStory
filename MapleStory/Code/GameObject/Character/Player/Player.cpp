@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../../../Camera/Camera.h"
+#include "../../../../../GameServer/Code/Protocol.h"
 
 Player::Player(const string& name) 
 	: Character(name)
@@ -108,25 +109,25 @@ void Player::Move(float elapsedTime)
 
 	if (KEY_DOWN(VK_RIGHT))
 	{
-		dir |= DIRECTION::RIGHT;
+		dir |= DIR_TYPE::RIGHT;
 		shift += m_rightVector * distance;
 	}
 
 	if (KEY_DOWN(VK_LEFT))
 	{
-		dir |= DIRECTION::LEFT;
+		dir |= DIR_TYPE::LEFT;
 		shift -= m_rightVector * distance;
 	}
 
 	if (KEY_DOWN(VK_UP))
 	{
-		dir |= DIRECTION::UP;
+		dir |= DIR_TYPE::UP;
 		shift += m_upVector * distance;
 	}
 
 	if (KEY_DOWN(VK_DOWN))
 	{
-		dir |= DIRECTION::DOWN;
+		dir |= DIR_TYPE::DOWN;
 		shift -= m_upVector * distance;
 	}
 

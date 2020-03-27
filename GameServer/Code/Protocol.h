@@ -18,7 +18,13 @@ constexpr unsigned short	WORLD_WIDTH = 300;
 // ¸Ê ¼¼·Î Å©±â
 constexpr unsigned short	WORLD_HEIGHT = 300;
 
-enum DIR_TYPE { UP, DOWN, LEFT, RIGHT };
+enum DIR_TYPE
+{
+	RIGHT = 0x0001,
+	LEFT = 0x0002,
+	UP = 0x0004,
+	DOWN = 0x0008
+};
 
 enum CS_PACKET_TYPE
 {
@@ -53,6 +59,7 @@ struct CSPacket_Server_Login
 	char m_size;
 	char m_type;
 	char m_ID[30];
+	char m_PW[30];
 };
 struct CSPacket_Channel_Login
 {
