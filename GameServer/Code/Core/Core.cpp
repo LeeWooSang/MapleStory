@@ -413,7 +413,9 @@ void Core::ProcessPacket(int id, char* buf)
 	case CS_PACKET_TYPE::CS_SERVER_LOGIN:
 		{
 			CSPacket_Server_Login* packet = reinterpret_cast<CSPacket_Server_Login*>(buf);
-			reinterpret_cast<Player*>(m_characterList[id])->SetLoginID(packet->m_ID);
+			Player* player = reinterpret_cast<Player*>(m_characterList[id]);
+			player->SetLoginID(packet->m_ID);
+			player->SetPassword(packet->m_PW);
 			// db 스레드에게 넘김
 			GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::PLAYER_LOGIN, id);
 		}

@@ -14,13 +14,12 @@ class Network
 	void ProcessPacket(char*);
 	void ProcessWindowMessage(WPARAM, LPARAM);
 
-	void ServerLogin();
 	void ChannelLogin();
 
 	void SetMyID(int id) { m_myID = id; }
 	int GetMyID()	const { return m_myID; }
 
-	void SendServerLoginPacket(char*, char*);
+	void SendServerLoginPacket(const char*, const char*);
 	void SendChannelLoginPacket(char);
 	void SendMovePacket(char);
 

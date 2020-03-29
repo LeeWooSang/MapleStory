@@ -358,11 +358,11 @@ bool DataBase::UpdatePlayerStatusInfo(Player* player)
 bool DataBase::PlayerLogin(Player* player)
 {
 	string id = player->GetLoginID();
-	wchar_t wname[50] = { 0, };
-	mbstowcs(wname, const_cast<char*>(id.c_str()), id.length());
+	string pw = player->GetPassword();
 
 	wstring ws = L"EXEC PlayerLogin";
 	MakeStoredProcedure(ws, id, true);
+	MakeStoredProcedure(ws, pw, false);
 
 	SQLWCHAR loginID[MAX_STRLEN];
 	SQLINTEGER length;

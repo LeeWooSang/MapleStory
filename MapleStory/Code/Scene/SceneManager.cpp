@@ -4,6 +4,7 @@
 INIT_INSTACNE(SceneManager)
 SceneManager::SceneManager()
 {
+	m_sceneList.clear();
 	m_gameState = GAME_STATE::LOGIN_SCENE;
 }
 
@@ -18,6 +19,8 @@ bool SceneManager::Initialize()
 	m_sceneList.emplace(GAME_STATE::LOGIN_SCENE, loginSc);
 	if (loginSc->Initialize() == false)
 		return false;
+
+	return true;
 }
 
 void SceneManager::Update(float elapsedTime)
@@ -36,4 +39,13 @@ void SceneManager::Render()
 		return;
 
 	(*iter).second->Render();
+}
+
+Scene* SceneManager::GetScene()
+{
+	auto iter = m_sceneList.find(m_gameState);
+	if(iter == m_sceneList.end())
+		return nullptr;
+
+	return (*iter).second;
 }

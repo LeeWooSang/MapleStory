@@ -10,7 +10,8 @@ enum OBJECT_KEY_TYPE
 	INPUT_BACKGROUND_KEY,
 	LOGIN_BUTTON_KEY,
 	ID_INPUT_KEY,
-	PW_INPUT_KEY
+	PW_INPUT_KEY,
+	QUIT_BUTTON_KEY,
 };
 
 constexpr int MAX_OBJECT_TYPE = 7;
@@ -27,15 +28,20 @@ public:
 	virtual bool CheckCollision(int, int&);
 	virtual void ProcessCollision(int, int);
 
+	virtual void ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM);
+
 private:
 	class Player* m_player;
+
+	int m_inputKey;
 };
 
 enum OBJECT_TYPE
 {
 	LOGIN_BUTTON = 0x0001,
 	ID_INPUT = 0x0002,
-	PW_INPUT = 0x0004
+	PW_INPUT = 0x0004,
+	QUIT_INPUT = 0x0008,
 };
 
 enum COLLISION_TYPE
@@ -65,5 +71,7 @@ enum PROCESS_OBJECT_COLLISION_TYPE
 	PW_INPUT_NO_COLLISION_AND_NO_CLICK = 0x0114,
 	PW_INPUT_NO_COLLISION_AND_CLICK = 0x0214,
 	PW_INPUT_COLLISION_AND_NO_CLICK = 0x0124,
-	PW_INPUT_COLLISION_AND_CLICK = 0x0224
+	PW_INPUT_COLLISION_AND_CLICK = 0x0224,
+
+	QUIT_INPUT_COLLISION_AND_CLICK = 0x0228
 };

@@ -10,6 +10,7 @@
 LoginScene::LoginScene()
 {
 	m_objectVector.reserve(MAX_OBJECT_TYPE);
+	m_inputKey = -1;
 }
 
 LoginScene::~LoginScene()
@@ -78,6 +79,13 @@ bool LoginScene::Initialize()
 		return false;
 	pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
 
+	name = "QuitButton";
+	LoginUI* quitButton = new LoginUI(name);
+	m_objectVector.emplace_back(quitButton);
+	if (quitButton->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/QuitButton.png", 69, 30, 1, 1, 0, 0)) == false)
+		return false;
+	quitButton->SetPosition(VECTOR2D(73.f, 55.f));
+
 	//name = "Player";
 	//m_player = new Player(name);
 	//if(m_player->Initialize(TextureInfo(L"../Resource/Textures/Character/Player.png", 133, 144, 1, 1, 0, 0)) == false)
@@ -91,7 +99,7 @@ void LoginScene::Update(float elapsedTime)
 	// 1. 충돌한 오브젝트를 찾는다
 	int collidedObject = -1;
 	int flag = 0;
-	for (int i = OBJECT_KEY_TYPE::LOGIN_BUTTON_KEY; i < OBJECT_KEY_TYPE::PW_INPUT_KEY; ++i)
+	for (int i = OBJECT_KEY_TYPE::LOGIN_BUTTON_KEY; i < m_objectVector.size(); ++i)
 	{
 		flag = 0;
 		if (CheckCollision(i, flag) == true)
@@ -136,6 +144,9 @@ bool LoginScene::CheckCollision(int key, int& flag)
 
 	else if (key == OBJECT_KEY_TYPE::PW_INPUT_KEY)
 		flag |= OBJECT_TYPE::PW_INPUT;
+
+	else if (key == OBJECT_KEY_TYPE::QUIT_BUTTON_KEY)
+		flag |= OBJECT_TYPE::QUIT_INPUT;
 
 	Matrix3x2F worldView = m_objectVector[key]->GetWorldMatrix() * GET_INSTANCE(Camera)->GetViewMatrix();
 	VECTOR2D pos = VECTOR2D(worldView._31, worldView._32);
@@ -198,35 +209,48 @@ void LoginScene::ProcessCollision(int key, int flag)
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::LOGIN_BUTTON_COLLISION_AND_CLICK:
-		cout << "로그인 버튼 클릭" << endl;
+		{
+			string id = reinterpret_cast<TextUI*>(m_objectVector[ID_INPUT_KEY])->ConvertTextToString();
+			string pw = reinterpret_cast<TextUI*>(m_objectVector[PW_INPUT_KEY])->ConvertTextToString();
+			GET_INSTANCE(Network)->SendServerLoginPacket(id.c_str(), pw.c_str());
+			cout << "로그인 버튼 클릭" << endl;
+		}
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::ID_INPUT_NO_COLLISION_AND_NO_CLICK:
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::ID_INPUT_NO_COLLISION_AND_CLICK:
-		GET_INSTANCE(Input)->SetIsActive(false);
+		reinterpret_cast<TextUI*>(m_objectVector[key])->SetIsActive(false);
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::ID_INPUT_COLLISION_AND_NO_CLICK:
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::ID_INPUT_COLLISION_AND_CLICK:
-		GET_INSTANCE(Input)->SetIsActive(true);
+		m_inputKey = ID_INPUT_KEY;
+		reinterpret_cast<TextUI*>(m_objectVector[key])->SetIsActive(true);
+		reinterpret_cast<TextUI*>(m_objectVector[PW_INPUT_KEY])->SetIsActive(false);
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::PW_INPUT_NO_COLLISION_AND_NO_CLICK:
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::PW_INPUT_NO_COLLISION_AND_CLICK:
-		GET_INSTANCE(Input)->SetIsActive(false);
+		//GET_INSTANCE(Input)->SetIsActive(false);
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::PW_INPUT_COLLISION_AND_NO_CLICK:
 		break;
 
 	case PROCESS_OBJECT_COLLISION_TYPE::PW_INPUT_COLLISION_AND_CLICK:
-		GET_INSTANCE(Input)->SetIsActive(true);
+		m_inputKey = PW_INPUT_KEY;
+		reinterpret_cast<TextUI*>(m_objectVector[key])->SetIsActive(true);
+		reinterpret_cast<TextUI*>(m_objectVector[ID_INPUT_KEY])->SetIsActive(false);
+		break;
+
+	case PROCESS_OBJECT_COLLISION_TYPE::QUIT_INPUT_COLLISION_AND_CLICK:
+		::PostQuitMessage(0);
 		break;
 
 	default:
@@ -234,3 +258,10 @@ void LoginScene::ProcessCollision(int key, int flag)
 	}
 }
 
+void LoginScene::ProcessKeyboardMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (m_inputKey == -1)
+		return;
+
+	reinterpret_cast<TextUI*>(m_objectVector[m_inputKey])->ProcessKeyboardMessage(hWnd, message, wParam, lParam);
+}

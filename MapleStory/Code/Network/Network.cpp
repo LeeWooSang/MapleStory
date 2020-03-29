@@ -1,5 +1,6 @@
 #include "Network.h"
 #include "../Core/Core.h"
+#include "../Scene/SceneManager.h"
 
 INIT_INSTACNE(Network)
 Network::Network()
@@ -44,6 +45,8 @@ bool Network::Initialize()
 		return false;
 	}
 
+	Connect();
+
 	return true;
 }
 
@@ -53,8 +56,8 @@ void Network::Connect()
 	SOCKADDR_IN serveraddr;
 	ZeroMemory(&serveraddr, sizeof(SOCKADDR_IN));
 	serveraddr.sin_family = AF_INET;
-	//serveraddr.sin_addr.s_addr = inet_addr(SERVER_IP);
-	serveraddr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
+	serveraddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+	//serveraddr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
 	serveraddr.sin_port = htons(SERVER_PORT);
 
 	int result = WSAConnect(m_Socket, (SOCKADDR*)&serveraddr, sizeof(serveraddr), nullptr, nullptr, nullptr, nullptr);
@@ -69,8 +72,6 @@ void Network::Connect()
 	WSAAsyncSelect(m_Socket, GET_INSTANCE(Core)->GetHwnd(), WM_SOCKET, FD_CLOSE | FD_READ);
 
 	cout << "서버 연결 성공!!" << endl;
-
-	ServerLogin();
 	//m_ConnectState = CONNECT_STATE::OK;
 }
 
@@ -129,6 +130,7 @@ void Network::ProcessPacket(char* buf)
 		{
 			SCPacket_Server_Login_Ok* packet = reinterpret_cast<SCPacket_Server_Login_Ok*>(buf);
 			m_myID = packet->id;
+			GET_INSTANCE(SceneManager)->SetGameState(SceneManager::GAME_STATE::CHANNEL_SCENE);
 			ChannelLogin();
 		}
 		break;
@@ -137,7 +139,7 @@ void Network::ProcessPacket(char* buf)
 		{
 			SCPacket_Server_Login_Fail* packet = reinterpret_cast<SCPacket_Server_Login_Fail*>(buf);
 			cout << "Login is fail" << endl;
-			ServerLogin();
+			//ServerLogin();
 		}
 		break;
 
@@ -192,14 +194,6 @@ void Network::ProcessWindowMessage(WPARAM wParam, LPARAM lParam)
 	}
 }
 
-void Network::ServerLogin()
-{
-	string id;
-	cout << "로그인 아이디 입력 : ";
-	cin >> id;
-	//SendServerLoginPacket(const_cast<char*>(id.c_str()));
-}
-
 void Network::ChannelLogin()
 {
 	int channel;
@@ -208,7 +202,7 @@ void Network::ChannelLogin()
 	SendChannelLoginPacket(static_cast<char>(channel));
 }
 
-void Network::SendServerLoginPacket(char* id, char* pw)
+void Network::SendServerLoginPacket(const char* id, const char* pw)
 {
 	CSPacket_Server_Login* packet = reinterpret_cast<CSPacket_Server_Login*>(m_sendBuf);
 	packet->m_size = sizeof(CSPacket_Server_Login);

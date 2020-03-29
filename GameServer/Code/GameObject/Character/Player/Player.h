@@ -14,6 +14,10 @@ public:
 	const string& GetLoginID()	const { return m_loginID; }
 	void SetLoginID(const string& id) { m_loginID = id; }
 
+	const string& GetPassword()	const { return m_password; }
+	void SetPassword(const string& password) { m_password = password; }
+
+
 	const SOCKET& GetSocket()	const { return m_socket; }
 	void SetSocket(const SOCKET& socket) { m_socket = socket; }
 
@@ -36,6 +40,8 @@ private:
 	class Inventory* m_inventory;
 
 	string m_loginID;
+	string m_password;
+
 	SOCKET m_socket;
 	char m_packetBuf[MAX_BUFFER];
 	int	 m_prevSize;

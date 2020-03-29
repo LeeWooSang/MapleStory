@@ -9,18 +9,12 @@
 INIT_INSTACNE(Input)
 Input::Input()
 {
-	m_isActive = false;
-	m_IMEMode = IMEMODE::ENGLISH;
-	m_comb.clear();
-	m_textList.clear();
-
 	m_mousePos.x = 0;
 	m_mousePos.y = 0;
 }
 
 Input::~Input()
 {
-	m_textList.clear();
 }
 
 bool Input::Initialize()
@@ -67,64 +61,11 @@ LRESULT Input::ProcessWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPAR
 }
 
 LRESULT Input::ProcessKeyboardMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-		case WM_KEYUP:
-		{
-			switch (wParam)
-			{
-			case VK_RETURN:
-				m_isActive = !m_isActive;
-				break;
+{	
+	Scene* scene = GET_INSTANCE(SceneManager)->GetScene();
+	if(scene != nullptr)
+		scene->ProcessKeyboardMessage(hWnd, message, wParam, lParam);
 
-			case VK_ESCAPE:
-				::PostQuitMessage(0);
-				break;
-			}
-		}
-	}
-
-	if (m_isActive == true)
-	{
-		switch (message)
-		{
-		case WM_KEYDOWN:
-		case WM_KEYUP:
-			switch (wParam)
-			{
-			case VK_BACK:
-				DeleteText();
-				break;
-
-			case VK_HANGEUL:
-				m_IMEMode = !m_IMEMode;
-				ChangeIMEMode(hWnd, m_IMEMode);
-				break;
-
-			case VK_LEFT:
-			case VK_RIGHT:
-				ControlCaret(wParam);
-				break;
-			}
-			break;
-		}
-
-		switch (message)
-		{
-		case WM_CHAR:				// 1byte 문자 (ex : 영어)
-			ProcessEnglish(hWnd, wParam);
-			break;
-
-		case WM_IME_COMPOSITION:
-			ProcessKorean(hWnd, lParam);
-			break;
-
-		case WM_IME_NOTIFY:
-			break;
-		}
-	}
-	
 	return 0;
 }
 
@@ -148,128 +89,6 @@ void Input::ProcessMouseMessage(HWND hWnd, UINT message, LPARAM lParam)
 	default:
 		break;
 	}
-}
-
-void Input::ProcessEnglish(HWND hWnd, WPARAM wParam)
-{
-	unsigned char key = static_cast<unsigned char>(m_textList.size());
-
-	wstring text = L"";
-	text = static_cast<wchar_t>(wParam);
-	if (text == L"\r")
-	{
-		WStringToString();
-		return;
-	}
-
-	m_textList.emplace_back(TextInfo(key, text));
-}
-
-void Input::ProcessKorean(HWND hWnd, LPARAM lParam)
-{
-	HIMC himc = ImmGetContext(hWnd);
-	int len = 0;
-	wchar_t temp[10] = { 0, };
-
-	// 한글 조합중이라면,
-	if (lParam & GCS_COMPSTR)
-	{
-		len = ImmGetCompositionStringW(himc, GCS_COMPSTR, nullptr, 0);
-		if (len > 0)
-		{
-			ImmGetCompositionStringW(himc, GCS_COMPSTR, temp, len);
-			temp[len] = 0;
-			m_comb = temp;
-		}
-	}
-
-	// 한글이 완성됬다면,
-	else if (lParam & GCS_RESULTSTR)
-	{
-		len = ImmGetCompositionStringW(himc, GCS_RESULTSTR, nullptr, 0);
-		if (len > 0)
-		{
-			ImmGetCompositionStringW(himc, GCS_RESULTSTR, temp, len);
-			temp[len] = 0;
-
-			unsigned char key = static_cast<unsigned char>(m_textList.size());
-			wstring text = temp;
-			m_textList.emplace_back(TextInfo(key, text));
-			// 조합중인 글자는 지움
-			m_comb.clear();
-		}
-	}
-
-	ImmReleaseContext(hWnd, himc);	// IME 핸들 반환!!
-}
-
-void Input::DeleteText()
-{
-	if (m_textList.size() > 0)
-	{
-		//for (auto iter = m_textList.begin(); iter != m_textList.end(); )
-		//{
-		//	if ((*iter).m_Key == m_CaretPos - 1)
-		//	{
-		//		iter = m_textList.erase(iter);
-		//		--m_CaretPos;
-		//	}
-
-		//	else
-		//		++iter;
-		//}
-		auto iter = m_textList.end();
-		m_textList.erase(--iter);
-	}
-}
-
-void Input::ChangeIMEMode(HWND hWnd, bool korean)
-{
-	HIMC himc = ImmGetContext(hWnd);
-	DWORD sentence;
-	DWORD temp;
-
-	ImmGetConversionStatus(himc, &m_IMEMode, &sentence);
-
-	temp = m_IMEMode & ~IME_CMODE_LANGUAGE;
-
-	// 상태를 바꿉니다. 
-	if (korean)
-		temp |= IME_CMODE_NATIVE;      // 한글 
-	else
-		temp |= IME_CMODE_ALPHANUMERIC;  // 영문
-
-	m_IMEMode = temp;
-
-	ImmSetConversionStatus(himc, m_IMEMode, sentence);
-	ImmReleaseContext(hWnd, himc);
-}
-
-void Input::ControlCaret(WPARAM wParam)
-{
-}
-
-wstring Input::GetText() const
-{
-	wstring text = L"";
-
-	for (auto iter = m_textList.begin(); iter != m_textList.end(); ++iter)
-		text += (*iter).m_Text;
-
-	return text;
-}
-
-void Input::WStringToString()
-{
-	string s = "";
-	for (auto data : m_textList)
-	{
-		char temp[10] = { 0, };
-		wcstombs(temp, const_cast<wchar_t*>(data.m_Text.c_str()), data.m_Text.length());
-		s += temp;
-	}
-	GET_INSTANCE(Network)->SetServerIP(s);
-	GET_INSTANCE(Network)->Connect();
 }
 
 void Input::ProcessKeyEvent()
