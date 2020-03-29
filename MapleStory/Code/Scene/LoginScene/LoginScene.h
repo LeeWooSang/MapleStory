@@ -14,7 +14,7 @@ enum OBJECT_KEY_TYPE
 	QUIT_BUTTON_KEY,
 };
 
-constexpr int MAX_OBJECT_TYPE = 7;
+constexpr int MAX_OBJECT_TYPE = 8;
 
 class LoginScene : public Scene
 {

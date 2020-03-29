@@ -7,7 +7,7 @@ public:
 	LoginUI(const string&);
 	virtual ~LoginUI();
 
-	virtual bool Initialize(TextureInfo);
+	virtual bool Initialize();
 	virtual void Update(float);
 	virtual void Render();
 

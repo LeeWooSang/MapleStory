@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "../ResourceManager/ResourceManager.h"
+#include "../ResourceManager/Texture/Texture.h"
 #include "../Camera/Camera.h"
 
 GameObject::GameObject(const string& name)
@@ -21,15 +23,13 @@ GameObject::~GameObject()
 
 bool GameObject::Initialize()
 {
-	return true;
-}
-
-bool GameObject::Initialize(TextureInfo info)
-{
-	if (GET_INSTANCE(D2DManager)->CreateTexture(m_name, info) == false)
+	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
+	if (tex == nullptr)
 		return false;
 
-	m_collider = new AABBCollider(AABB(-info.m_width * 0.5f, -info.m_height * 0.5f, info.m_width * 0.5f, info.m_height * 0.5f));
+	int width = tex->GetWidth();
+	int height = tex->GetHeight();
+	m_collider = new AABBCollider(AABB(-width * 0.5f, -height * 0.5f, width * 0.5f, height * 0.5f));
 
 	m_isDrawBoundingBox = true;
 
@@ -38,7 +38,9 @@ bool GameObject::Initialize(TextureInfo info)
 
 void GameObject::Render()
 {
-	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(m_name);
+	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
+	if (tex == nullptr)
+		return;
 
 	Matrix3x2F transform = m_worldMatrix;
 	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
@@ -46,7 +48,7 @@ void GameObject::Render()
 
 	D2D1_RECT_F rect;
 	m_collider->GetAABB(&rect);
-	GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(info.m_image, rect);
+	GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(tex->GetBitmap(), rect);
 	RenderBoundingBox();
 }
 

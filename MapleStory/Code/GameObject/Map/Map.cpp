@@ -9,9 +9,9 @@ Map::~Map()
 {
 }
 
-bool Map::Initialize(TextureInfo info)
+bool Map::Initialize()
 {
-	if (GameObject::Initialize(info) == false)
+	if (GameObject::Initialize() == false)
 		return false;
 
 	m_worldMatrix._21 = 0.f;

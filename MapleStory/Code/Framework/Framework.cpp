@@ -1,5 +1,6 @@
 #include "Framework.h"
 #include "../D2DManager/D2DManager.h"
+#include "../ResourceManager/ResourceManager.h"
 #include "../GameTimer/GameTimer.h"
 #include "../Network/Network.h"
 #include "../Camera/Camera.h"
@@ -18,6 +19,7 @@ Framework::~Framework()
 	GET_INSTANCE(Camera)->Release();
 	GET_INSTANCE(Network)->Release();
 	GET_INSTANCE(GameTimer)->Release();
+	GET_INSTANCE(ResourceManager)->Release();
 	GET_INSTANCE(D2DManager)->Release();
 }
 
@@ -27,6 +29,9 @@ bool Framework::Initialize(HWND hWnd)
 	m_titleName = L"MapleStory ";
 
 	if (GET_INSTANCE(D2DManager)->Initialize(hWnd) == false)
+		return false;
+
+	if (GET_INSTANCE(ResourceManager)->Initialize() == false)
 		return false;
 
 	GET_INSTANCE(GameTimer)->Reset();

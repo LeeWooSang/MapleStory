@@ -10,7 +10,6 @@ public:
 	virtual ~GameObject();
 
 	virtual bool Initialize();
-	virtual bool Initialize(TextureInfo);
 	virtual void Update(float) = 0;
 	virtual void Render();
 	void RenderBoundingBox();

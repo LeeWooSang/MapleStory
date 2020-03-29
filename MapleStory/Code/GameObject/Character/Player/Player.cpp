@@ -20,7 +20,7 @@ Player::~Player()
 {
 }
 
-bool Player::Initialize(TextureInfo info)
+bool Player::Initialize()
 {
 	//if (GET_INSTANCE(D2DManager)->CreateTexture("Action", ImageInfo(L"../Resource/Textures/Character/Action.png", 900, 100, ANIMATION_FRAME::ACTION_FRAME, 1, 0, 0, 150, 150)) == false)
 	//	return false;
@@ -30,7 +30,7 @@ bool Player::Initialize(TextureInfo info)
 	//if (GET_INSTANCE(D2DManager)->CreateTexture("RagingBlow", ImageInfo(L"../Resource/Textures/Skill/Effect/RagingBlow.png", 5850, 380, ANIMATION_FRAME::RAGINGBLOW_FRAME, 1, 0, 0, 380, 380)) == false)
 	//	return false;
 
-	if (GameObject::Initialize(info) == false)
+	if (GameObject::Initialize() == false)
 		return false;
 
 	m_friction = 50.f;

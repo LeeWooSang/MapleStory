@@ -1,9 +1,11 @@
 #include "LoginScene.h"
 #include "../../Input/Input.h"
 #include "../../GameObject/Map/Map.h"
-#include "../../GameObject/Character/Player/Player.h"
 #include "../../GameObject/UI/LoginUI/LoginUI.h"
 #include "../../GameObject/UI/TextUI/TextUI.h"
+#include "../../GameObject/UI/NoticeUI/NoticeUI.h"
+#include "../../ResourceManager/ResourceManager.h"
+#include "../../ResourceManager/Texture/Texture.h"
 #include "../../Camera/Camera.h"
 #include "../../Network/Network.h"
 
@@ -15,76 +17,88 @@ LoginScene::LoginScene()
 
 LoginScene::~LoginScene()
 {
-	if (m_player)
-		delete m_player;
 }
 
 bool LoginScene::Initialize()
 {
 	string name = "";
 
-	name = "Background";
+	name = "LoginBackground";
 	Map* background = new Map(name);
 	m_objectVector.emplace_back(background);
-	if (background->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/Background.png", 800, 600, 1, 1, 0, 0)) == false)
+	if (background->Initialize() == false)
 		return false;
 	background->SetPosition(VECTOR2D(0.f, 0.f));
 
-	name = "Frame";
+	name = "LoginFrame";
 	Map* frame = new Map(name);
 	m_objectVector.emplace_back(frame);
-	if (frame->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/Frame.png", 800, 600, 1, 1, 0, 0)) == false)
+	if (frame->Initialize() == false)
 		return false;
 	frame->SetPosition(VECTOR2D(0.f, 0.f));
 
-	name = "GameGrade";
+	name = "LoginGameGrade";
 	Map* grade = new Map(name);
 	m_objectVector.emplace_back(grade);
-	if (grade->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/GameGrade.png", 65, 75, 1, 1, 0, 0)) == false)
+	if (grade->Initialize() == false)
 		return false;
 	grade->SetPosition(VECTOR2D(365.f, -260.f));
 
-	name = "Logo";
+	name = "LoginLogo";
 	Map* logo = new Map(name);
 	m_objectVector.emplace_back(logo);
-	if (logo->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/Logo.png", 306, 152, 1, 1, 0, 0)) == false)
+	if (logo->Initialize() == false)
 		return false;
 	logo->SetPosition(VECTOR2D(0.f, -165.f));
 
-	name = "InputBackground";
+	name = "LoginInputBackground";
 	LoginUI* inputBackground = new LoginUI(name);
 	m_objectVector.emplace_back(inputBackground);
-	if (inputBackground->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/InputBackground.png", 244, 158, 1, 1, 0, 0)) == false)
+	if (inputBackground->Initialize() == false)
 		return false;
 	inputBackground->SetPosition(VECTOR2D(0.f, 0.f));
 	
-	name = "LoginButton";
+	name = "LoginInputButton";
 	LoginUI* loginButton = new LoginUI(name);
 	m_objectVector.emplace_back(loginButton);
-	if (loginButton->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/LoginButton.png", 50, 50, 1, 1, 0, 0)) == false)
+	if (loginButton->Initialize() == false)
 		return false;
 	loginButton->SetPosition(VECTOR2D(82.5f, -13.5f));
 
-	name = "IDInput";
+	name = "LoginIDInput";
 	TextUI* idInput = new TextUI(name);
 	m_objectVector.emplace_back(idInput);
-	if (idInput->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/IDInput1.png", 160, 23, 1, 1, 0, 0)) == false)
+	if (idInput->Initialize() == false)
 		return false;
 	idInput->SetPosition(VECTOR2D(-25.f, -27.f));
 
-	name = "PWInput";
+	name = "LoginPWInput";
 	TextUI* pwInput = new TextUI(name);
 	m_objectVector.emplace_back(pwInput);
-	if (pwInput->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/PWInput.png", 160, 23, 1, 1, 0, 0)) == false)
+	if (pwInput->Initialize() == false)
 		return false;
 	pwInput->SetPosition(VECTOR2D(-25.f, 0.f));
 
-	name = "QuitButton";
+	name = "LoginQuitButton";
 	LoginUI* quitButton = new LoginUI(name);
 	m_objectVector.emplace_back(quitButton);
-	if (quitButton->Initialize(TextureInfo(L"../Resource/Textures/UI/Login/QuitButton.png", 69, 30, 1, 1, 0, 0)) == false)
+	if (quitButton->Initialize() == false)
 		return false;
 	quitButton->SetPosition(VECTOR2D(73.f, 55.f));
+
+	name = "NoticeBackground";
+	NoticeUI* noticeBackground = new NoticeUI(name);
+	m_objectVector.emplace_back(noticeBackground);
+	if (noticeBackground->Initialize() == false)
+		return false;
+	noticeBackground->SetPosition(VECTOR2D(0.f, 0.f));
+
+	//name = "NoticeIDNotCorrect";
+	//LoginUI* noticeBackground = new LoginUI(name);
+	//m_objectVector.emplace_back(noticeBackground);
+	//if (noticeBackground->Initialize() == false)
+	//	return false;
+	//noticeBackground->SetPosition(VECTOR2D(0.f, 0.f));
 
 	//name = "Player";
 	//m_player = new Player(name);
@@ -99,7 +113,7 @@ void LoginScene::Update(float elapsedTime)
 	// 1. 충돌한 오브젝트를 찾는다
 	int collidedObject = -1;
 	int flag = 0;
-	for (int i = OBJECT_KEY_TYPE::LOGIN_BUTTON_KEY; i < m_objectVector.size(); ++i)
+	for (int i = OBJECT_KEY_TYPE::LOGIN_BUTTON_KEY; i < OBJECT_KEY_TYPE::QUIT_BUTTON_KEY + 1; ++i)
 	{
 		flag = 0;
 		if (CheckCollision(i, flag) == true)
@@ -114,9 +128,6 @@ void LoginScene::Update(float elapsedTime)
 
 	for (auto object : m_objectVector)
 		object->Update(elapsedTime);
-
-	if (m_player != nullptr)
-		m_player->Update(elapsedTime);
 }
 
 void LoginScene::Render()
@@ -126,9 +137,6 @@ void LoginScene::Render()
 		//if(GET_INSTANCE(Camera)->IsVisible(object.second) == true)
 			object->Render();
 	}
-
-	if(m_player != nullptr)
-		m_player->Render();
 }
 
 bool LoginScene::CheckCollision(int key, int& flag)
@@ -151,12 +159,12 @@ bool LoginScene::CheckCollision(int key, int& flag)
 	Matrix3x2F worldView = m_objectVector[key]->GetWorldMatrix() * GET_INSTANCE(Camera)->GetViewMatrix();
 	VECTOR2D pos = VECTOR2D(worldView._31, worldView._32);
 
-	TextureInfo info = GET_INSTANCE(D2DManager)->GetTexture(m_objectVector[key]->GetName());
+	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_objectVector[key]->GetName());
 
-	int minX = pos.x - info.m_width * 0.5f;
-	int minY = pos.y - info.m_height * 0.5f;
-	int maxX = minX + info.m_width;
-	int maxY = minY + info.m_height;
+	int minX = pos.x - tex->GetWidth() * 0.5f;
+	int minY = pos.y - tex->GetHeight() * 0.5f;
+	int maxX = minX + tex->GetWidth();
+	int maxY = minY + tex->GetHeight();
 
 	POINT mousePos = GET_INSTANCE(Input)->GetMousePos();
 

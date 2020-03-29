@@ -60,6 +60,15 @@
     <Filter Include="Code\GameObject\UI\TextUI">
       <UniqueIdentifier>{b8cc7c14-98d2-4391-96d2-5f156926bca2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\UI\NoticeUI">
+      <UniqueIdentifier>{cd131e0c-548a-4fed-8cf2-97ffdd6d77b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Resource">
+      <UniqueIdentifier>{3aa08084-9311-4933-aad8-65a036a3fea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Resource\Texture">
+      <UniqueIdentifier>{5679e07d-4915-4771-aedf-18303ccf185d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -118,6 +127,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\UI\TextUI\TextUI.cpp">
       <Filter>Code\GameObject\UI\TextUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.cpp">
+      <Filter>Code\GameObject\UI\NoticeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ResourceManager\ResourceManager.cpp">
+      <Filter>Code\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ResourceManager\Texture\Texture.cpp">
+      <Filter>Code\Resource\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +201,15 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\UI\TextUI\TextUI.h">
       <Filter>Code\GameObject\UI\TextUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.h">
+      <Filter>Code\GameObject\UI\NoticeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\ResourceManager\ResourceManager.h">
+      <Filter>Code\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\ResourceManager\Texture\Texture.h">
+      <Filter>Code\Resource\Texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

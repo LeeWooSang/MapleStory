@@ -9,7 +9,7 @@ Character::~Character()
 {
 }
 
-bool Character::Initialize(TextureInfo)
+bool Character::Initialize()
 {
 	return false;
 }

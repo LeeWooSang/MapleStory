@@ -11,9 +11,9 @@ LoginUI::~LoginUI()
 {
 }
 
-bool LoginUI::Initialize(TextureInfo info)
+bool LoginUI::Initialize()
 {
-	if (GameObject::Initialize(info) == false)
+	if (GameObject::Initialize() == false)
 		return false;
 
 	m_worldMatrix._21 = 0.f;

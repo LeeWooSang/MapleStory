@@ -5,29 +5,6 @@
 constexpr int MAX_FONT_COUNT = 2;
 constexpr int MAX_COLOR_COUNT = 8;
 
-struct TextureInfo
-{
-	TextureInfo()
-		: m_path(L""), m_image(nullptr), m_width(0), m_height(0), m_totalFrameX(0), m_totalFrameY(0), m_frameX(0), m_frameY(0) {}
-	TextureInfo(const wstring& path, int width, int height, int totalX, int totalY, int frameX, int frameY)
-		: m_path(path), m_image(nullptr), m_width(width), m_height(height), m_totalFrameX(totalX), m_totalFrameY(totalY), m_frameX(frameX), m_frameY(frameY) {}
-
-	wstring m_path;
-	ID2D1Bitmap* m_image;
-
-	int m_width;
-	int m_height;
-
-	// 총 가로 몇프레임
-	int m_totalFrameX;
-	// 총 세로 몇프레임
-	int m_totalFrameY;
-
-	// 현재 프레임
-	int m_frameX;
-	int m_frameY;
-};
-
 struct FontInfo
 {
 	FontInfo()
@@ -49,9 +26,10 @@ class D2DManager
 
 	bool Initialize(HWND);
 
-	bool CreateTexture(const string&, TextureInfo&);
 
 	void Render(const wstring&, const string&, const string&, D2D1_RECT_F&);
+
+	IWICImagingFactory* GetWICImagingFactory() { return m_pWICImagingFactory; }
 
 	IDWriteFactory5* GetWriteFactory()	const { return m_pWriteFactory; }
 	 ID2D1HwndRenderTarget* GetRenderTarget() const { return m_pRenderTarget; }
@@ -59,7 +37,6 @@ class D2DManager
 	 const unordered_map<string, FontInfo>& GetFontInfoList()	const { return m_FontInfoMap; }
 	 ID2D1SolidColorBrush* GetFontColor(const string& key)	 { return m_FontColorMap[key]; }
 
-	 const TextureInfo& GetTexture(string key) { return m_ImageInfoMap[key]; }
 	 FontInfo& GetFontInfo(const string& font) { return m_FontInfoMap[font]; }
 
 private:
@@ -75,8 +52,6 @@ private:
 	// D2DManager로 이미지를 그리기 위한 팩토리
 	IWICImagingFactory*			m_pWICImagingFactory;
 
-	// 이미지를 저장함
-	unordered_map<string, TextureInfo>						m_ImageInfoMap;
 	// 폰트를 저장함
 	unordered_map<string, FontInfo>						m_FontInfoMap;
 	// 폰트 색상을 저장함

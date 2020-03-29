@@ -7,7 +7,7 @@ public:
 	Character(const string&);
 	virtual ~Character();
 
-	virtual bool Initialize(TextureInfo);
+	virtual bool Initialize();
 	virtual void Update(float);
 	virtual void Render();
 };

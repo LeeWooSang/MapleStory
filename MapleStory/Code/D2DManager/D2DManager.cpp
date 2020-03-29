@@ -8,14 +8,6 @@ D2DManager::D2DManager()
 
 D2DManager::~D2DManager()
 {
-	//갖고 있는 비트맵이미지를 모두 지움
-	for (auto iter = m_ImageInfoMap.begin(); iter != m_ImageInfoMap.end(); )
-	{
-		(*iter).second.m_image->Release();
-		iter = m_ImageInfoMap.erase(iter);
-	}
-	m_ImageInfoMap.clear();
-
 	// 폰트 컬러를 모두 지움
 	for (auto iter = m_FontColorMap.begin(); iter != m_FontColorMap.end(); )
 	{
@@ -78,69 +70,6 @@ bool D2DManager::Initialize(HWND hWnd)
 
 	CreateGameFont();
 	CreateGameFontColor();
-
-	return true;
-}
-
-bool D2DManager::CreateTexture(const string& key, TextureInfo& info)
-{
-	// [ Bitmap 이미지 초기화 방법 ] 
-	// 1. Com객체 초기화
-	// 2. IWICImagingFactory 생성
-	// 3. Decoder 생성
-	// 4. 이미지의 프레임 얻어오기
-	// 5. Converter 생성
-	// 6. Bitmap 생성
-
-	IWICBitmapDecoder* pBitmapDecoder;
-	HRESULT result = m_pWICImagingFactory->CreateDecoderFromFilename(info.m_path.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &pBitmapDecoder);
-	if (result != S_OK)
-		return false;
-
-	IWICBitmapFrameDecode* pFrameDecode;
-	result = pBitmapDecoder->GetFrame(0, &pFrameDecode);
-	if (result != S_OK)
-		return false;
-	
-	IWICBitmapSource* wicSource = pFrameDecode;
-
-	IWICBitmapFlipRotator* flipRotator = nullptr;
-	result = m_pWICImagingFactory->CreateBitmapFlipRotator(&flipRotator);
-	if (result != S_OK)
-		return false;
-	
-	//result = flipRotator->Initialize(wicSource, WICBitmapTransformFlipHorizontal);
-	result = flipRotator->Initialize(wicSource, WICBitmapTransformFlipVertical);
-	if (result != S_OK)
-		return false;
-	wicSource = flipRotator;
-
-	IWICFormatConverter* pFormatConverter;
-	result = m_pWICImagingFactory->CreateFormatConverter(&pFormatConverter);
-	if (result != S_OK)
-		return false;
-	//result = pFormatConverter->Initialize(pFrameDecode, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeCustom);
-	result = pFormatConverter->Initialize(wicSource, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeMedianCut);
-	if (result != S_OK)
-		return false;
-
-	result = m_pRenderTarget->CreateBitmapFromWicBitmap(pFormatConverter, &info.m_image);
-	if (result != S_OK)
-		return false;
-
-	if (pBitmapDecoder)
-		pBitmapDecoder->Release();
-
-	if (pFrameDecode)
-		pFrameDecode->Release();
-
-	if (pFormatConverter)
-		pFormatConverter->Release();
-
-	if (flipRotator)
-		flipRotator->Release();
-
-	m_ImageInfoMap.emplace(key, info);
 
 	return true;
 }
