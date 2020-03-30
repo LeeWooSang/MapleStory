@@ -6,6 +6,7 @@
 NoticeUI::NoticeUI(const string& name)
 	: UI(name)
 {
+	m_isActive = false;
 	m_noticeType = NOTICE_TYPE::NONE;
 }
 
@@ -57,8 +58,11 @@ void NoticeUI::Update(float elapsedTime)
 
 void NoticeUI::Render()
 {
-	RenderBase();
-	RenderNotice();
+	if (m_isActive == true)
+	{
+		RenderBase();
+		RenderNotice();
+	}
 }
 
 void NoticeUI::RenderBase()

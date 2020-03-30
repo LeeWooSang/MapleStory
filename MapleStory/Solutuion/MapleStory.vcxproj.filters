@@ -69,6 +69,9 @@
     <Filter Include="Code\Resource\Texture">
       <UniqueIdentifier>{5679e07d-4915-4771-aedf-18303ccf185d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\UI\ButtonUI">
+      <UniqueIdentifier>{a364d788-91c7-448b-b60e-9e84dfb229f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ResourceManager\Texture\Texture.cpp">
       <Filter>Code\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.cpp">
+      <Filter>Code\GameObject\UI\ButtonUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +216,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\ResourceManager\Texture\Texture.h">
       <Filter>Code\Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.h">
+      <Filter>Code\GameObject\UI\ButtonUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

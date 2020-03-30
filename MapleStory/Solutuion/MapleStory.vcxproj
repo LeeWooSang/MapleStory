@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -165,6 +165,7 @@
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp" />
     <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
     <ClCompile Include="..\Code\GameObject\Map\Map.cpp" />
+    <ClCompile Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\LoginUI\LoginUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\TextUI\TextUI.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h" />
     <ClInclude Include="..\Code\GameObject\GameObject.h" />
     <ClInclude Include="..\Code\GameObject\Map\Map.h" />
+    <ClInclude Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\LoginUI\LoginUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\TextUI\TextUI.h" />

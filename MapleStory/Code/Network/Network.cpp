@@ -1,6 +1,8 @@
 #include "Network.h"
 #include "../Core/Core.h"
 #include "../Scene/SceneManager.h"
+#include "../Scene/LoginScene/LoginScene.h"
+#include "../GameObject/UI/NoticeUI/NoticeUI.h"
 
 INIT_INSTACNE(Network)
 Network::Network()
@@ -139,7 +141,8 @@ void Network::ProcessPacket(char* buf)
 		{
 			SCPacket_Server_Login_Fail* packet = reinterpret_cast<SCPacket_Server_Login_Fail*>(buf);
 			cout << "Login is fail" << endl;
-			//ServerLogin();
+			NoticeUI* notice = reinterpret_cast<NoticeUI*>(GET_INSTANCE(SceneManager)->GetScene()->GetGameObject(OBJECT_KEY_TYPE::NOTICE_KEY));
+			notice->SetIsActive(true);
 		}
 		break;
 
