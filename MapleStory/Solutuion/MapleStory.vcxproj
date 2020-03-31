@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -165,12 +165,17 @@
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp" />
     <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
     <ClCompile Include="..\Code\GameObject\Map\Map.cpp" />
+    <ClCompile Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\LoginUI\LoginUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\TextUI\TextUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\UI.cpp" />
     <ClCompile Include="..\Code\GameTimer\GameTimer.cpp" />
     <ClCompile Include="..\Code\Input\Input.cpp" />
+    <ClCompile Include="..\Code\Layer\Layer.cpp" />
+    <ClCompile Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.cpp" />
+    <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp" />
+    <ClCompile Include="..\Code\Layer\LoginUILayer\LoginUILayer.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Network\Network.cpp" />
     <ClCompile Include="..\Code\ResourceManager\ResourceManager.cpp" />
@@ -185,18 +190,24 @@
     <ClInclude Include="..\Code\Collision\Collision.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
     <ClInclude Include="..\Code\D2DManager\D2DManager.h" />
+    <ClInclude Include="..\Code\Default\Resource.h" />
     <ClInclude Include="..\Code\Defines.h" />
     <ClInclude Include="..\Code\Framework\Framework.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h" />
     <ClInclude Include="..\Code\GameObject\GameObject.h" />
     <ClInclude Include="..\Code\GameObject\Map\Map.h" />
+    <ClInclude Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\LoginUI\LoginUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\TextUI\TextUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\UI.h" />
     <ClInclude Include="..\Code\GameTimer\GameTimer.h" />
     <ClInclude Include="..\Code\Input\Input.h" />
+    <ClInclude Include="..\Code\Layer\Layer.h" />
+    <ClInclude Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.h" />
+    <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h" />
+    <ClInclude Include="..\Code\Layer\LoginUILayer\LoginUILayer.h" />
     <ClInclude Include="..\Code\Macro.h" />
     <ClInclude Include="..\Code\Network\Network.h" />
     <ClInclude Include="..\Code\ResourceManager\ResourceManager.h" />
@@ -204,6 +215,12 @@
     <ClInclude Include="..\Code\Scene\LoginScene\LoginScene.h" />
     <ClInclude Include="..\Code\Scene\Scene.h" />
     <ClInclude Include="..\Code\Scene\SceneManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Code\Default\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Code\Default\Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

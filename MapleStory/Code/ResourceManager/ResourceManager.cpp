@@ -82,6 +82,17 @@ bool ResourceManager::LoadTexture()
 	if (tex12->Initialize(L"../Resource/Textures/UI/Login/NoticePWNotCorrect.png", 215, 86, 1, 1, 0, 0) == false)
 		return false;
 
+	Texture* tex13 = new Texture;
+	m_textureList.emplace("NoticeYesButton", tex13);
+	if (tex13->Initialize(L"../Resource/Textures/UI/Login/NoticeYesButton.png", 50, 23, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex14 = new Texture;
+	m_textureList.emplace("NoticeNoButton", tex14);
+	if (tex14->Initialize(L"../Resource/Textures/UI/Login/NoticeNoButton.png", 50, 23, 1, 1, 0, 0) == false)
+		return false;
+
+
 	return true;
 }
 

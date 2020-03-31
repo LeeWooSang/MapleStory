@@ -134,14 +134,18 @@ void DataBase::ProcessDBTransaction(DBTransaction& transaction)
 
 	case DB_TRANSACTION_TYPE::PLAYER_LOGIN:
 		{
-			bool isLoginOk = PlayerLogin(player);
+			int isLoginOk = PlayerLogin(player);
 			OverEx* overEx = new OverEx;
 			overEx->myID = transaction.m_ID;
 
-			if(isLoginOk == true)
+			if(isLoginOk == NOTICE_TYPE::CORRECT)
 				overEx->eventType = Core::EVENT_TYPE::PLAYER_LOGIN_OK;
+
+			else if(isLoginOk == NOTICE_TYPE::ID_NOT_CORRECT)
+				overEx->eventType = Core::EVENT_TYPE::PLAYER_LOGIN_ID_FAIL;
+
 			else
-				overEx->eventType = Core::EVENT_TYPE::PLAYER_LOGIN_FAIL;
+				overEx->eventType = Core::EVENT_TYPE::PLAYER_LOGIN_PW_FAIL;
 
 			PostQueuedCompletionStatus(GET_INSTANCE(Core)->GetIOCPHandle(), 1, transaction.m_ID, &overEx->overlapped);
 		}
@@ -355,12 +359,64 @@ bool DataBase::UpdatePlayerStatusInfo(Player* player)
 	return true;
 }
 
-bool DataBase::PlayerLogin(Player* player)
+int DataBase::PlayerLogin(Player* player)
+{
+	if (CheckPlayerLoginID(player) == false)
+		return NOTICE_TYPE::ID_NOT_CORRECT;
+
+	if (CheckPlayerLoginPW(player) == false)
+		return NOTICE_TYPE::PW_NOT_CORRECT;
+
+	return NOTICE_TYPE::CORRECT;
+}
+
+bool DataBase::CheckPlayerLoginID(Player* player)
 {
 	string id = player->GetLoginID();
 	string pw = player->GetPassword();
 
-	wstring ws = L"EXEC PlayerLogin";
+	wstring ws = L"EXEC CheckPlayerLoginID";
+	MakeStoredProcedure(ws, id, true);
+
+	SQLWCHAR loginID[MAX_STRLEN];
+	SQLINTEGER length;
+	SQLLEN cbLength = 0, cbLoginID = 0;
+
+	SQLRETURN retcode = SQLExecDirect(m_Hstmt, (SQLWCHAR*)ws.c_str(), SQL_NTS);
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+	{
+		retcode = SQLBindCol(m_Hstmt, 1, SQL_C_LONG, &length, 0, &cbLength);
+		retcode = SQLBindCol(m_Hstmt, 2, SQL_C_CHAR, &loginID, MAX_STRLEN, &cbLoginID);
+
+		retcode = SQLFetch(m_Hstmt);
+
+		if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+		{
+			loginID[length] = '\0';
+			player->SetLoginID(reinterpret_cast<char*>(loginID));
+			SQLCloseCursor(m_Hstmt);
+			return true;
+		}
+
+		else if (retcode == SQL_NO_DATA)
+			cout << "ID of Player is not correct" << endl;
+
+		else if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
+			ErrorDisplay(retcode);
+	}
+	else
+		ErrorDisplay(retcode);
+
+	SQLCloseCursor(m_Hstmt);
+	return false;
+}
+
+bool DataBase::CheckPlayerLoginPW(Player* player)
+{
+	string id = player->GetLoginID();
+	string pw = player->GetPassword();
+
+	wstring ws = L"EXEC CheckPlayerLoginPW";
 	MakeStoredProcedure(ws, id, true);
 	MakeStoredProcedure(ws, pw, false);
 
@@ -374,36 +430,26 @@ bool DataBase::PlayerLogin(Player* player)
 		retcode = SQLBindCol(m_Hstmt, 1, SQL_C_LONG, &length, 0, &cbLength);
 		retcode = SQLBindCol(m_Hstmt, 2, SQL_C_CHAR, &loginID, MAX_STRLEN, &cbLoginID);
 
-		while (true)
+		retcode = SQLFetch(m_Hstmt);
+
+		if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
 		{
-			retcode = SQLFetch(m_Hstmt);
-
-			if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-			{
-				loginID[length] = '\0';
-				player->SetLoginID(reinterpret_cast<char*>(loginID));
-			}
-
-			else if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
-			{
-				ErrorDisplay(retcode);
-				break;
-			}
-
-			else if (retcode == SQL_NO_DATA)
-			{
-				ErrorDisplay(retcode);
-				SQLCloseCursor(m_Hstmt);
-				return true;
-			}
-
+			loginID[length] = '\0';
+			player->SetLoginID(reinterpret_cast<char*>(loginID));
+			SQLCloseCursor(m_Hstmt);
+			return true;
 		}
+
+		else if (retcode == SQL_NO_DATA)
+			cout << "Password of Player is not correct" << endl;
+
+		else if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
+			ErrorDisplay(retcode);
 	}
 	else
 		ErrorDisplay(retcode);
 
 	SQLCloseCursor(m_Hstmt);
-
 	return false;
 }
 
