@@ -172,6 +172,10 @@
     <ClCompile Include="..\Code\GameObject\UI\UI.cpp" />
     <ClCompile Include="..\Code\GameTimer\GameTimer.cpp" />
     <ClCompile Include="..\Code\Input\Input.cpp" />
+    <ClCompile Include="..\Code\Layer\Layer.cpp" />
+    <ClCompile Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.cpp" />
+    <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp" />
+    <ClCompile Include="..\Code\Layer\LoginUILayer\LoginUILayer.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Network\Network.cpp" />
     <ClCompile Include="..\Code\ResourceManager\ResourceManager.cpp" />
@@ -200,6 +204,10 @@
     <ClInclude Include="..\Code\GameObject\UI\UI.h" />
     <ClInclude Include="..\Code\GameTimer\GameTimer.h" />
     <ClInclude Include="..\Code\Input\Input.h" />
+    <ClInclude Include="..\Code\Layer\Layer.h" />
+    <ClInclude Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.h" />
+    <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h" />
+    <ClInclude Include="..\Code\Layer\LoginUILayer\LoginUILayer.h" />
     <ClInclude Include="..\Code\Macro.h" />
     <ClInclude Include="..\Code\Network\Network.h" />
     <ClInclude Include="..\Code\ResourceManager\ResourceManager.h" />

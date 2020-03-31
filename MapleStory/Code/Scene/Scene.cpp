@@ -1,26 +1,26 @@
 #include "Scene.h"
+#include "../Layer/Layer.h"
 #include "../GameObject/GameObject.h"
 
 Scene::Scene()
 {
-	m_objectList.clear();
-	m_objectVector.clear();
+	m_layerList.clear();
 }
 
 Scene::~Scene()
 {
-	for (auto iter = m_objectList.begin(); iter != m_objectList.end(); )
+	for (auto iter = m_layerList.begin(); iter != m_layerList.end();)
 	{
 		delete (*iter).second;
-		iter = m_objectList.erase(iter);
+		iter = m_layerList.erase(iter);
 	}
-	m_objectList.clear();
-
-	for (auto& object : m_objectVector)
-	{
-		if(object != nullptr)
-			delete object;
-	}
-	m_objectVector.clear();
 }
 
+Layer * Scene::GetLayer(const string & key)
+{
+	auto iter = m_layerList.find(key);
+	if(iter == m_layerList.end())
+		return nullptr;
+
+	return (*iter).second;
+}

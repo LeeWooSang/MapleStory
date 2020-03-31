@@ -72,6 +72,18 @@
     <Filter Include="Code\GameObject\UI\ButtonUI">
       <UniqueIdentifier>{a364d788-91c7-448b-b60e-9e84dfb229f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Layer">
+      <UniqueIdentifier>{2dd9a954-dc3e-47cc-a8c9-cf4611f74d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\LoginUILayer">
+      <UniqueIdentifier>{6cc46629-c5ff-4fdc-b590-a18ec80132ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\LoginBaseLayer">
+      <UniqueIdentifier>{9e9c7bb4-297f-41c7-adf3-3bde56222c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\LoginNoticeLayer">
+      <UniqueIdentifier>{82df1f5a-24c3-4045-b118-bc0ff78f3e04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -142,6 +154,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.cpp">
       <Filter>Code\GameObject\UI\ButtonUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\Layer.cpp">
+      <Filter>Code\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\LoginUILayer\LoginUILayer.cpp">
+      <Filter>Code\Layer\LoginUILayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.cpp">
+      <Filter>Code\Layer\LoginBaseLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp">
+      <Filter>Code\Layer\LoginNoticeLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +246,18 @@
     </ClInclude>
     <ClInclude Include="..\Code\Default\Resource.h">
       <Filter>리소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\Layer.h">
+      <Filter>Code\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\LoginUILayer\LoginUILayer.h">
+      <Filter>Code\Layer\LoginUILayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.h">
+      <Filter>Code\Layer\LoginBaseLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h">
+      <Filter>Code\Layer\LoginNoticeLayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

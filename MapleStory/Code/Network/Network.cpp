@@ -2,6 +2,7 @@
 #include "../Core/Core.h"
 #include "../Scene/SceneManager.h"
 #include "../Scene/LoginScene/LoginScene.h"
+#include "../Layer/LoginNoticeLayer/LoginNoticeLayer.h"
 #include "../GameObject/UI/NoticeUI/NoticeUI.h"
 
 INIT_INSTACNE(Network)
@@ -141,9 +142,7 @@ void Network::ProcessPacket(char* buf)
 		{
 			SCPacket_Server_Login_Fail* packet = reinterpret_cast<SCPacket_Server_Login_Fail*>(buf);
 			cout << "Login is fail" << endl;
-			NoticeUI* notice = reinterpret_cast<NoticeUI*>(GET_INSTANCE(SceneManager)->GetScene()->GetGameObject(OBJECT_KEY_TYPE::NOTICE_KEY));
-			notice->SetIsActive(true);
-			notice->SetNoticeType(packet->failType);
+			reinterpret_cast<LoginNoticeLayer*>(GET_INSTANCE(SceneManager)->GetScene()->GetLayer("LoginNoticeLayer"))->SetNoticeType(packet->failType);
 		}
 		break;
 

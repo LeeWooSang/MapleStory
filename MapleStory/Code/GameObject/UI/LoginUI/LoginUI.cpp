@@ -1,6 +1,4 @@
 #include "LoginUI.h"
-#include "../../../Input/Input.h"
-#include "../../../Camera/Camera.h"
 
 LoginUI::LoginUI(const string& name)
 	: UI(name)
