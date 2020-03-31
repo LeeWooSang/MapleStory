@@ -143,6 +143,7 @@ void Network::ProcessPacket(char* buf)
 			cout << "Login is fail" << endl;
 			NoticeUI* notice = reinterpret_cast<NoticeUI*>(GET_INSTANCE(SceneManager)->GetScene()->GetGameObject(OBJECT_KEY_TYPE::NOTICE_KEY));
 			notice->SetIsActive(true);
+			notice->SetNoticeType(packet->failType);
 		}
 		break;
 

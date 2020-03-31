@@ -21,7 +21,8 @@ public:
 		SEND, 		
 		QUIT,
 		PLAYER_LOGIN_OK, 
-		PLAYER_LOGIN_FAIL, 
+		PLAYER_LOGIN_ID_FAIL,
+		PLAYER_LOGIN_PW_FAIL,
 		PLAYER_LOGOUT, 
 		PLAYER_STATUS_UPDATE 
 	};
@@ -52,7 +53,7 @@ private:
 	int CreatePlayerID();
 
 	void SendServerLoginOkPacket(int);
-	void SendServerLoginFailPacket(int);
+	void SendServerLoginFailPacket(int, char);
 
 	void SendChannelLoginOkPacket(int);
 	void SendChannelLoginFailPacket(int);

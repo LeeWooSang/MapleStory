@@ -18,6 +18,13 @@ constexpr unsigned short	WORLD_WIDTH = 300;
 // ¸Ê ¼¼·Î Å©±â
 constexpr unsigned short	WORLD_HEIGHT = 300;
 
+enum NOTICE_TYPE
+{
+	CORRECT = 0x0000,
+	ID_NOT_CORRECT = 0x0001,
+	PW_NOT_CORRECT = 0x0002
+};
+
 enum DIR_TYPE
 {
 	RIGHT = 0x0001,
@@ -85,6 +92,7 @@ struct SCPacket_Server_Login_Fail
 {
 	char size;
 	char type;
+	char failType;
 };
 struct SCPacket_Channel_Login_Ok
 {

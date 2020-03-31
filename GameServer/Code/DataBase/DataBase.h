@@ -25,6 +25,7 @@ struct DBTransaction
 };
 constexpr int MAX_STRLEN = 50;
 
+class Player;
 class DataBase
 {
 	SINGLE_TONE(DataBase)
@@ -41,11 +42,15 @@ public:
 	const wstring& MakeStoredProcedure(wstring&, T, bool);
 	const wstring& MakeStoredProcedure(wstring&, const string&, bool);
 
-	bool GetPlayerStatusInfo(class Player*);
-	bool GetPlayerInventoryInfo(class Player*);
-	bool UpdatePlayerStatusInfo(class Player*);
-	bool PlayerLogin(class Player*);
-	bool PlayerLogout(class Player*);
+	bool GetPlayerStatusInfo(Player*);
+	bool GetPlayerInventoryInfo(Player*);
+	bool UpdatePlayerStatusInfo(Player*);
+
+	int PlayerLogin(Player*);
+	bool CheckPlayerLoginID(Player*);
+	bool CheckPlayerLoginPW(Player*);
+
+	bool PlayerLogout(Player*);
 
 private:
 	void ErrorDisplay(RETCODE);

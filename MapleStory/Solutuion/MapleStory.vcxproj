@@ -186,6 +186,7 @@
     <ClInclude Include="..\Code\Collision\Collision.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
     <ClInclude Include="..\Code\D2DManager\D2DManager.h" />
+    <ClInclude Include="..\Code\Default\Resource.h" />
     <ClInclude Include="..\Code\Defines.h" />
     <ClInclude Include="..\Code\Framework\Framework.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
@@ -206,6 +207,12 @@
     <ClInclude Include="..\Code\Scene\LoginScene\LoginScene.h" />
     <ClInclude Include="..\Code\Scene\Scene.h" />
     <ClInclude Include="..\Code\Scene\SceneManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Code\Default\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Code\Default\Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -220,5 +220,18 @@
     <ClInclude Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.h">
       <Filter>Code\GameObject\UI\ButtonUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Code\Default\Resource.h">
+      <Filter>리소스 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Code\Default\icon.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Code\Default\Resource.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

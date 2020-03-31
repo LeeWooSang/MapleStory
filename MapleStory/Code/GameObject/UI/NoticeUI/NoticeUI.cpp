@@ -1,4 +1,5 @@
 #include "NoticeUI.h"
+#include "../../../../../GameServer/Code/Protocol.h"
 #include "../../../ResourceManager/ResourceManager.h"
 #include "../../../ResourceManager/Texture/Texture.h"
 #include "../../../Camera/Camera.h"
@@ -7,7 +8,7 @@ NoticeUI::NoticeUI(const string& name)
 	: UI(name)
 {
 	m_isActive = false;
-	m_noticeType = NOTICE_TYPE::NONE;
+	m_noticeType = NOTICE_TYPE::CORRECT;
 }
 
 NoticeUI::~NoticeUI()
@@ -30,8 +31,7 @@ bool NoticeUI::Initialize()
 	m_worldMatrix._21 = 0.f;
 	m_worldMatrix._22 = -1.f;
 
-	//m_noticeType = NOTICE_TYPE::ID_NOT_CORRECT;
-	m_noticeType = NOTICE_TYPE::PW_NOT_CORRECT;
+	m_noticeType = NOTICE_TYPE::CORRECT;
 
 	Texture* tex2 = GET_INSTANCE(ResourceManager)->GetTexture("NoticeIDNotCorrect");
 	if (tex2 == nullptr)

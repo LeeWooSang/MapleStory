@@ -94,19 +94,19 @@ bool LoginScene::Initialize()
 		return false;
 	noticeBackground->SetPosition(VECTOR2D(0.f, 0.f));
 
-	name = "NoticeYesButton";
-	ButtonUI* yesButton = new ButtonUI(name);
-	m_objectVector.emplace_back(yesButton);
-	if (yesButton->Initialize() == false)
-		return false;
-	yesButton->SetPosition(VECTOR2D(-40.f, 50.f));
+	//name = "NoticeYesButton";
+	//ButtonUI* yesButton = new ButtonUI(name);
+	//m_objectVector.emplace_back(yesButton);
+	//if (yesButton->Initialize() == false)
+	//	return false;
+	//yesButton->SetPosition(VECTOR2D(-40.f, 50.f));
 
-	name = "NoticeNoButton";
-	ButtonUI* noButton = new ButtonUI(name);
-	m_objectVector.emplace_back(noButton);
-	if (noButton->Initialize() == false)
-		return false;
-	noButton->SetPosition(VECTOR2D(40.f, 50.f));
+	//name = "NoticeNoButton";
+	//ButtonUI* noButton = new ButtonUI(name);
+	//m_objectVector.emplace_back(noButton);
+	//if (noButton->Initialize() == false)
+	//	return false;
+	//noButton->SetPosition(VECTOR2D(40.f, 50.f));
 
 	//name = "NoticeIDNotCorrect";
 	//LoginUI* noticeBackground = new LoginUI(name);

@@ -479,10 +479,16 @@ void Core::ProcessEvent(EVENT_TYPE& eventType, int id)
 		cout << "Login is OK" << endl;
 		break;
 
-	case EVENT_TYPE::PLAYER_LOGIN_FAIL:
+	case EVENT_TYPE::PLAYER_LOGIN_ID_FAIL:
 		reinterpret_cast<Player*>(m_characterList[id])->SetLoginID("");
-		SendServerLoginFailPacket(id);
-		cout << "Login is Fail" << endl;
+		SendServerLoginFailPacket(id, NOTICE_TYPE::ID_NOT_CORRECT);
+		cout << "Login id is Fail" << endl;
+		break;
+
+	case EVENT_TYPE::PLAYER_LOGIN_PW_FAIL:
+		reinterpret_cast<Player*>(m_characterList[id])->SetLoginID("");
+		SendServerLoginFailPacket(id, NOTICE_TYPE::PW_NOT_CORRECT);
+		cout << "Login pw is Fail" << endl;
 		break;
 
 	default:
@@ -526,11 +532,12 @@ void Core::SendServerLoginOkPacket(int to)
 	SendPacket(to, reinterpret_cast<char*>(&packet));
 }
 
-void Core::SendServerLoginFailPacket(int to)
+void Core::SendServerLoginFailPacket(int to, char failType)
 {
 	SCPacket_Server_Login_Fail packet;
 	packet.size = sizeof(SCPacket_Server_Login_Fail);
 	packet.type = SC_PACKET_TYPE::SC_SERVER_LOGIN_FAIL;
+	packet.failType = failType;
 
 	SendPacket(to, reinterpret_cast<char*>(&packet));
 }
