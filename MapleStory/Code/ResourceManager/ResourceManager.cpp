@@ -39,7 +39,7 @@ bool ResourceManager::LoadTexture()
 
 	Texture* tex4 = new Texture;
 	m_textureList.emplace("LoginLogo", tex4);
-	if (tex4->Initialize(L"../Resource/Textures/UI/Login/LoginLogo.png", 306, 152, 1, 1, 0, 0) == false)
+	if (tex4->Initialize(L"../Resource/Textures/UI/Login/LoginLogo.png", 352, 173, 1, 1, 0, 0) == false)
 		return false;
 
 	Texture* tex5 = new Texture;
