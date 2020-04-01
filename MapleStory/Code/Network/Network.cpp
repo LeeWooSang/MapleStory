@@ -133,8 +133,7 @@ void Network::ProcessPacket(char* buf)
 		{
 			SCPacket_Server_Login_Ok* packet = reinterpret_cast<SCPacket_Server_Login_Ok*>(buf);
 			m_myID = packet->id;
-			GET_INSTANCE(SceneManager)->SetGameState(SceneManager::GAME_STATE::CHANNEL_SCENE);
-			ChannelLogin();
+			GET_INSTANCE(SceneManager)->SetGameState(SceneManager::GAME_STATE::WORLD_SELECT_SCENE);
 		}
 		break;
 
@@ -152,7 +151,6 @@ void Network::ProcessPacket(char* buf)
 
 	case SC_PACKET_TYPE::SC_CHANNEL_LOGIN_FAIL:
 		cout << "Channel login fail" << endl;
-		ChannelLogin();
 		break;
 
 	case SC_ADD_OBJECT:
@@ -218,6 +216,16 @@ void Network::SendServerLoginPacket(const char* id, const char* pw)
 	Send();
 }
 
+void Network::SendServerLogoutPacket()
+{
+	CSPacket_Server_Logout* packet = reinterpret_cast<CSPacket_Server_Logout*>(m_sendBuf);
+	packet->m_size = sizeof(CSPacket_Server_Logout);
+	packet->m_type = CS_PACKET_TYPE::CS_SERVER_LOGOUT;
+	m_sendWsaBuf.len = sizeof(CSPacket_Server_Logout);
+
+	Send();
+}
+
 void Network::SendChannelLoginPacket(char channel)
 {
 	CSPacket_Channel_Login* packet = reinterpret_cast<CSPacket_Channel_Login*>(m_sendBuf);
@@ -228,6 +236,10 @@ void Network::SendChannelLoginPacket(char channel)
 	m_sendWsaBuf.len = sizeof(CSPacket_Channel_Login);
 
 	Send();
+}
+
+void Network::SendChannelLogoutPacket()
+{
 }
 
 void Network::SendMovePacket(char dir)

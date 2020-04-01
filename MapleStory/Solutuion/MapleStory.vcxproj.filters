@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Code">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -83,6 +79,21 @@
     </Filter>
     <Filter Include="Code\Layer\LoginNoticeLayer">
       <UniqueIdentifier>{82df1f5a-24c3-4045-b118-bc0ff78f3e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Default">
+      <UniqueIdentifier>{e4853145-0116-4eb1-a450-64f66c8c067a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Scene\WorldSelectScene">
+      <UniqueIdentifier>{2efd849b-fa12-4b45-9db0-57ee7e5e6110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\WorldSelectBaseLayer">
+      <UniqueIdentifier>{7bd1a101-65b1-4dad-9f08-fa9ecdc9e488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\WorldSelectUILayer">
+      <UniqueIdentifier>{cb883c9d-ab78-4833-bfa7-47698bb4bc2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\ChannelSelectLayer">
+      <UniqueIdentifier>{1932be6e-3f98-4801-a810-3ea16ee18ccd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +178,18 @@
     <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp">
       <Filter>Code\Layer\LoginNoticeLayer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\Scene\WorldSelectScene\WorldSelectScene.cpp">
+      <Filter>Code\Scene\WorldSelectScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\WorldSelectBaseLayer\WorldSelectBaseLayer.cpp">
+      <Filter>Code\Layer\WorldSelectBaseLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\WorldSelectUILayer\WorldSelectUILayer.cpp">
+      <Filter>Code\Layer\WorldSelectUILayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.cpp">
+      <Filter>Code\Layer\ChannelSelectLayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h">
@@ -244,9 +267,6 @@
     <ClInclude Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.h">
       <Filter>Code\GameObject\UI\ButtonUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\Default\Resource.h">
-      <Filter>리소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="..\Code\Layer\Layer.h">
       <Filter>Code\Layer</Filter>
     </ClInclude>
@@ -259,15 +279,25 @@
     <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h">
       <Filter>Code\Layer\LoginNoticeLayer</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Code\Default\icon.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
+    <ClInclude Include="..\Code\Default\Resource.h">
+      <Filter>Code\Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Scene\WorldSelectScene\WorldSelectScene.h">
+      <Filter>Code\Scene\WorldSelectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\WorldSelectBaseLayer\WorldSelectBaseLayer.h">
+      <Filter>Code\Layer\WorldSelectBaseLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\WorldSelectUILayer\WorldSelectUILayer.h">
+      <Filter>Code\Layer\WorldSelectUILayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.h">
+      <Filter>Code\Layer\ChannelSelectLayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Code\Default\Resource.rc">
-      <Filter>리소스 파일</Filter>
+      <Filter>Code\Default</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -74,21 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/Debug/</IntDir>
+    <TargetName>Debug_MapleStory</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/x64Debug/</IntDir>
+    <TargetName>x64Debug_MapleStory</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/Release/</IntDir>
+    <TargetName>Release_MapleStory</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/x64Release/</IntDir>
+    <TargetName>x64Release_MapleStory</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -172,10 +176,13 @@
     <ClCompile Include="..\Code\GameObject\UI\UI.cpp" />
     <ClCompile Include="..\Code\GameTimer\GameTimer.cpp" />
     <ClCompile Include="..\Code\Input\Input.cpp" />
+    <ClCompile Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.cpp" />
     <ClCompile Include="..\Code\Layer\Layer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginUILayer\LoginUILayer.cpp" />
+    <ClCompile Include="..\Code\Layer\WorldSelectBaseLayer\WorldSelectBaseLayer.cpp" />
+    <ClCompile Include="..\Code\Layer\WorldSelectUILayer\WorldSelectUILayer.cpp" />
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Network\Network.cpp" />
     <ClCompile Include="..\Code\ResourceManager\ResourceManager.cpp" />
@@ -183,6 +190,7 @@
     <ClCompile Include="..\Code\Scene\LoginScene\LoginScene.cpp" />
     <ClCompile Include="..\Code\Scene\Scene.cpp" />
     <ClCompile Include="..\Code\Scene\SceneManager.cpp" />
+    <ClCompile Include="..\Code\Scene\WorldSelectScene\WorldSelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\GameServer\Code\Protocol.h" />
@@ -204,10 +212,13 @@
     <ClInclude Include="..\Code\GameObject\UI\UI.h" />
     <ClInclude Include="..\Code\GameTimer\GameTimer.h" />
     <ClInclude Include="..\Code\Input\Input.h" />
+    <ClInclude Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.h" />
     <ClInclude Include="..\Code\Layer\Layer.h" />
     <ClInclude Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.h" />
     <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h" />
     <ClInclude Include="..\Code\Layer\LoginUILayer\LoginUILayer.h" />
+    <ClInclude Include="..\Code\Layer\WorldSelectBaseLayer\WorldSelectBaseLayer.h" />
+    <ClInclude Include="..\Code\Layer\WorldSelectUILayer\WorldSelectUILayer.h" />
     <ClInclude Include="..\Code\Macro.h" />
     <ClInclude Include="..\Code\Network\Network.h" />
     <ClInclude Include="..\Code\ResourceManager\ResourceManager.h" />
@@ -215,9 +226,7 @@
     <ClInclude Include="..\Code\Scene\LoginScene\LoginScene.h" />
     <ClInclude Include="..\Code\Scene\Scene.h" />
     <ClInclude Include="..\Code\Scene\SceneManager.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Code\Default\icon.ico" />
+    <ClInclude Include="..\Code\Scene\WorldSelectScene\WorldSelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Code\Default\Resource.rc" />

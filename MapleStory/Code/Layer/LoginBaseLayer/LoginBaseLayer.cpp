@@ -12,16 +12,14 @@ LoginBaseLayer::~LoginBaseLayer()
 
 bool LoginBaseLayer::Initialize()
 {	
-	string name = "";
-
-	name = "LoginBackground";
+	string name = "LoginBackground";
 	Map* background = new Map(name);
 	m_objectList.emplace_back(background);
 	if (background->Initialize() == false)
 		return false;
 	background->SetPosition(VECTOR2D(0.f, 0.f));
 
-	name = "LoginFrame";
+	name = "Frame";
 	Map* frame = new Map(name);
 	m_objectList.emplace_back(frame);
 	if (frame->Initialize() == false)

@@ -13,8 +13,8 @@ public:
 
 	virtual void ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM) = 0;
 
+	void AddLayer(const string& key, class Layer* layer) { m_layerList.emplace(key, layer); }
 	class Layer* GetLayer(const string& key);
-	//class GameObject* GetGameObject(int key)	 { return m_objectVector[key]; }
 
 protected:
 	unordered_map<string, class Layer*> m_layerList;

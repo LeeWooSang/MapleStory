@@ -74,21 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/Debug/</IntDir>
+    <TargetName>Debug_GameServer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/x64Debug/</IntDir>
+    <TargetName>x64Debug_GameServer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/Release/</IntDir>
+    <TargetName>Release_GameServer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Excutable/</OutDir>
     <IntDir>../Excutable/x64Release</IntDir>
+    <TargetName>x64Release_GameServer</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

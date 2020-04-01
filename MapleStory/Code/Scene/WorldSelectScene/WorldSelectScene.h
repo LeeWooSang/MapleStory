@@ -1,11 +1,11 @@
 #pragma once
 #include "../Scene.h"
 
-class ServerChoiceScene : public Scene
+class WorldSelectScene : public Scene
 {
 public:
-	ServerChoiceScene();
-	virtual ~ServerChoiceScene();
+	WorldSelectScene();
+	virtual ~WorldSelectScene();
 
 	virtual bool Initialize();
 	virtual void Update(float);

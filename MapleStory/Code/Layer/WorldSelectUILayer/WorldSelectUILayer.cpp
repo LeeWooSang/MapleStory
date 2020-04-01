@@ -1,0 +1,84 @@
+#include "WorldSelectUILayer.h"
+#include "../../GameObject/UI/ButtonUI/ButtonUI.h"
+#include "../../Network/Network.h"
+#include "../../Scene/SceneManager.h"
+
+WorldSelectUILayer::WorldSelectUILayer()
+{
+}
+
+WorldSelectUILayer::~WorldSelectUILayer()
+{
+}
+
+bool WorldSelectUILayer::Initialize()
+{
+	string name = "BackButton";
+	ButtonUI* backButton = new ButtonUI(name);
+	m_objectMap.emplace(WORLD_SELECT_UI_OBJECT_KEY::BACK_BUTTON, backButton);
+	if (backButton->Initialize() == false)
+		return false;
+	backButton->SetPosition(VECTOR2D(-359.5f, 260.f));
+
+	name = "WorldButton0";
+	ButtonUI* worldButton = new ButtonUI(name);
+	m_objectMap.emplace(WORLD_SELECT_UI_OBJECT_KEY::WORLD_BUTTON, worldButton);
+	if (worldButton->Initialize() == false)
+		return false;
+	worldButton->SetPosition(VECTOR2D(313.5f, -237.5f));
+
+	return true;
+}
+
+void WorldSelectUILayer::Update(float elapsedTime)
+{
+	int flag = 0;
+	for (auto object : m_objectMap)
+	{
+		flag = object.first;
+		if (CheckCollision(object.second, flag) == false)
+			continue;
+
+		ProcessCollision(object.second, flag);
+	}
+
+	for (auto object : m_objectMap)
+		object.second->Update(elapsedTime);
+}
+
+void WorldSelectUILayer::Render()
+{
+	for (auto object : m_objectMap)
+		object.second->Render();
+}
+
+bool WorldSelectUILayer::CheckCollision(GameObject* object, int& flag)
+{
+	if (Layer::CheckCollision(object, flag) == false)
+		return false;
+
+	return true;
+}
+
+void WorldSelectUILayer::ProcessCollision(GameObject* object, int& flag)
+{
+	switch (flag)
+	{
+	case PROCESS_WORLD_SELECT_UI_COLLISION_TYPE::BACK_BUTTON_COLLISION_AND_CLICK:
+		GET_INSTANCE(Network)->SendServerLogoutPacket();
+		GET_INSTANCE(SceneManager)->SetGameState(SceneManager::GAME_STATE::LOGIN_SCENE);
+		cout << "뒤로 버튼 클릭" << endl;
+		break;
+
+	case PROCESS_WORLD_SELECT_UI_COLLISION_TYPE::WORLD_BUTTON_COLLISION_AND_CLICK:
+		cout << "월드 버튼 클릭" << endl;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void WorldSelectUILayer::ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM)
+{
+}

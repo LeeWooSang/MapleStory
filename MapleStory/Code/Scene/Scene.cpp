@@ -16,7 +16,7 @@ Scene::~Scene()
 	}
 }
 
-Layer * Scene::GetLayer(const string & key)
+Layer* Scene::GetLayer(const string& key)
 {
 	auto iter = m_layerList.find(key);
 	if(iter == m_layerList.end())

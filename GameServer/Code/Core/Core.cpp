@@ -419,12 +419,28 @@ void Core::ProcessPacket(int id, char* buf)
 			// db 스레드에게 넘김
 			GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::PLAYER_LOGIN, id);
 		}
-	break;
+		break;
+
+	case CS_PACKET_TYPE::CS_SERVER_LOGOUT:
+		{
+			CSPacket_Server_Logout* packet = reinterpret_cast<CSPacket_Server_Logout*>(buf);
+			Player* player = reinterpret_cast<Player*>(m_characterList[id]);
+			//player->SetLoginID(packet->m_ID);
+			//player->SetPassword(packet->m_PW);
+			// db 스레드에게 넘김
+			//GET_INSTANCE(DataBase)->AddDBTransactionQueue(DB_TRANSACTION_TYPE::PLAYER_LOGIN, id);
+		}
+		break;
 
 	case CS_PACKET_TYPE::CS_CHANNEL_LOGIN:
 		{
 			CSPacket_Channel_Login* packet = reinterpret_cast<CSPacket_Channel_Login*>(buf);
 			ProcessChannelLogin(packet->m_channel, id);
+		}
+		break;
+
+	case CS_PACKET_TYPE::CS_CHANNEL_LOGOUT:
+		{
 		}
 		break;
 
@@ -443,6 +459,9 @@ void Core::ProcessPacket(int id, char* buf)
 
 void Core::ProcessChannelLogin(char channel, int id)
 {
+	cout << (int)channel << "채널 입장" << endl;
+	return;
+
 	// 현재 채널에 몇명의 유저가 있는지 저장
 	m_channelList[channel]->ChannelMtxLock();
 	// 채널에 들어 갈 수 있는지 체크해야함

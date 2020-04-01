@@ -1,11 +1,14 @@
 #include "SceneManager.h"
 #include "LoginScene/LoginScene.h"
+#include "WorldSelectScene/WorldSelectScene.h"
 
 INIT_INSTACNE(SceneManager)
 SceneManager::SceneManager()
 {
 	m_sceneList.clear();
 	m_gameState = GAME_STATE::LOGIN_SCENE;
+	//m_gameState = GAME_STATE::WORLD_SELECT_SCENE;
+
 }
 
 SceneManager::~SceneManager()
@@ -18,6 +21,11 @@ bool SceneManager::Initialize()
 	LoginScene* loginSc = new LoginScene;
 	m_sceneList.emplace(GAME_STATE::LOGIN_SCENE, loginSc);
 	if (loginSc->Initialize() == false)
+		return false;
+	
+	WorldSelectScene* worldSelectSc = new WorldSelectScene;
+	m_sceneList.emplace(GAME_STATE::WORLD_SELECT_SCENE, worldSelectSc);
+	if (worldSelectSc->Initialize() == false)
 		return false;
 
 	return true;

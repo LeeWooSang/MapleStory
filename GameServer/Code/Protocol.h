@@ -36,8 +36,10 @@ enum DIR_TYPE
 enum CS_PACKET_TYPE
 {
 	CS_SERVER_LOGIN,
+	CS_SERVER_LOGOUT,
 	CS_CHANNEL_LOGIN,
-
+	CS_CHANNEL_LOGOUT,
+	
 	CS_MOVE,
 	CS_ATTACK,
 	CS_PICKUP_ITEM,
@@ -68,11 +70,21 @@ struct CSPacket_Server_Login
 	char m_ID[30];
 	char m_PW[30];
 };
+struct CSPacket_Server_Logout
+{
+	char m_size;
+	char m_type;
+};
 struct CSPacket_Channel_Login
 {
 	char m_size;
 	char m_type;
 	char m_channel;
+};
+struct CSPacket_Channel_Logout
+{
+	char m_size;
+	char m_type;
 };
 struct CSPacket_Move
 {

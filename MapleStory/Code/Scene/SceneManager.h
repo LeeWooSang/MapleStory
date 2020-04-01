@@ -14,7 +14,7 @@ public:
 	enum GAME_STATE 
 	{ 
 		LOGIN_SCENE,
-		CHANNEL_SCENE
+		WORLD_SELECT_SCENE,
 	};
 
 	void SetGameState(GAME_STATE state) { m_gameState = state; }
