@@ -20,6 +20,21 @@ bool ChannelSelectLayer::Initialize()
 		return false;
 	background->SetPosition(VECTOR2D(0.f, 0.f));
 
+	name = "ChannelWorldLogo";
+	Map* channelWorldLogo = new Map(name);
+	m_objectList.emplace_back(channelWorldLogo);
+	if (channelWorldLogo->Initialize() == false)
+		return false;
+	channelWorldLogo->SetPosition(VECTOR2D(-105.f, -122.f));
+
+	name = "ChannelSelectButton";
+	ButtonUI* channelSelectButton = new ButtonUI(name);
+	m_objectMap.emplace(CHANNEL_SELECT_OBJECT_KEY::CHANNEL_SELECT_BUTTON, channelSelectButton);
+	if (channelSelectButton->Initialize() == false)
+		return false;
+	channelSelectButton->SetPosition(VECTOR2D(112.5f, -121.f));
+
+
 	float x = -142.f;
 	float y = -78.5f;
 
@@ -83,6 +98,9 @@ void ChannelSelectLayer::ProcessCollision(GameObject* object, int& flag)
 	char channel = 0;
 	switch (flag)
 	{
+	case PROCESS_CHANNEL_SELECT_COLLISION_TYPE::CHANNEL_SELECT_BUTTON_COLLISION_AND_CLICK:
+		break;
+
 	case PROCESS_CHANNEL_SELECT_COLLISION_TYPE::CHANNEL_BUTTON1_COLLISION_AND_CLICK:	channel = 0;	break;
 	case PROCESS_CHANNEL_SELECT_COLLISION_TYPE::CHANNEL_BUTTON2_COLLISION_AND_CLICK:	channel = 1; break;
 	case PROCESS_CHANNEL_SELECT_COLLISION_TYPE::CHANNEL_BUTTON3_COLLISION_AND_CLICK:	channel = 2;	break;

@@ -14,14 +14,19 @@ constexpr int MAX_LEN = 256;
 //	wstring m_Text;
 //};
 
-constexpr int MAX_KEY_TYPE = 7;
+constexpr int MAX_KEY_TYPE = 9;
 enum KEY_TYPE 
 { 
 	NONE = 0, 
+
 	KEYBOARD_LEFT,
 	KEYBOARD_RIGHT, 
 	KEYBOARD_UP,
 	KEYBOARD_DOWN,
+
+	KEYBOARD_TAB,
+	KEYBOARD_ENTER,
+
 	MOUSE_LBUTTON,
 	MOUSE_RBUTTON 
 };

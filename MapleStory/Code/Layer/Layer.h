@@ -12,7 +12,7 @@ public:
 	virtual void Render() = 0;
 
 	virtual bool CheckCollision(class GameObject*, int&);
-	virtual void ProcessCollision(class GameObject*, int&) = 0;
+	virtual void ProcessCollision(class GameObject*, int&);
 	virtual void ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM) = 0;
 
 	class GameObject* GetGameObject(int key);

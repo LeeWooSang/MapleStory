@@ -47,6 +47,10 @@ bool Layer::CheckCollision(GameObject* object, int& flag)
 	}
 }
 
+void Layer::ProcessCollision(GameObject *, int &)
+{
+}
+
 GameObject* Layer::GetGameObject(int key)
 {
 	auto iter = m_objectMap.find(key);

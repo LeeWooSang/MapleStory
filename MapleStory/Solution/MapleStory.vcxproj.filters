@@ -95,6 +95,12 @@
     <Filter Include="Code\Layer\ChannelSelectLayer">
       <UniqueIdentifier>{1932be6e-3f98-4801-a810-3ea16ee18ccd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Scene\CharacterSelectScene">
+      <UniqueIdentifier>{3f437d43-7dfc-4e68-bc17-511ca38777de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\CharacterSelectBaseLayer">
+      <UniqueIdentifier>{2d201c0f-a3f3-4834-a6c8-b95e306b61cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -189,6 +195,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.cpp">
       <Filter>Code\Layer\ChannelSelectLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Scene\CharacterSelectScene\CharacterSelectScene.cpp">
+      <Filter>Code\Scene\CharacterSelectScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.cpp">
+      <Filter>Code\Layer\CharacterSelectBaseLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +305,12 @@
     </ClInclude>
     <ClInclude Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.h">
       <Filter>Code\Layer\ChannelSelectLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Scene\CharacterSelectScene\CharacterSelectScene.h">
+      <Filter>Code\Scene\CharacterSelectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.h">
+      <Filter>Code\Layer\CharacterSelectBaseLayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

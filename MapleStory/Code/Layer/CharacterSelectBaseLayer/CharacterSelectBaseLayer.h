@@ -1,11 +1,11 @@
 #pragma once
 #include "../Layer.h"
 
-class LoginBaseLayer : public Layer
+class CharacterSelectBaseLayer : public Layer
 {
 public:
-	LoginBaseLayer();
-	virtual ~LoginBaseLayer();
+	CharacterSelectBaseLayer();
+	virtual ~CharacterSelectBaseLayer();
 
 	virtual bool Initialize();
 	virtual void Update(float);
@@ -16,11 +16,3 @@ public:
 	virtual void ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM);
 };
 
-enum LOGIN_BASE_OBJECT_KEY
-{
-	BACKGROUND = 0x0010,
-	FRAME = 0x0020,
-	GAMEGRADE = 0x0040,
-	LOGO = 0x0080,
-	INPUT_BACKGROUND = 0x0100
-};

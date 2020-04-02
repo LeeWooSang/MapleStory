@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 #include "Texture/Texture.h"
+//#include "../../../GameServer/Code/Protocol.h"
 
 INIT_INSTACNE(ResourceManager)
 ResourceManager::ResourceManager()
@@ -108,8 +109,8 @@ bool ResourceManager::LoadTexture()
 		return false;
 
 	Texture* tex18 = new Texture;
-	m_textureList.emplace("BackButton", tex18);
-	if (tex18->Initialize(L"../Resource/Textures/UI/WorldSelect/BackButton.png", 81, 35, 1, 1, 0, 0) == false)
+	m_textureList.emplace("GoLoginSceneButton", tex18);
+	if (tex18->Initialize(L"../Resource/Textures/UI/WorldSelect/GoLoginSceneButton.png", 81, 35, 1, 1, 0, 0) == false)
 		return false;
 
 	Texture* tex19 = new Texture;
@@ -121,31 +122,32 @@ bool ResourceManager::LoadTexture()
 	m_textureList.emplace("ChannelSelectBackground", tex20);
 	if (tex20->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelSelectBackground.png", 396, 335, 1, 1, 0, 0) == false)
 		return false;
-
+	
 	Texture* tex21 = new Texture;
-	m_textureList.emplace("ChannelButton1", tex21);
-	if (tex21->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelButton1.png", 68, 27, 1, 1, 0, 0) == false)
+	m_textureList.emplace("ChannelWorldLogo", tex21);
+	if (tex21->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelWorldLogo.png", 132, 44, 1, 1, 0, 0) == false)
 		return false;
 
 	Texture* tex22 = new Texture;
-	m_textureList.emplace("ChannelButton2", tex22);
-	if (tex22->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelButton2.png", 68, 27, 1, 1, 0, 0) == false)
+	m_textureList.emplace("ChannelSelectButton", tex22);
+	if (tex22->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelSelectButton.png", 131, 31, 1, 1, 0, 0) == false)
 		return false;
 
 	Texture* tex23 = new Texture;
-	m_textureList.emplace("ChannelButton3", tex23);
-	if (tex23->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelButton3.png", 68, 27, 1, 1, 0, 0) == false)
+	m_textureList.emplace("ChannelGauge", tex23);
+	if (tex23->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelGauge.png", 56, 5, 1, 1, 0, 0) == false)
 		return false;
 
-	Texture* tex24 = new Texture;
-	m_textureList.emplace("ChannelButton4", tex24);
-	if (tex24->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelButton4.png", 68, 27, 1, 1, 0, 0) == false)
-		return false;
+	for (int i = 0; i < 5; ++i)
+	{
+		string s = "ChannelButton" + to_string(i + 1);
+		wstring ws = L"ChannelButton" + to_wstring(i + 1) + L".png";
 
-	Texture* tex25 = new Texture;
-	m_textureList.emplace("ChannelButton5", tex25);
-	if (tex25->Initialize(L"../Resource/Textures/UI/ChannelSelect/ChannelButton5.png", 68, 27, 1, 1, 0, 0) == false)
-		return false;
+		Texture* tex = new Texture;
+		m_textureList.emplace(s, tex);
+		if (tex->Initialize(L"../Resource/Textures/UI/ChannelSelect/" + ws, 68, 27, 1, 1, 0, 0) == false)
+			return false;
+	}
 
 	return true;
 }

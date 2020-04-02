@@ -6,8 +6,8 @@ INIT_INSTACNE(SceneManager)
 SceneManager::SceneManager()
 {
 	m_sceneList.clear();
-	m_gameState = GAME_STATE::LOGIN_SCENE;
-	//m_gameState = GAME_STATE::WORLD_SELECT_SCENE;
+	//m_gameState = GAME_STATE::LOGIN_SCENE;
+	m_gameState = GAME_STATE::WORLD_SELECT_SCENE;
 
 }
 

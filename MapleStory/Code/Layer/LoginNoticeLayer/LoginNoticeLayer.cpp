@@ -27,35 +27,35 @@ bool LoginNoticeLayer::Initialize()
 
 	string name = "NoticeBackground";
 	m_noticeBackground = new NoticeUI(name);
-	m_objectMap.emplace(NOTICE_OBJECT_KEY::NOTICE_BACKGROUND, m_noticeBackground);
+	m_objectMap.emplace(LOGIN_NOTICE_OBJECT_KEY::NOTICE_BACKGROUND, m_noticeBackground);
 	if (m_noticeBackground->Initialize() == false)
 		return false;
 	m_noticeBackground->SetPosition(VECTOR2D(0.f, 0.f));
 
 	name = "NoticeIDNotCorrect";
 	m_noticeIDNotCorrect = new NoticeUI(name);
-	m_objectMap.emplace(NOTICE_OBJECT_KEY::NOTICE_ID_NOT_CORRECT, m_noticeIDNotCorrect);
+	m_objectMap.emplace(LOGIN_NOTICE_OBJECT_KEY::NOTICE_ID_NOT_CORRECT, m_noticeIDNotCorrect);
 	if (m_noticeIDNotCorrect->Initialize() == false)
 		return false;
 	m_noticeIDNotCorrect->SetPosition(VECTOR2D(0.f, -15.f));
 
 	name = "NoticePWNotCorrect";
 	m_noticePWNotCorrect = new NoticeUI(name);
-	m_objectMap.emplace(NOTICE_OBJECT_KEY::NOTICE_PW_NOT_CORRECT, m_noticePWNotCorrect);
+	m_objectMap.emplace(LOGIN_NOTICE_OBJECT_KEY::NOTICE_PW_NOT_CORRECT, m_noticePWNotCorrect);
 	if (m_noticePWNotCorrect->Initialize() == false)
 		return false;
 	m_noticePWNotCorrect->SetPosition(VECTOR2D(0.f, -15.f));
 
 	name = "NoticeYesButton";
 	m_yesButton = new ButtonUI(name);
-	m_objectMap.emplace(NOTICE_OBJECT_KEY::NOTICE_YES_BUTTON, m_yesButton);
+	m_objectMap.emplace(LOGIN_NOTICE_OBJECT_KEY::NOTICE_YES_BUTTON, m_yesButton);
 	if (m_yesButton->Initialize() == false)
 		return false;
 	m_yesButton->SetPosition(VECTOR2D(-40.f, 50.f));
 
 	name = "NoticeNoButton";
 	m_noButton = new ButtonUI(name);
-	m_objectMap.emplace(NOTICE_OBJECT_KEY::NOTICE_NO_BUTTON, m_noButton);
+	m_objectMap.emplace(LOGIN_NOTICE_OBJECT_KEY::NOTICE_NO_BUTTON, m_noButton);
 	if (m_noButton->Initialize() == false)
 		return false;
 	m_noButton->SetPosition(VECTOR2D(40.f, 50.f));
@@ -67,7 +67,7 @@ void LoginNoticeLayer::Update(float elapsedTime)
 {
 	if (m_yesButton != nullptr)
 	{
-		int flag = NOTICE_OBJECT_KEY::NOTICE_YES_BUTTON;
+		int flag = LOGIN_NOTICE_OBJECT_KEY::NOTICE_YES_BUTTON;
 		
 		if (CheckCollision(m_yesButton, flag) == true)
 			ProcessCollision(m_yesButton, flag);
@@ -95,10 +95,10 @@ void LoginNoticeLayer::Render()
 	m_noticeBackground->Render();
 
 	if (m_noticeType & NOTICE_TYPE::ID_NOT_CORRECT)
-		m_objectMap[NOTICE_OBJECT_KEY::NOTICE_ID_NOT_CORRECT]->Render();
+		m_objectMap[LOGIN_NOTICE_OBJECT_KEY::NOTICE_ID_NOT_CORRECT]->Render();
 
 	else if (m_noticeType & NOTICE_TYPE::PW_NOT_CORRECT)
-		m_objectMap[NOTICE_OBJECT_KEY::NOTICE_PW_NOT_CORRECT]->Render();
+		m_objectMap[LOGIN_NOTICE_OBJECT_KEY::NOTICE_PW_NOT_CORRECT]->Render();
 
 	m_yesButton->Render();
 }

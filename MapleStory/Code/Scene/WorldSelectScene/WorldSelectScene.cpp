@@ -5,6 +5,8 @@
 
 WorldSelectScene::WorldSelectScene()
 {
+	m_isWorldSelect = false;
+	m_channelSelectLayer = nullptr;
 }
 
 WorldSelectScene::~WorldSelectScene()
@@ -13,6 +15,8 @@ WorldSelectScene::~WorldSelectScene()
 
 bool WorldSelectScene::Initialize()
 {
+	m_isWorldSelect = false;
+
 	WorldSelectBaseLayer* worldSelectBaseLayer = new WorldSelectBaseLayer;
 	m_layerList.emplace("WorldSelectBaseLayer", worldSelectBaseLayer);
 	if (worldSelectBaseLayer->Initialize() == false)
@@ -23,9 +27,9 @@ bool WorldSelectScene::Initialize()
 	if (worldSelectUILayer->Initialize() == false)
 		return false;
 
-	ChannelSelectLayer* channelSelectLayer = new ChannelSelectLayer;
-	m_layerList.emplace("ChannelSelectLayer", channelSelectLayer);
-	if (channelSelectLayer->Initialize() == false)
+	m_channelSelectLayer = new ChannelSelectLayer;
+	//m_layerList.emplace("ChannelSelectLayer", channelSelectLayer);
+	if (m_channelSelectLayer->Initialize() == false)
 		return false;
 
 	return true;
@@ -35,12 +39,22 @@ void WorldSelectScene::Update(float elapsedTime)
 {
 	for (auto layer : m_layerList)
 		layer.second->Update(elapsedTime);
+
+	if (m_isWorldSelect == true)
+	{
+		m_channelSelectLayer->Update(elapsedTime);
+	}
 }
 
 void WorldSelectScene::Render()
 {
 	for (auto layer : m_layerList)
 		layer.second->Render();
+
+	if (m_isWorldSelect == true)
+	{
+		m_channelSelectLayer->Render();
+	}
 }
 
 void WorldSelectScene::ProcessKeyboardMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
