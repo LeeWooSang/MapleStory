@@ -5,7 +5,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmd
 	if (GET_INSTANCE(Core)->Initialize(hInstance) == false)
 	{
 		GET_INSTANCE(Core)->Release();
-		return 0;
+		return -1;
 	}
 
 	GET_INSTANCE(Core)->Run();
