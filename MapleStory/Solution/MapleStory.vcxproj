@@ -178,6 +178,7 @@
     <ClCompile Include="..\Code\Input\Input.cpp" />
     <ClCompile Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.cpp" />
     <ClCompile Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.cpp" />
+    <ClCompile Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.cpp" />
     <ClCompile Include="..\Code\Layer\Layer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="..\Code\Input\Input.h" />
     <ClInclude Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.h" />
     <ClInclude Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.h" />
+    <ClInclude Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.h" />
     <ClInclude Include="..\Code\Layer\Layer.h" />
     <ClInclude Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.h" />
     <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h" />

@@ -11,7 +11,8 @@ ButtonUI::~ButtonUI()
 
 bool ButtonUI::Initialize()
 {
-	GameObject::Initialize();
+	if (GameObject::Initialize() == false)
+		return false;
 
 	m_worldMatrix._21 = 0.f;
 	m_worldMatrix._22 = -1.f;

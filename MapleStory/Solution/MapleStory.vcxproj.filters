@@ -101,6 +101,9 @@
     <Filter Include="Code\Layer\CharacterSelectBaseLayer">
       <UniqueIdentifier>{2d201c0f-a3f3-4834-a6c8-b95e306b61cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Layer\CharacterSelectUILayer">
+      <UniqueIdentifier>{97d8126e-71a0-48af-a179-cca43ed5a8ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -201,6 +204,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.cpp">
       <Filter>Code\Layer\CharacterSelectBaseLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.cpp">
+      <Filter>Code\Layer\CharacterSelectUILayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +317,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.h">
       <Filter>Code\Layer\CharacterSelectBaseLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.h">
+      <Filter>Code\Layer\CharacterSelectUILayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

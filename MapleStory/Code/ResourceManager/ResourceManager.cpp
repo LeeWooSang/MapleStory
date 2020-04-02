@@ -149,6 +149,17 @@ bool ResourceManager::LoadTexture()
 			return false;
 	}
 
+	Texture* tex24 = new Texture;
+	m_textureList.emplace("CharacterSelectBackground", tex24);
+	if (tex24->Initialize(L"../Resource/Textures/UI/CharacterSelect/CharacterSelectBackground.png", 800, 600, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex25 = new Texture;
+	m_textureList.emplace("GoWorldSelectSceneButton", tex25);
+	if (tex25->Initialize(L"../Resource/Textures/UI/CharacterSelect/GoWorldSelectSceneButton.png", 81, 35, 1, 1, 0, 0) == false)
+		return false;
+
+
 	return true;
 }
 
