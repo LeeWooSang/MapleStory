@@ -285,6 +285,8 @@ public:
 	virtual AABB GetAABB(D2D1_RECT_F *pd2drcBounds=NULL);
 	AABB GetBounds(D2D1_RECT_F *pd2drcBounds=NULL);
 	AABB GetTransformedBounds(Matrix3x2F *pd2dmtxTransform=NULL, D2D1_RECT_F *pd2drcBounds=NULL);
+
+	void SetAABB(AABB& rcBounds) { m_rcBounds = rcBounds; }
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

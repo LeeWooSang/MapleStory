@@ -169,6 +169,57 @@ bool ResourceManager::LoadTexture()
 	if (tex27->Initialize(L"../Resource/Textures/UI/CharacterSelect/WorldLogoBackground.png", 190, 89, 1, 1, 0, 0) == false)
 		return false;
 
+	Texture* tex28 = new Texture;
+	m_textureList.emplace("WorldLogoIcon", tex28);
+	if (tex28->Initialize(L"../Resource/Textures/UI/CharacterSelect/WorldLogoIcon.png", 44, 48, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex29 = new Texture;
+	m_textureList.emplace("WorldLogoName", tex29);
+	if (tex29->Initialize(L"../Resource/Textures/UI/CharacterSelect/WorldLogoName.png", 81, 25, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex30 = new Texture;
+	m_textureList.emplace("FrontHead", tex30);
+	if (tex30->Initialize(L"../Resource/Textures/Character/Head/FrontHead.png", 39, 35, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex31 = new Texture;
+	m_textureList.emplace("FrontHead", tex31);
+	if (tex31->Initialize(L"../Resource/Textures/Character/Head/BackHead.png", 41, 35, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex32 = new Texture;
+	m_textureList.emplace("IdleBody0", tex32);
+	if (tex32->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody0.png", 21, 31, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex33 = new Texture;
+	m_textureList.emplace("IdleBody1", tex33);
+	if (tex33->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody1.png", 22, 31, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex34 = new Texture;
+	m_textureList.emplace("IdleBody2", tex34);
+	if (tex34->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody2.png", 23, 31, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex35 = new Texture;
+	m_textureList.emplace("IdleArm0", tex35);
+	if (tex35->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm0.png", 10, 19, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex36 = new Texture;
+	m_textureList.emplace("IdleArm1", tex36);
+	if (tex36->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm1.png", 10, 19, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex37 = new Texture;
+	m_textureList.emplace("IdleArm2", tex37);
+	if (tex37->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm2.png", 11, 19, 1, 1, 0, 0) == false)
+		return false;
+
+
 	return true;
 }
 

@@ -34,6 +34,8 @@ public:
 
 	void SetIsDrawBoundingBox(bool value) { m_isDrawBoundingBox = value; }
 
+	//virtual void InitHierarchyMap() = 0;
+
 protected:
 	string m_name;
 	Matrix3x2F m_worldMatrix;
@@ -47,4 +49,7 @@ protected:
 	VECTOR2D m_gravity;
 
 	bool m_isDrawBoundingBox;
+
+	unordered_map<string, GameObject*> m_hierarchyMap;
+	list<GameObject*> m_hierarchyList;
 };

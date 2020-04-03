@@ -3,6 +3,14 @@
 
 #define SAFE_DELETE_ARRAY(p)	if(p != nullptr)	{ delete[] p; p = nullptr; }
 
+#define SAFE_DELETE_VECTOR(p) \
+for(auto iter = p.begin(); iter != p.end(); ) \
+{ \
+	delete (*iter); \
+	iter = p.erase(iter); \
+} \
+p.clear(); \
+
 #define SAFE_DELETE_LIST(p) \
 for(auto iter = p.begin(); iter != p.end(); ) \
 { \

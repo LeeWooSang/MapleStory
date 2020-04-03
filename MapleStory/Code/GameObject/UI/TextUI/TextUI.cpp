@@ -69,7 +69,7 @@ void TextUI::Render()
 	Matrix3x2F worldView = m_worldMatrix * GET_INSTANCE(Camera)->GetViewMatrix();
 	VECTOR2D pos = VECTOR2D(worldView._31, worldView._32);
 	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
-
+	
 	int minX = pos.x - tex->GetWidth() * 0.5f;
 	int minY = pos.y - tex->GetHeight() * 0.5f;
 

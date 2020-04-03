@@ -39,6 +39,20 @@ bool CharacterSelectBaseLayer::Initialize()
 		return false;
 	worldLogoBackground->SetPosition(VECTOR2D(272.5f, -222.5f));
 
+	name = "WorldLogoIcon";
+	Map* worldLogoIcon = new Map(name);
+	m_objectList.emplace_back(worldLogoIcon);
+	if (worldLogoIcon->Initialize() == false)
+		return false;
+	worldLogoIcon->SetPosition(VECTOR2D(225.f, -222.5f));
+
+	name = "WorldLogoName";
+	Map* worldLogoName = new Map(name);
+	m_objectList.emplace_back(worldLogoName);
+	if (worldLogoName->Initialize() == false)
+		return false;
+	worldLogoName->SetPosition(VECTOR2D(295.f, -230.5f));
+
 	return true;
 }
 

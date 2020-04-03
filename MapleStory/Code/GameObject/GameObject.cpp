@@ -13,16 +13,22 @@ GameObject::GameObject(const string& name)
 	m_maxVelocity = VECTOR2D(0.f, 0.f);
 	m_gravity = VECTOR2D(0.f, 0.f);
 	m_isDrawBoundingBox = false;
+
+	//m_animationName.clear();
 }
 
 GameObject::~GameObject()
 {
 	if (m_collider)
 		delete m_collider;
+
+	SAFE_DELETE_VECTOR(m_hierarchyList);
 }
 
 bool GameObject::Initialize()
 {
+	//m_animationName = m_name;
+
 	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
 	if (tex == nullptr)
 		return false;
@@ -38,6 +44,7 @@ bool GameObject::Initialize()
 
 void GameObject::Render()
 {
+	//Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
 	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
 	if (tex == nullptr)
 		return;
@@ -135,4 +142,3 @@ VECTOR2D GameObject::GetSize(Matrix3x2F* pd2dmtxTransform)
 
 	return m_collider->GetSize(&m_worldMatrix);
 }
-

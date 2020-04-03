@@ -81,11 +81,14 @@ void Player::Update(float elapsedTime)
 
 		m_velocity += vDeceleration * fDeceleration;
 	}
+
+	Character::Update(elapsedTime);
 }
 
 void Player::Render()
 {
-	GameObject::Render();
+	//GameObject::Render();
+	Character::Render();
 }
 
 void Player::RegenerateWorldMatrix()

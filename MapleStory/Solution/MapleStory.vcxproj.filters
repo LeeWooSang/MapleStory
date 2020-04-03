@@ -104,6 +104,9 @@
     <Filter Include="Code\Layer\CharacterSelectUILayer">
       <UniqueIdentifier>{97d8126e-71a0-48af-a179-cca43ed5a8ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Animation">
+      <UniqueIdentifier>{0ea67533-876e-43d1-8793-c10e8b9da83a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -207,6 +210,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.cpp">
       <Filter>Code\Layer\CharacterSelectUILayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Animation\Animation.cpp">
+      <Filter>Code\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +326,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.h">
       <Filter>Code\Layer\CharacterSelectUILayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Animation\Animation.h">
+      <Filter>Code\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

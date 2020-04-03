@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Code\Animation\Animation.cpp" />
     <ClCompile Include="..\Code\Camera\Camera.cpp" />
     <ClCompile Include="..\Code\Collision\Collision.cpp" />
     <ClCompile Include="..\Code\Core\Core.cpp" />
@@ -197,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\GameServer\Code\Protocol.h" />
+    <ClInclude Include="..\Code\Animation\Animation.h" />
     <ClInclude Include="..\Code\Camera\Camera.h" />
     <ClInclude Include="..\Code\Collision\Collision.h" />
     <ClInclude Include="..\Code\Core\Core.h" />
