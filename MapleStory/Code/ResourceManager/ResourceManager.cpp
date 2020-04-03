@@ -185,7 +185,7 @@ bool ResourceManager::LoadTexture()
 		return false;
 
 	Texture* tex31 = new Texture;
-	m_textureList.emplace("FrontHead", tex31);
+	m_textureList.emplace("BackHead", tex31);
 	if (tex31->Initialize(L"../Resource/Textures/Character/Head/BackHead.png", 41, 35, 1, 1, 0, 0) == false)
 		return false;
 

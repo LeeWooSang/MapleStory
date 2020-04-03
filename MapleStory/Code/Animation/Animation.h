@@ -21,5 +21,11 @@ private:
 	vector<string> m_animationList;
 	int m_animationNum;
 	float m_delay;
+	int m_flag;
 };
 
+enum IDLE_ANIMATION_TYPE
+{
+	FOWARD_DIRECTION = 0x0001,
+	BACK_DIRECTION = 0x0002,
+};

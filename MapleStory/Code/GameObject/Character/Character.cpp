@@ -111,7 +111,7 @@ void Character::InitAnimation()
 		objectName = "Head";
 		Character* head = new Character(objectName);
 		head->SetUpVector(VECTOR2D(0.f, -1.f));
-		head->SetPosition(VECTOR2D(0.f, 0.f));
+		head->SetPosition(VECTOR2D(2.5f, 0.f));
 		//m_hierarchyMap.emplace(objectName, head);
 		m_hierarchyList.emplace_back(head);
 

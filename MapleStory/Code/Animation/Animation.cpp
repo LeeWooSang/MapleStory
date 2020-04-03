@@ -6,6 +6,7 @@ Animation::Animation(const string& name)
 	m_animationList.clear();
 	m_animationNum = 0;
 	m_delay = 0.f;
+	m_flag = IDLE_ANIMATION_TYPE::FOWARD_DIRECTION;
 }
 
 Animation::~Animation()
@@ -24,8 +25,31 @@ void Animation::Update(float elapsedTime)
 		return;
 	m_delay = 0.f;
 
-	if (m_animationNum == m_animationList.size() - 1)
-		m_animationNum = 0;
-	else
-		++m_animationNum;
+	if (m_name == "Idle")
+	{
+		//m_flag |= IDLE_ANIMATION_TYPE::FOWARD_DIRECTION;
+
+		if (m_flag & IDLE_ANIMATION_TYPE::FOWARD_DIRECTION)
+		{
+			if (m_animationNum == m_animationList.size() - 1)
+			{
+				m_flag &= ~IDLE_ANIMATION_TYPE::FOWARD_DIRECTION;
+				m_flag |= IDLE_ANIMATION_TYPE::BACK_DIRECTION;
+			}
+
+			else
+				++m_animationNum;
+		}
+		else
+		{
+			if (m_animationNum == 0)
+			{
+				m_flag &= ~IDLE_ANIMATION_TYPE::BACK_DIRECTION;
+				m_flag |= IDLE_ANIMATION_TYPE::FOWARD_DIRECTION;
+			}
+
+			else
+				--m_animationNum;
+		}
+	}
 }
