@@ -34,7 +34,6 @@ bool ChannelSelectLayer::Initialize()
 		return false;
 	channelSelectButton->SetPosition(VECTOR2D(112.5f, -121.f));
 
-
 	float x = -142.f;
 	float y = -78.5f;
 

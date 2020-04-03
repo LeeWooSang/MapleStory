@@ -1,6 +1,5 @@
 #include "Scene.h"
 #include "../Layer/Layer.h"
-#include "../GameObject/GameObject.h"
 
 Scene::Scene()
 {

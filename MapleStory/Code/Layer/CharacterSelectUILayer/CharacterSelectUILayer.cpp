@@ -12,12 +12,19 @@ CharacterSelectUILayer::~CharacterSelectUILayer()
 
 bool CharacterSelectUILayer::Initialize()
 {
-	string name = "GoWorldSelectSceneButton";
+	string name = "GoLoginSceneButton";
+	ButtonUI* goLoginSceneButton = new ButtonUI(name);
+	m_objectMap.emplace(CHARACTER_SELECT_UI_OBJECT_KEY::GO_LOGIN_SCENE_BUTTON, goLoginSceneButton);
+	if (goLoginSceneButton->Initialize() == false)
+		return false;
+	goLoginSceneButton->SetPosition(VECTOR2D(-359.5f, 235.f));
+
+	name = "GoWorldSelectSceneButton";
 	ButtonUI* goWorldSelectSceneButton = new ButtonUI(name);
 	m_objectMap.emplace(CHARACTER_SELECT_UI_OBJECT_KEY::GO_WORLD_SELECT_SCENE_BUTTON, goWorldSelectSceneButton);
 	if (goWorldSelectSceneButton->Initialize() == false)
 		return false;
-	goWorldSelectSceneButton->SetPosition(VECTOR2D(-359.5f, 260.f));
+	goWorldSelectSceneButton->SetPosition(VECTOR2D(-359.5f, 195.f));
 
 	return true;
 }
@@ -56,6 +63,10 @@ void CharacterSelectUILayer::ProcessCollision(GameObject* object, int& flag)
 {
 	switch (flag)
 	{
+	case PROCESS_CHARACTER_SELECT_UI_COLLISION_TYPE::GO_LOGIN_SCENE_BUTTON_COLLISION_AND_CLICK:
+		GET_INSTANCE(SceneManager)->SetGameState(SceneManager::GAME_STATE::LOGIN_SCENE);
+		break;
+
 	case PROCESS_CHARACTER_SELECT_UI_COLLISION_TYPE::GO_WORLD_SELECT_SCENE_BUTTON_COLLISION_AND_CLICK:
 		GET_INSTANCE(SceneManager)->SetGameState(SceneManager::GAME_STATE::WORLD_SELECT_SCENE);
 		break;

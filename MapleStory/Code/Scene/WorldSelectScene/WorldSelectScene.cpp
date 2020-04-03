@@ -11,6 +11,8 @@ WorldSelectScene::WorldSelectScene()
 
 WorldSelectScene::~WorldSelectScene()
 {
+	if (m_channelSelectLayer != nullptr)
+		delete m_channelSelectLayer;
 }
 
 bool WorldSelectScene::Initialize()

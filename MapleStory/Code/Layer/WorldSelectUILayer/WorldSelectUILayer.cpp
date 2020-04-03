@@ -19,7 +19,7 @@ bool WorldSelectUILayer::Initialize()
 	m_objectMap.emplace(WORLD_SELECT_UI_OBJECT_KEY::GO_LOGIN_SCENE_BUTTON, goLoginSceneButton);
 	if (goLoginSceneButton->Initialize() == false)
 		return false;
-	goLoginSceneButton->SetPosition(VECTOR2D(-359.5f, 260.f));
+	goLoginSceneButton->SetPosition(VECTOR2D(-359.5f, 235.f));
 
 	name = "WorldButton0";
 	ButtonUI* worldButton = new ButtonUI(name);
