@@ -11,7 +11,7 @@ Core::Core()
 {
 	// 메모리 릭이 있는지 체크를 해준다.
 	// 릭이 있으면, 번호를 출력해준다.
-	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	// 출력된 번호를 넣어주면 그 지점으로 바로 이동시켜준다.
 	// [ 예시 ]

@@ -21,7 +21,7 @@ bool Animation::Initialize()
 void Animation::Update(float elapsedTime)
 {
 	m_delay += elapsedTime;
-	if (m_delay < 0.5f)
+	if (m_delay < 0.35f)
 		return;
 	m_delay = 0.f;
 
