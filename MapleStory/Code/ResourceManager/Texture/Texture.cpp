@@ -10,6 +10,8 @@ Texture::Texture()
 	m_totalFrameY = 0;
 	m_frameX = 0;
 	m_frameY = 0;
+	m_originX = 0.f;
+	m_originY = 0.f;
 }
 
 Texture::~Texture()
@@ -18,7 +20,7 @@ Texture::~Texture()
 		m_image->Release();
 }
 
-bool Texture::Initialize(const wstring& path, int width, int height, int totalX, int totalY, int frameX, int frameY)
+bool Texture::Initialize(const wstring& path, int width, int height, int totalX, int totalY, int frameX, int frameY, float originX, float originY)
 {
 	m_width = width;
 	m_height = height;
@@ -26,6 +28,8 @@ bool Texture::Initialize(const wstring& path, int width, int height, int totalX,
 	m_totalFrameY = totalY;
 	m_frameX = frameX;
 	m_frameY = frameY;
+	m_originX = originX;
+	m_originY = originY;
 
 	IWICBitmapDecoder* pBitmapDecoder;
 	HRESULT result = GET_INSTANCE(D2DManager)->GetWICImagingFactory()->CreateDecoderFromFilename(path.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &pBitmapDecoder);

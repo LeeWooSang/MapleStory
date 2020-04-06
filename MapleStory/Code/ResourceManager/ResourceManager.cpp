@@ -178,10 +178,12 @@ bool ResourceManager::LoadTexture()
 	m_textureList.emplace("WorldLogoName", tex29);
 	if (tex29->Initialize(L"../Resource/Textures/UI/CharacterSelect/WorldLogoName.png", 81, 25, 1, 1, 0, 0) == false)
 		return false;
-
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	Texture* tex30 = new Texture;
 	m_textureList.emplace("FrontHead", tex30);
-	if (tex30->Initialize(L"../Resource/Textures/Character/Head/FrontHead.png", 39, 35, 1, 1, 0, 0) == false)
+	if (tex30->Initialize(L"../Resource/Textures/Character/Head/FrontHead.png", 39, 35, 1, 1, 0, 0, 2.5f, 0.f) == false)
 		return false;
 
 	Texture* tex31 = new Texture;
@@ -189,36 +191,93 @@ bool ResourceManager::LoadTexture()
 	if (tex31->Initialize(L"../Resource/Textures/Character/Head/BackHead.png", 41, 35, 1, 1, 0, 0) == false)
 		return false;
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	Texture* tex32 = new Texture;
 	m_textureList.emplace("IdleBody0", tex32);
-	if (tex32->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody0.png", 21, 31, 1, 1, 0, 0) == false)
+	if (tex32->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody0.png", 21, 31, 1, 1, 0, 0, 0.f, 30.f) == false)
 		return false;
 
 	Texture* tex33 = new Texture;
 	m_textureList.emplace("IdleBody1", tex33);
-	if (tex33->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody1.png", 22, 31, 1, 1, 0, 0) == false)
+	if (tex33->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody1.png", 22, 31, 1, 1, 0, 0, -0.5f, 30.f) == false)
 		return false;
 
 	Texture* tex34 = new Texture;
 	m_textureList.emplace("IdleBody2", tex34);
-	if (tex34->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody2.png", 23, 31, 1, 1, 0, 0) == false)
+	if (tex34->Initialize(L"../Resource/Textures/Character/Body/Idle/IdleBody2.png", 23, 31, 1, 1, 0, 0, -1.f, 30.f) == false)
 		return false;
 
 	Texture* tex35 = new Texture;
 	m_textureList.emplace("IdleArm0", tex35);
-	if (tex35->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm0.png", 10, 19, 1, 1, 0, 0) == false)
+	if (tex35->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm0.png", 10, 19, 1, 1, 0, 0, 9.f, 25.f) == false)
 		return false;
 
 	Texture* tex36 = new Texture;
 	m_textureList.emplace("IdleArm1", tex36);
-	if (tex36->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm1.png", 10, 19, 1, 1, 0, 0) == false)
+	if (tex36->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm1.png", 10, 19, 1, 1, 0, 0, 9.f, 25.f) == false)
 		return false;
 
 	Texture* tex37 = new Texture;
 	m_textureList.emplace("IdleArm2", tex37);
-	if (tex37->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm2.png", 11, 19, 1, 1, 0, 0) == false)
+	if (tex37->Initialize(L"../Resource/Textures/Character/Arm/Idle/IdleArm2.png", 11, 19, 1, 1, 0, 0, 9.f, 25.f) == false)
+		return false;
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Texture* tex38 = new Texture;
+	m_textureList.emplace("WalkBody0", tex38);
+	if (tex38->Initialize(L"../Resource/Textures/Character/Body/Walk/WalkBody0.png", 27, 32, 1, 1, 0, 0, 0.f, 30.f) == false)
 		return false;
 
+	Texture* tex39 = new Texture;
+	m_textureList.emplace("WalkBody1", tex39);
+	if (tex39->Initialize(L"../Resource/Textures/Character/Body/Walk/WalkBody1.png", 26, 32, 1, 1, 0, 0, 2.f, 30.f) == false)
+		return false;
+
+	Texture* tex40 = new Texture;
+	m_textureList.emplace("WalkBody2", tex40);
+	if (tex40->Initialize(L"../Resource/Textures/Character/Body/Walk/WalkBody2.png", 24, 32, 1, 1, 0, 0, -1.5f, 30.f) == false)
+		return false;
+
+	Texture* tex41 = new Texture;
+	m_textureList.emplace("WalkBody3", tex41);
+	if (tex41->Initialize(L"../Resource/Textures/Character/Body/Walk/WalkBody3.png", 29, 31, 1, 1, 0, 0, -0.5f, 30.f) == false)
+		return false;
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Texture* tex42 = new Texture;
+	m_textureList.emplace("WalkArm0", tex42);
+	if (tex42->Initialize(L"../Resource/Textures/Character/Arm/Walk/WalkArm0.png", 12, 17, 1, 1, 0, 0, 12.f, 25.f) == false)
+		return false;
+
+	Texture* tex43 = new Texture;
+	m_textureList.emplace("WalkArm1", tex43);
+	if (tex43->Initialize(L"../Resource/Textures/Character/Arm/Walk/WalkArm1.png", 13, 17, 1, 1, 0, 0, 5.f, 25.f) == false)
+		return false;
+
+	Texture* tex44 = new Texture;
+	m_textureList.emplace("WalkArm2", tex44);
+	if (tex44->Initialize(L"../Resource/Textures/Character/Arm/Walk/WalkArm2.png", 12, 17, 1, 1, 0, 0, 12.f, 25.f) == false)
+		return false;
+
+	Texture* tex45 = new Texture;
+	m_textureList.emplace("WalkArm3", tex45);
+	if (tex45->Initialize(L"../Resource/Textures/Character/Arm/Walk/WalkArm3.png", 14, 15, 1, 1, 0, 0, 12.f, 25.f) == false)
+		return false;
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	Texture* tex46 = new Texture;
+	m_textureList.emplace("JumpBody0", tex46);
+	if (tex46->Initialize(L"../Resource/Textures/Character/Body/Jump/JumpBody0.png", 35, 30, 1, 1, 0, 0, 0.f, 0.f) == false)
+		return false;
+
+	Texture* tex47 = new Texture;
+	m_textureList.emplace("JumpArm0", tex47);
+	if (tex47->Initialize(L"../Resource/Textures/Character/Arm/Jump/JumpArm0.png", 13, 11, 1, 1, 0, 0, 0.f, 0.f) == false)
+		return false;
 
 	return true;
 }

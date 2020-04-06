@@ -57,6 +57,9 @@ void Character::Render()
 		reinterpret_cast<AABBCollider*>(m_collider)->SetAABB(AABB(-width * 0.5f, -height * 0.5f, width * 0.5f, height * 0.5f));
 
 	Matrix3x2F transform = m_worldMatrix;
+	transform._31 += tex->GetOriginX();
+	transform._32 += tex->GetOriginY();
+
 	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
 
@@ -73,8 +76,6 @@ bool Character::InitHierarchyMap()
 
 void Character::InitAnimation()
 {
-	string animationName = "Idle";
-
 	string objectName;
 
 	{
@@ -83,13 +84,23 @@ void Character::InitAnimation()
 		//m_hierarchyMap.emplace(objectName, body);
 		m_hierarchyList.emplace_back(body);
 		body->SetUpVector(VECTOR2D(0.f, -1.f));
-		body->SetPosition(VECTOR2D(0.f, 30.f));
 
-		Animation* IdleBodyAni = new Animation(animationName);
+		Animation* IdleBodyAni = new Animation("Idle");
 		IdleBodyAni->AddAnimation("IdleBody0");
 		IdleBodyAni->AddAnimation("IdleBody1");
 		IdleBodyAni->AddAnimation("IdleBody2");
-		body->m_animationMap.emplace(animationName, IdleBodyAni);
+		body->m_animationMap.emplace("Idle", IdleBodyAni);
+
+		Animation* walkBodyAni = new Animation("Walk");
+		walkBodyAni->AddAnimation("WalkBody0");
+		walkBodyAni->AddAnimation("WalkBody1");
+		walkBodyAni->AddAnimation("WalkBody2");
+		walkBodyAni->AddAnimation("WalkBody3");
+		body->m_animationMap.emplace("Walk", walkBodyAni);
+
+		Animation* jumpBodyAni = new Animation("Jump");
+		jumpBodyAni->AddAnimation("JumpBody0");
+		body->m_animationMap.emplace("Jump", jumpBodyAni);
 	}
 
 	{
@@ -98,25 +109,38 @@ void Character::InitAnimation()
 		//m_hierarchyMap.emplace(objectName, arm);
 		m_hierarchyList.emplace_back(arm);
 		arm->SetUpVector(VECTOR2D(0.f, -1.f));
-		arm->SetPosition(VECTOR2D(10.f, 25.f));
 
-		Animation* IdleArmAni = new Animation(animationName);
+		Animation* IdleArmAni = new Animation("Idle");
 		IdleArmAni->AddAnimation("IdleArm0");
 		IdleArmAni->AddAnimation("IdleArm1");
 		IdleArmAni->AddAnimation("IdleArm2");
-		arm->m_animationMap.emplace(animationName, IdleArmAni);
+		arm->m_animationMap.emplace("Idle", IdleArmAni);
+
+		Animation* walkArmAni = new Animation("Walk");
+		walkArmAni->AddAnimation("WalkArm0");
+		walkArmAni->AddAnimation("WalkArm1");
+		walkArmAni->AddAnimation("WalkArm2");
+		walkArmAni->AddAnimation("WalkArm3");
+		arm->m_animationMap.emplace("Walk", walkArmAni);
+
+		Animation* jumpArmAni = new Animation("Jump");
+		jumpArmAni->AddAnimation("JumpArm0");
+		arm->m_animationMap.emplace("Jump", jumpArmAni);
 	}
 
 	{
 		objectName = "Head";
 		Character* head = new Character(objectName);
 		head->SetUpVector(VECTOR2D(0.f, -1.f));
-		head->SetPosition(VECTOR2D(2.5f, 0.f));
 		//m_hierarchyMap.emplace(objectName, head);
 		m_hierarchyList.emplace_back(head);
 
-		Animation* frontHeadAni = new Animation(animationName);
-		frontHeadAni->AddAnimation("FrontHead");
-		head->m_animationMap.emplace(animationName, frontHeadAni);
+		Animation* idleHeadAni = new Animation("Idle");
+		idleHeadAni->AddAnimation("FrontHead");
+		head->m_animationMap.emplace("Idle", idleHeadAni);
+
+		Animation* walkHeadAni = new Animation("Walk");
+		walkHeadAni->AddAnimation("FrontHead");
+		head->m_animationMap.emplace("Walk", walkHeadAni);
 	}
 }
