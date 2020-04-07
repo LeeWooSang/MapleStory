@@ -14,7 +14,7 @@ constexpr int MAX_LEN = 256;
 //	wstring m_Text;
 //};
 
-constexpr int MAX_KEY_TYPE = 9;
+constexpr int MAX_KEY_TYPE = 11;
 enum KEY_TYPE 
 { 
 	NONE = 0, 
@@ -26,6 +26,9 @@ enum KEY_TYPE
 
 	KEYBOARD_TAB,
 	KEYBOARD_ENTER,
+
+	KEYBOARD_CONTROL,
+	KEYBOARD_ALT,
 
 	MOUSE_LBUTTON,
 	MOUSE_RBUTTON 
@@ -57,14 +60,15 @@ class Input
 	void ProcessMouseMessage(HWND, UINT, LPARAM);
 
 	const POINT& GetMousePos() const { return m_mousePos; }
+	
+	void ProcessKeyEvent();
+	bool KeyOnceCheck(KEY_TYPE);
 
-	bool PushedKey(KEY_TYPE key)	const { return m_keyStateList[key].m_pushed; }
-	bool PushingKey(KEY_TYPE key)	const { return m_keyStateList[key].m_pushing; }
-	bool PopKey(KEY_TYPE key)		const { return m_keyStateList[key].m_pop; }
-	bool KeyOnceCheck(KEY_TYPE key);
+	bool GetIsPushed(KEY_TYPE key)	const { return m_keyStateList[key].m_pushed; }
+	bool GetIsPushing(KEY_TYPE key)	const { return m_keyStateList[key].m_pushing; }
+	bool GetIsPop(KEY_TYPE key)	const { return m_keyStateList[key].m_pop; }
 
 private:
-	void ProcessKeyEvent();
 
 	POINT m_mousePos;
 	

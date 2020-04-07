@@ -12,11 +12,13 @@ public:
 	virtual void Render();
 
 	virtual bool InitHierarchyMap();
+	virtual void InitAnimation();
 
-	void InitAnimation();
+	void SetAnimation(const string&);
+	void AddAnimation(const string& animationName, class Animation* ani) { m_animationMap.emplace(string(animationName), ani); }
 
-private:
-	unordered_map<string, class Animation*> m_animationMap;
+protected:
 	string m_animation;
+	unordered_map<string, class Animation*> m_animationMap;
 };
 

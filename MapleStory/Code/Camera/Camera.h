@@ -19,12 +19,15 @@ class Camera
 
 public:
 	bool Initialize();
+
 	void Move(VECTOR2D&);
 	void Rotate(float);
 	void Update(float);
 
 	void RegenerateViewMatrix();
 	bool IsVisible(class GameObject*);
+
+	void SetTarget(class GameObject* object) { if(object != nullptr) m_target = object; }
 
 	const Matrix3x2F& GetViewMatrix() const { return m_viewMatrix; }
 
@@ -42,6 +45,8 @@ public:
 	void SetViewport(UINT xStart, UINT yStart, UINT nWidth, UINT nHeight, UINT nMinLayer, UINT nMaxLayer);
 
 private:
+	class GameObject* m_target;
+
 	Matrix3x2F m_viewMatrix;
 
 	VECTOR2D m_positionVector;

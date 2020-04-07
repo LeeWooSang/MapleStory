@@ -28,6 +28,9 @@ bool Input::Initialize()
 	m_keyStateList[KEY_TYPE::KEYBOARD_TAB].m_keyType = VK_TAB;
 	m_keyStateList[KEY_TYPE::KEYBOARD_ENTER].m_keyType = VK_RETURN;
 
+	m_keyStateList[KEY_TYPE::KEYBOARD_CONTROL].m_keyType = VK_CONTROL;
+	m_keyStateList[KEY_TYPE::KEYBOARD_ALT].m_keyType = VK_MENU;
+
 	m_keyStateList[KEY_TYPE::MOUSE_LBUTTON].m_keyType = VK_LBUTTON;
 	m_keyStateList[KEY_TYPE::MOUSE_RBUTTON].m_keyType = VK_RBUTTON;
 
@@ -148,3 +151,4 @@ bool Input::KeyOnceCheck(KEY_TYPE key)
 
 	return false;
 }
+

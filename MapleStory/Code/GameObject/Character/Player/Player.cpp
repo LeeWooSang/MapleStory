@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "../../../Camera/Camera.h"
 #include "../../../../../GameServer/Code/Protocol.h"
+#include "../../../Animation/Animation.h"
+#include "../../../Input/Input.h"
 
 Player::Player(const string& name) 
 	: Character(name)
@@ -22,16 +24,9 @@ Player::~Player()
 
 bool Player::Initialize()
 {
-	//if (GET_INSTANCE(D2DManager)->CreateTexture("Action", ImageInfo(L"../Resource/Textures/Character/Action.png", 900, 100, ANIMATION_FRAME::ACTION_FRAME, 1, 0, 0, 150, 150)) == false)
-	//	return false;
-
-	//m_AnimationMap.emplace(ANIMATION::ACTION, ANIMATION_FRAME::ACTION_FRAME);
-
-	//if (GET_INSTANCE(D2DManager)->CreateTexture("RagingBlow", ImageInfo(L"../Resource/Textures/Skill/Effect/RagingBlow.png", 5850, 380, ANIMATION_FRAME::RAGINGBLOW_FRAME, 1, 0, 0, 380, 380)) == false)
-	//	return false;
-
-	if (GameObject::Initialize() == false)
-		return false;
+	InitAnimation();
+	m_animation = "Idle";
+	SetAnimation(m_animation);
 
 	m_friction = 50.f;
 	m_gravity = VECTOR2D(0.f, 0.f);
@@ -44,6 +39,8 @@ bool Player::Initialize()
 
 void Player::Update(float elapsedTime)
 {
+	ProcessInput();
+
 	Move(elapsedTime);
 
 	m_velocity += m_gravity * elapsedTime;
@@ -83,12 +80,89 @@ void Player::Update(float elapsedTime)
 	}
 
 	Character::Update(elapsedTime);
+	cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
 }
 
 void Player::Render()
 {
-	//GameObject::Render();
 	Character::Render();
+}
+
+void Player::InitAnimation()
+{
+	string objectName;
+
+	{
+		objectName = "Body";
+		Character* body = new Character(objectName);
+		//m_hierarchyMap.emplace(objectName, body);
+		m_hierarchyList.emplace_back(body);
+		body->SetRightVector(VECTOR2D(1.f, 0.f));
+		body->SetUpVector(VECTOR2D(0.f, -1.f));
+
+		Animation* IdleBodyAni = new Animation("Idle");
+		IdleBodyAni->AddAnimation("IdleBody0");
+		IdleBodyAni->AddAnimation("IdleBody1");
+		IdleBodyAni->AddAnimation("IdleBody2");
+		body->AddAnimation("Idle", IdleBodyAni);
+
+		Animation* walkBodyAni = new Animation("Walk");
+		walkBodyAni->AddAnimation("WalkBody0");
+		walkBodyAni->AddAnimation("WalkBody1");
+		walkBodyAni->AddAnimation("WalkBody2");
+		walkBodyAni->AddAnimation("WalkBody3");
+		body->AddAnimation("Walk", walkBodyAni);
+
+		Animation* jumpBodyAni = new Animation("Jump");
+		jumpBodyAni->AddAnimation("JumpBody0");
+		body->AddAnimation("Jump", jumpBodyAni);
+	}
+
+	{
+		objectName = "Arm";
+		Character* arm = new Character(objectName);
+		//m_hierarchyMap.emplace(objectName, arm);
+		m_hierarchyList.emplace_back(arm);
+		arm->SetRightVector(VECTOR2D(1.f, 0.f));
+		arm->SetUpVector(VECTOR2D(0.f, -1.f));
+
+		Animation* IdleArmAni = new Animation("Idle");
+		IdleArmAni->AddAnimation("IdleArm0");
+		IdleArmAni->AddAnimation("IdleArm1");
+		IdleArmAni->AddAnimation("IdleArm2");
+		arm->AddAnimation("Idle", IdleArmAni);
+
+		Animation* walkArmAni = new Animation("Walk");
+		walkArmAni->AddAnimation("WalkArm0");
+		walkArmAni->AddAnimation("WalkArm1");
+		walkArmAni->AddAnimation("WalkArm2");
+		walkArmAni->AddAnimation("WalkArm3");
+		arm->AddAnimation("Walk", walkArmAni);
+
+		Animation* jumpArmAni = new Animation("Jump");
+		jumpArmAni->AddAnimation("JumpArm0");
+		arm->AddAnimation("Jump", jumpArmAni);
+	}
+
+	{
+		objectName = "Head";
+		Character* head = new Character(objectName);
+		head->SetRightVector(VECTOR2D(1.f, 0.f));
+		head->SetUpVector(VECTOR2D(0.f, -1.f));
+		m_hierarchyList.emplace_back(head);
+
+		Animation* idleHeadAni = new Animation("Idle");
+		idleHeadAni->AddAnimation("FrontHead");
+		head->AddAnimation("Idle", idleHeadAni);
+
+		Animation* walkHeadAni = new Animation("Walk");
+		walkHeadAni->AddAnimation("FrontHead");
+		head->AddAnimation("Walk", walkHeadAni);
+
+		Animation* jumpHeadAni = new Animation("Jump");
+		jumpHeadAni->AddAnimation("FrontHead");
+		head->AddAnimation("Jump", jumpHeadAni);
+	}
 }
 
 void Player::RegenerateWorldMatrix()
@@ -134,8 +208,34 @@ void Player::Move(float elapsedTime)
 		shift -= m_upVector * distance;
 	}
 
-	if(dir)
+	if (dir)
+	{
+		if (dir & DIR_TYPE::LEFT)
+		{
+			float minWidth = -WORLD_WIDTH * 0.5f;
+			if (m_positionVector.x <= minWidth)
+			{
+				m_positionVector.x = minWidth;
+				RegenerateWorldMatrix();
+				return;
+			}
+
+		}
+		else if (dir & DIR_TYPE::RIGHT)
+		{
+			float maxWidth = WORLD_WIDTH * 0.5f;
+			if (m_positionVector.x >= maxWidth)
+			{
+				m_positionVector.x = maxWidth;
+				RegenerateWorldMatrix();
+				return;
+			}
+
+		}
+			
 		Move(shift, true);
+	}
+
 }
 
 //void Player::Move(char direction, VECTO distance, bool velocity)
@@ -150,9 +250,37 @@ void Player::Move(VECTOR2D& shift, bool updateVelocity)
 	else
 	{
 		m_positionVector += shift;
+
 		RegenerateWorldMatrix();
 
 		GET_INSTANCE(Camera)->Move(shift);
-
 	}
+}
+
+void Player::ProcessInput()
+{
+	GET_INSTANCE(Input)->ProcessKeyEvent();
+
+	if (GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_LEFT) == true
+		|| GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_RIGHT) == true)
+	{
+		cout << "첨 누름" << endl;
+		SetAnimation("Walk");
+		// 이때 다른 플레이어에게 애니메이션 정보를 보내면 됨
+	}
+	else if (GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_ALT) == true)
+	{
+		cout << "점프 누름" << endl;
+		SetAnimation("Jump");
+	}
+
+	if (GET_INSTANCE(Input)->GetIsPop(KEY_TYPE::KEYBOARD_LEFT) == true
+		|| GET_INSTANCE(Input)->GetIsPop(KEY_TYPE::KEYBOARD_RIGHT) == true
+		|| GET_INSTANCE(Input)->GetIsPop(KEY_TYPE::KEYBOARD_ALT) == true)
+	{		
+		cout << "첨 땜" << endl;
+		SetAnimation("Idle");
+		// 이때 다른 플레이어에게 애니메이션 정보를 보내면 됨
+	}
+
 }

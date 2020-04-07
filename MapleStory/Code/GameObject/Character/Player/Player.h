@@ -12,10 +12,14 @@ public:
 	virtual void Render();
 
 private:
+	virtual void InitAnimation();
+
 	void RegenerateWorldMatrix();
 	void Move(float);
 	void Move(char direction, float distance, bool velocity = false);
 	void Move(VECTOR2D&, bool);
+
+	void ProcessInput();
 
 	VECTOR2D m_positionVector;
 	VECTOR2D m_rightVector;

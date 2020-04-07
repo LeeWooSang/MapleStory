@@ -271,12 +271,12 @@ bool ResourceManager::LoadTexture()
 	
 	Texture* tex46 = new Texture;
 	m_textureList.emplace("JumpBody0", tex46);
-	if (tex46->Initialize(L"../Resource/Textures/Character/Body/Jump/JumpBody0.png", 35, 30, 1, 1, 0, 0, 0.f, 0.f) == false)
+	if (tex46->Initialize(L"../Resource/Textures/Character/Body/Jump/JumpBody0.png", 35, 30, 1, 1, 0, 0, 0.f, 30.f) == false)
 		return false;
 
 	Texture* tex47 = new Texture;
 	m_textureList.emplace("JumpArm0", tex47);
-	if (tex47->Initialize(L"../Resource/Textures/Character/Arm/Jump/JumpArm0.png", 13, 11, 1, 1, 0, 0, 0.f, 0.f) == false)
+	if (tex47->Initialize(L"../Resource/Textures/Character/Arm/Jump/JumpArm0.png", 13, 11, 1, 1, 0, 0, 9.f, 25.f) == false)
 		return false;
 
 	return true;

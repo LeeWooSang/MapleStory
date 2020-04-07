@@ -23,11 +23,6 @@ bool CharacterSelectScene::Initialize()
 	if (characterSelectUILayer->Initialize() == false)
 		return false;
 
-	m_player = new Player("ChannelGauge");
-	if (m_player->Initialize() == false)
-		return false;
-	m_player->InitAnimation();
-
 	return true;
 }
 

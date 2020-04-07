@@ -72,5 +72,4 @@ void Animation::Update(float elapsedTime)
 			++m_animationNum;
 
 	}
-	cout << m_animationNum << endl;
 }

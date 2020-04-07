@@ -107,6 +107,15 @@
     <Filter Include="Code\Animation">
       <UniqueIdentifier>{0ea67533-876e-43d1-8793-c10e8b9da83a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Scene\InGameScene">
+      <UniqueIdentifier>{e59ae774-4160-4ec9-8504-693530f21fe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\InGameUILayer">
+      <UniqueIdentifier>{37dc0e2e-4f9c-47f5-bf95-5526b9ca1aaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\InGameBaseLayer">
+      <UniqueIdentifier>{110eb555-c511-4a72-88fc-c720ac8db5ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -213,6 +222,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Animation\Animation.cpp">
       <Filter>Code\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Scene\InGameScene\InGameScene.cpp">
+      <Filter>Code\Scene\InGameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.cpp">
+      <Filter>Code\Layer\InGameBaseLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +344,12 @@
     </ClInclude>
     <ClInclude Include="..\Code\Animation\Animation.h">
       <Filter>Code\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Scene\InGameScene\InGameScene.h">
+      <Filter>Code\Scene\InGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.h">
+      <Filter>Code\Layer\InGameBaseLayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,7 @@
     <ClCompile Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.cpp" />
     <ClCompile Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.cpp" />
     <ClCompile Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.cpp" />
+    <ClCompile Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.cpp" />
     <ClCompile Include="..\Code\Layer\Layer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.cpp" />
     <ClCompile Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="..\Code\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="..\Code\ResourceManager\Texture\Texture.cpp" />
     <ClCompile Include="..\Code\Scene\CharacterSelectScene\CharacterSelectScene.cpp" />
+    <ClCompile Include="..\Code\Scene\InGameScene\InGameScene.cpp" />
     <ClCompile Include="..\Code\Scene\LoginScene\LoginScene.cpp" />
     <ClCompile Include="..\Code\Scene\Scene.cpp" />
     <ClCompile Include="..\Code\Scene\SceneManager.cpp" />
@@ -220,6 +222,7 @@
     <ClInclude Include="..\Code\Layer\ChannelSelectLayer\ChannelSelectLayer.h" />
     <ClInclude Include="..\Code\Layer\CharacterSelectBaseLayer\CharacterSelectBaseLayer.h" />
     <ClInclude Include="..\Code\Layer\CharacterSelectUILayer\CharacterSelectUILayer.h" />
+    <ClInclude Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.h" />
     <ClInclude Include="..\Code\Layer\Layer.h" />
     <ClInclude Include="..\Code\Layer\LoginBaseLayer\LoginBaseLayer.h" />
     <ClInclude Include="..\Code\Layer\LoginNoticeLayer\LoginNoticeLayer.h" />
@@ -231,6 +234,7 @@
     <ClInclude Include="..\Code\ResourceManager\ResourceManager.h" />
     <ClInclude Include="..\Code\ResourceManager\Texture\Texture.h" />
     <ClInclude Include="..\Code\Scene\CharacterSelectScene\CharacterSelectScene.h" />
+    <ClInclude Include="..\Code\Scene\InGameScene\InGameScene.h" />
     <ClInclude Include="..\Code\Scene\LoginScene\LoginScene.h" />
     <ClInclude Include="..\Code\Scene\Scene.h" />
     <ClInclude Include="..\Code\Scene\SceneManager.h" />

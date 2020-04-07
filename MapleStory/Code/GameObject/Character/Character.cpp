@@ -22,8 +22,6 @@ bool Character::Initialize()
 
 void Character::Update(float elapsedTime)
 {
-	m_animation = "Idle";
-
 	for (auto object : m_hierarchyList)
 		object->Update(elapsedTime);
 
@@ -76,71 +74,10 @@ bool Character::InitHierarchyMap()
 
 void Character::InitAnimation()
 {
-	string objectName;
+}
 
-	{
-		objectName = "Body";
-		Character* body = new Character(objectName);
-		//m_hierarchyMap.emplace(objectName, body);
-		m_hierarchyList.emplace_back(body);
-		body->SetUpVector(VECTOR2D(0.f, -1.f));
-
-		Animation* IdleBodyAni = new Animation("Idle");
-		IdleBodyAni->AddAnimation("IdleBody0");
-		IdleBodyAni->AddAnimation("IdleBody1");
-		IdleBodyAni->AddAnimation("IdleBody2");
-		body->m_animationMap.emplace("Idle", IdleBodyAni);
-
-		Animation* walkBodyAni = new Animation("Walk");
-		walkBodyAni->AddAnimation("WalkBody0");
-		walkBodyAni->AddAnimation("WalkBody1");
-		walkBodyAni->AddAnimation("WalkBody2");
-		walkBodyAni->AddAnimation("WalkBody3");
-		body->m_animationMap.emplace("Walk", walkBodyAni);
-
-		Animation* jumpBodyAni = new Animation("Jump");
-		jumpBodyAni->AddAnimation("JumpBody0");
-		body->m_animationMap.emplace("Jump", jumpBodyAni);
-	}
-
-	{
-		objectName = "Arm";
-		Character* arm = new Character(objectName);
-		//m_hierarchyMap.emplace(objectName, arm);
-		m_hierarchyList.emplace_back(arm);
-		arm->SetUpVector(VECTOR2D(0.f, -1.f));
-
-		Animation* IdleArmAni = new Animation("Idle");
-		IdleArmAni->AddAnimation("IdleArm0");
-		IdleArmAni->AddAnimation("IdleArm1");
-		IdleArmAni->AddAnimation("IdleArm2");
-		arm->m_animationMap.emplace("Idle", IdleArmAni);
-
-		Animation* walkArmAni = new Animation("Walk");
-		walkArmAni->AddAnimation("WalkArm0");
-		walkArmAni->AddAnimation("WalkArm1");
-		walkArmAni->AddAnimation("WalkArm2");
-		walkArmAni->AddAnimation("WalkArm3");
-		arm->m_animationMap.emplace("Walk", walkArmAni);
-
-		Animation* jumpArmAni = new Animation("Jump");
-		jumpArmAni->AddAnimation("JumpArm0");
-		arm->m_animationMap.emplace("Jump", jumpArmAni);
-	}
-
-	{
-		objectName = "Head";
-		Character* head = new Character(objectName);
-		head->SetUpVector(VECTOR2D(0.f, -1.f));
-		//m_hierarchyMap.emplace(objectName, head);
-		m_hierarchyList.emplace_back(head);
-
-		Animation* idleHeadAni = new Animation("Idle");
-		idleHeadAni->AddAnimation("FrontHead");
-		head->m_animationMap.emplace("Idle", idleHeadAni);
-
-		Animation* walkHeadAni = new Animation("Walk");
-		walkHeadAni->AddAnimation("FrontHead");
-		head->m_animationMap.emplace("Walk", walkHeadAni);
-	}
+void Character::SetAnimation(const string& animationName)
+{
+	for (auto& object : m_hierarchyList)
+		reinterpret_cast<Character*>(object)->m_animation = animationName;
 }

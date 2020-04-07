@@ -4,6 +4,8 @@
 INIT_INSTACNE(Camera)
 Camera::Camera()
 {
+	m_target = nullptr;
+
 	m_viewMatrix = Matrix3x2F::Identity();
 
 	m_rightVector = VECTOR2D(1.0f, 0.0f);
@@ -59,6 +61,7 @@ void Camera::Rotate(float delta)
 
 void Camera::Update(float elapsedTime)
 {
+
 	RegenerateViewMatrix();
 }
 
