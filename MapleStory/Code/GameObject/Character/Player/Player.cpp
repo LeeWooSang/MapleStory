@@ -210,7 +210,7 @@ void Player::Move(float elapsedTime)
 
 	if (dir)
 	{
-		if (dir & DIR_TYPE::LEFT)
+		/*if (dir & DIR_TYPE::LEFT)
 		{
 			float minWidth = -WORLD_WIDTH * 0.5f;
 			if (m_positionVector.x <= minWidth)
@@ -231,7 +231,7 @@ void Player::Move(float elapsedTime)
 				return;
 			}
 
-		}
+		}*/
 			
 		Move(shift, true);
 	}
@@ -283,4 +283,6 @@ void Player::ProcessInput()
 		// 이때 다른 플레이어에게 애니메이션 정보를 보내면 됨
 	}
 
+	if (KEY_DOWN(VK_ESCAPE))
+		PostQuitMessage(0);
 }

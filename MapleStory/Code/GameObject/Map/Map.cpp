@@ -1,4 +1,6 @@
 #include "Map.h"
+#include "../../ResourceManager/ResourceManager.h"
+#include "../../ResourceManager/Texture/Texture.h"
 
 Map::Map(const string& name)
 	: GameObject(name)
@@ -26,4 +28,10 @@ void Map::Update(float elapsedTime)
 void Map::Render()
 {	
 	GameObject::Render();
+}
+
+void Map::InitWrap()
+{
+	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
+	tex->InitWrap();
 }

@@ -11,4 +11,5 @@ public:
 	virtual void Update(float);
 	virtual void Render();
 
+	void InitWrap();
 };

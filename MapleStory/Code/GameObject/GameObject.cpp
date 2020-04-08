@@ -56,6 +56,13 @@ void GameObject::Render()
 	D2D1_RECT_F rect;
 	m_collider->GetAABB(&rect);
 	GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(tex->GetBitmap(), rect);
+
+	//D2D1_RECT_F wrapRect = rect;
+	//wrapRect.left = rect.left * 2;
+	//wrapRect.right = rect.right * 2;
+	//tex->GetWrapBrush()->SetTransform(transform);
+	//GET_INSTANCE(D2DManager)->GetRenderTarget()->FillRectangle(wrapRect, tex->GetWrapBrush());
+
 	RenderBoundingBox();
 }
 

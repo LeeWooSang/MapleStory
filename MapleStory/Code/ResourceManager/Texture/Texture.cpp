@@ -12,12 +12,18 @@ Texture::Texture()
 	m_frameY = 0;
 	m_originX = 0.f;
 	m_originY = 0.f;
+
+	for(int i = 0; i < 3; ++i)
+		m_bitmapBrush[i] = nullptr;
 }
 
 Texture::~Texture()
 {
 	if (m_image != nullptr)
 		m_image->Release();
+
+	if(m_bitmapBrush[0] != nullptr)
+		m_bitmapBrush[0]->Release();
 }
 
 bool Texture::Initialize(const wstring& path, int width, int height, int totalX, int totalY, int frameX, int frameY, float originX, float originY)
@@ -78,6 +84,21 @@ bool Texture::Initialize(const wstring& path, int width, int height, int totalX,
 
 	if (flipRotator)
 		flipRotator->Release();
+
+	return true;
+}
+
+bool Texture::InitWrap()
+{
+	HRESULT result = GET_INSTANCE(D2DManager)->GetRenderTarget()->CreateBitmapBrush(m_image, &m_bitmapBrush[0]);
+	if (result != S_OK)
+		return false;
+	m_bitmapBrush[0]->SetExtendModeX(D2D1_EXTEND_MODE::D2D1_EXTEND_MODE_WRAP);
+	m_bitmapBrush[0]->SetExtendModeY(D2D1_EXTEND_MODE::D2D1_EXTEND_MODE_WRAP);
+	//m_bitmapBrush[0]->SetExtendModeY(D2D1_EXTEND_MODE::D2D1_EXTEND_MODE_FORCE_DWORD);
+
+	Matrix3x2F matrix = Matrix3x2F::Identity();
+	m_bitmapBrush[0]->SetTransform(matrix);
 
 	return true;
 }

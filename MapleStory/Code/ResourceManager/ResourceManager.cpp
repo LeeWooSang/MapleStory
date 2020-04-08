@@ -279,6 +279,31 @@ bool ResourceManager::LoadTexture()
 	if (tex47->Initialize(L"../Resource/Textures/Character/Arm/Jump/JumpArm0.png", 13, 11, 1, 1, 0, 0, 9.f, 25.f) == false)
 		return false;
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Texture* tex48 = new Texture;
+	m_textureList.emplace("HenesysBackground5", tex48);
+	if (tex48->Initialize(L"../Resource/Textures/Map/Henesys/Background/HenesysBackground5.png", 517, 162, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex49 = new Texture;
+	m_textureList.emplace("HenesysBackground6", tex49);
+	if (tex49->Initialize(L"../Resource/Textures/Map/Henesys/Background/HenesysBackground6.png", 630, 238, 1, 1, 0, 0) == false)
+		return false;
+
+	{
+		for (int i = 0; i < 6; ++i)
+		{
+			string s = "WoodMarbleTile" + to_string(i);
+			wstring ws = L"WoodMarbleTile" + to_wstring(i) + L".png";
+
+			Texture* tex = new Texture;
+			m_textureList.emplace(s, tex);
+			if (tex->Initialize(L"../Resource/Textures/Map/Henesys/Tile/Base/" + ws, 90, 60, 1, 1, 0, 0) == false)
+				return false;
+		}
+	}
+
 	return true;
 }
 
