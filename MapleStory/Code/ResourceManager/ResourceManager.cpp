@@ -303,6 +303,18 @@ bool ResourceManager::LoadTexture()
 				return false;
 		}
 	}
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			string s = "WoodMarbleTop" + to_string(i);
+			wstring ws = L"WoodMarbleTop" + to_wstring(i) + L".png";
+
+			Texture* tex = new Texture;
+			m_textureList.emplace(s, tex);
+			if (tex->Initialize(L"../Resource/Textures/Map/Henesys/Tile/Top/" + ws, 90, 33, 1, 1, 0, 0) == false)
+				return false;
+		}
+	}
 
 	return true;
 }

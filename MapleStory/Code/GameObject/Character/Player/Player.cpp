@@ -80,7 +80,7 @@ void Player::Update(float elapsedTime)
 	}
 
 	Character::Update(elapsedTime);
-	cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
+	//cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
 }
 
 void Player::Render()
