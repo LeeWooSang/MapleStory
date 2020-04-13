@@ -29,7 +29,7 @@ bool Player::Initialize()
 	SetAnimation(m_animation);
 
 	m_friction = 50.f;
-	m_gravity = VECTOR2D(0.f, 0.f);
+	m_gravity = VECTOR2D(0.f, GRAVITY);
 	m_maxVelocity = VECTOR2D(125.f, 125.f);
 	m_positionVector = VECTOR2D(0.f, 0.f);
 	RegenerateWorldMatrix();
@@ -43,7 +43,7 @@ void Player::Update(float elapsedTime)
 
 	Move(elapsedTime);
 
-	m_velocity += m_gravity * elapsedTime;
+	m_velocity += m_gravity * elapsedTime * 100;
 	float length = m_velocity.Length();
 	if (!::IsZero(length))
 	{
@@ -80,7 +80,7 @@ void Player::Update(float elapsedTime)
 	}
 
 	Character::Update(elapsedTime);
-	//cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
+	cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
 }
 
 void Player::Render()

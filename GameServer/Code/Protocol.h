@@ -17,6 +17,8 @@ constexpr int MAX_CHARACTER = MAX_USER + MAX_NPC;
 constexpr unsigned short	WORLD_WIDTH = 5960;
 // 맵 세로 크기
 constexpr unsigned short	WORLD_HEIGHT = 1000;
+// 중력
+constexpr double GRAVITY = 9.80665;
 
 enum NOTICE_TYPE
 {
