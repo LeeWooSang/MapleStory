@@ -27,6 +27,7 @@ bool Player::Initialize()
 	InitAnimation();
 	m_animation = "Idle";
 	SetAnimation(m_animation);
+	RegenerateColliderAABB();
 
 	m_friction = 50.f;
 	m_gravity = VECTOR2D(0.f, GRAVITY);
@@ -80,7 +81,7 @@ void Player::Update(float elapsedTime)
 	}
 
 	Character::Update(elapsedTime);
-	cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
+	//cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
 }
 
 void Player::Render()

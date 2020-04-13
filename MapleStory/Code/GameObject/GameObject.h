@@ -12,7 +12,7 @@ public:
 	virtual bool Initialize();
 	virtual void Update(float) = 0;
 	virtual void Render();
-	void RenderBoundingBox();
+	virtual void RenderBoundingBox();
 
 	const string& GetName()	const { return m_name; }
 
@@ -34,6 +34,8 @@ public:
 
 	void SetIsDrawBoundingBox(bool value) { m_isDrawBoundingBox = value; }
 
+	list<GameObject*>& GetHierarchyList() { return m_hierarchyList; }
+	GameObject* FindObject(const string& name);
 	//virtual void InitHierarchyMap() = 0;
 
 protected:

@@ -72,37 +72,37 @@ void GameObject::RenderBoundingBox()
 	{
 		switch (m_collider->GetType())
 		{
-		case COLLIDER_AABB:
-		{
-			D2D1_RECT_F boundRect;
-			AABBCollider* aabbCollider = reinterpret_cast<AABBCollider*>(m_collider);
-			//				pAABBCollider->GetBounds(&d2drcBounds);
-			aabbCollider->GetTransformedBounds(&m_worldMatrix, &boundRect);
-			GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
-			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawRectangle(boundRect, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
-			break;
-		}
-		case COLLIDER_OOBB:
-		{
-			D2D1_RECT_F boundRect;
-			OOBBCollider* oobbCollider = reinterpret_cast<OOBBCollider*>(m_collider);
-			oobbCollider->GetBounds(&boundRect);
-			oobbCollider->GetTransformedBounds(&m_worldMatrix);
-			GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
-			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawRectangle(boundRect, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
-			break;
-		}
-		case COLLIDER_CIRCLE:
-		{
-			CircleCollider* circleCollider = reinterpret_cast<CircleCollider*>(m_collider);
-			//				CIRCLE ccCircle = pCircleCollider->GetTransformedBounds(&m_d2dmtxWorld);
-			//				D2D1_ELLIPSE d2dEllipse = Ellipse(ccCircle.m_vCenter, ccCircle.m_fRadius, ccCircle.m_fRadius);
-			D2D1_ELLIPSE ellipse;
-			circleCollider->GetBounds(&ellipse);
-			//				pd2dRenderTarget->SetTransform((pCamera) ? pCamera->m_d2dmtxView : Matrix3x2F::Identity());
-			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawEllipse(ellipse, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
-			break;
-		}
+			case COLLIDER_AABB:
+			{
+				D2D1_RECT_F boundRect;
+				AABBCollider* aabbCollider = reinterpret_cast<AABBCollider*>(m_collider);
+				//				pAABBCollider->GetBounds(&d2drcBounds);
+				aabbCollider->GetTransformedBounds(&m_worldMatrix, &boundRect);
+				GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
+				GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawRectangle(boundRect, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
+				break;
+			}
+			case COLLIDER_OOBB:
+			{
+				D2D1_RECT_F boundRect;
+				OOBBCollider* oobbCollider = reinterpret_cast<OOBBCollider*>(m_collider);
+				oobbCollider->GetBounds(&boundRect);
+				oobbCollider->GetTransformedBounds(&m_worldMatrix);
+				GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
+				GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawRectangle(boundRect, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
+				break;
+			}
+			case COLLIDER_CIRCLE:
+			{
+				CircleCollider* circleCollider = reinterpret_cast<CircleCollider*>(m_collider);
+				//				CIRCLE ccCircle = pCircleCollider->GetTransformedBounds(&m_d2dmtxWorld);
+				//				D2D1_ELLIPSE d2dEllipse = Ellipse(ccCircle.m_vCenter, ccCircle.m_fRadius, ccCircle.m_fRadius);
+				D2D1_ELLIPSE ellipse;
+				circleCollider->GetBounds(&ellipse);
+				//				pd2dRenderTarget->SetTransform((pCamera) ? pCamera->m_d2dmtxView : Matrix3x2F::Identity());
+				GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawEllipse(ellipse, GET_INSTANCE(D2DManager)->GetFontColor("說除儀"));
+				break;
+			}
 		}
 	}
 }
@@ -148,4 +148,15 @@ VECTOR2D GameObject::GetSize(Matrix3x2F* pd2dmtxTransform)
 		return m_collider->GetSize(pd2dmtxTransform);
 
 	return m_collider->GetSize(&m_worldMatrix);
+}
+
+GameObject * GameObject::FindObject(const string & name)
+{
+	for (auto object : m_hierarchyList)
+	{
+		if (object->m_name == name)
+			return object;
+	}
+
+	return nullptr;
 }

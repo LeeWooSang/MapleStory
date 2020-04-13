@@ -85,8 +85,13 @@ void InGameBaseLayer::Update(float elapsedTime)
 	for (auto object : m_objectList)
 		object->Update(elapsedTime);
 
+	int flag = 0;
 	for (auto tile : m_tileTopList)
+	{
+		CheckCollision(tile, flag);
 		tile->Update(elapsedTime);
+	}
+
 
 	if (m_player != nullptr)
 		m_player->Update(elapsedTime);
@@ -106,10 +111,23 @@ void InGameBaseLayer::Render()
 		m_player->Render();
 }
 
-bool InGameBaseLayer::CheckCollision(GameObject *, int &)
+bool InGameBaseLayer::CheckCollision(GameObject* tile, int& flag)
 {
+	if (m_player == nullptr)
+		return false;
 
-	return false;
+	GameObject* object = m_player->FindObject("Body");
+	if (object == nullptr)
+		return false;
+
+	if (object->GetCollider() == nullptr)
+		return false;
+
+	if (object->GetCollider()->Intersect(tile->GetCollider()) == true)
+		cout << "Ãæµ¹" << endl;
+
+
+	return true;
 }
 
 void InGameBaseLayer::ProcessCollision(GameObject *, int &)
