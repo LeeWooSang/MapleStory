@@ -12,6 +12,8 @@ InGameBaseLayer::~InGameBaseLayer()
 {
 	if (m_player != nullptr)
 		delete m_player;
+
+	SAFE_DELETE_LIST(m_tileTopList);
 }
 
 bool InGameBaseLayer::Initialize()
@@ -49,7 +51,7 @@ bool InGameBaseLayer::Initialize()
 			string name = "WoodMarbleTile" + to_string(tileNum++);
 
 			Map* tile = new Map(name);
-			m_objectList.emplace_back(tile);
+			m_tileTopList.emplace_back(tile);
 			if (tile->Initialize() == false)
 				return false;
 			tile->SetPosition(VECTOR2D(startX + gapX * i, startY + gapY * j));
@@ -83,6 +85,9 @@ void InGameBaseLayer::Update(float elapsedTime)
 	for (auto object : m_objectList)
 		object->Update(elapsedTime);
 
+	for (auto tile : m_tileTopList)
+		tile->Update(elapsedTime);
+
 	if (m_player != nullptr)
 		m_player->Update(elapsedTime);
 }
@@ -93,12 +98,17 @@ void InGameBaseLayer::Render()
 		if(GET_INSTANCE(Camera)->IsVisible(object) == true)
 			object->Render();
 
+	for (auto tile : m_tileTopList)
+		if (GET_INSTANCE(Camera)->IsVisible(tile) == true)
+			tile->Render();
+
 	if (m_player != nullptr)
 		m_player->Render();
 }
 
 bool InGameBaseLayer::CheckCollision(GameObject *, int &)
 {
+
 	return false;
 }
 

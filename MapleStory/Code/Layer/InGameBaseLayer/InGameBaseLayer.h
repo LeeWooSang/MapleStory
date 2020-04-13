@@ -17,5 +17,6 @@ public:
 
 private:
 	class Player* m_player;
+	list<class GameObject*> m_tileTopList;
 };
 

@@ -175,6 +175,13 @@ void Player::RegenerateWorldMatrix()
 
 	m_worldMatrix._31 = m_positionVector.x; 
 	m_worldMatrix._32 = m_positionVector.y;
+
+	for (auto& object : m_hierarchyList)
+	{
+		object->SetRightVector(VECTOR2D(m_worldMatrix._11, m_worldMatrix._12));
+		object->SetUpVector(VECTOR2D(m_worldMatrix._21, m_worldMatrix._22));
+		object->SetPosition(VECTOR2D(m_worldMatrix._31, m_worldMatrix._32));
+	}
 }
 
 void Player::Move(float elapsedTime)
