@@ -116,6 +116,9 @@
     <Filter Include="Code\Layer\InGameBaseLayer">
       <UniqueIdentifier>{110eb555-c511-4a72-88fc-c720ac8db5ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\Map\Tile">
+      <UniqueIdentifier>{83aa4a18-b623-4929-8538-0d836afb0b30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -228,6 +231,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.cpp">
       <Filter>Code\Layer\InGameBaseLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Map\Tile\Tile.cpp">
+      <Filter>Code\GameObject\Map\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -350,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.h">
       <Filter>Code\Layer\InGameBaseLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Map\Tile\Tile.h">
+      <Filter>Code\GameObject\Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -170,6 +170,7 @@
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp" />
     <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
     <ClCompile Include="..\Code\GameObject\Map\Map.cpp" />
+    <ClCompile Include="..\Code\GameObject\Map\Tile\Tile.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\LoginUI\LoginUI.cpp" />
     <ClCompile Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h" />
     <ClInclude Include="..\Code\GameObject\GameObject.h" />
     <ClInclude Include="..\Code\GameObject\Map\Map.h" />
+    <ClInclude Include="..\Code\GameObject\Map\Tile\Tile.h" />
     <ClInclude Include="..\Code\GameObject\UI\ButtonUI\ButtonUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\LoginUI\LoginUI.h" />
     <ClInclude Include="..\Code\GameObject\UI\NoticeUI\NoticeUI.h" />

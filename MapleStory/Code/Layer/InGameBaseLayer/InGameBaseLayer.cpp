@@ -1,5 +1,6 @@
 #include "InGameBaseLayer.h"
 #include "../../GameObject/Map/Map.h"
+#include "../../GameObject/Map/Tile/Tile.h"
 #include "../../GameObject/Character/Player/Player.h"
 #include "../../../../GameServer/Code/Protocol.h"
 #include "../../Camera/Camera.h"
@@ -51,7 +52,7 @@ bool InGameBaseLayer::Initialize()
 			string name = "WoodMarbleTile" + to_string(tileNum++);
 
 			Map* tile = new Map(name);
-			m_tileTopList.emplace_back(tile);
+			m_objectList.emplace_back(tile);
 			if (tile->Initialize() == false)
 				return false;
 			tile->SetPosition(VECTOR2D(startX + gapX * i, startY + gapY * j));
@@ -66,11 +67,12 @@ bool InGameBaseLayer::Initialize()
 
 		string name = "WoodMarbleTop" + to_string(tileNum++);
 
-		Map* tile = new Map(name);
-		m_objectList.emplace_back(tile);
+		Tile* tile = new Tile(name);
+		m_tileTopList.emplace_back(tile);
 		if (tile->Initialize() == false)
 			return false;
 		tile->SetPosition(VECTOR2D(startX + gapX * i, startY - 180 - 30 - 33*0.5));
+		tile->GetTopPos();
 	}
 
 	m_player = new Player("플레이어");
@@ -122,6 +124,8 @@ bool InGameBaseLayer::CheckCollision(GameObject* tile, int& flag)
 
 	if (object->GetCollider() == nullptr)
 		return false;
+
+	reinterpret_cast<Tile*>(tile)->GetTopPos();
 
 	if (object->GetCollider()->Intersect(tile->GetCollider()) == true)
 		cout << "충돌" << endl;
