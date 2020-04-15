@@ -30,9 +30,14 @@ public:
 	VECTOR2D GetPositionVector()	const;
 	void SetPosition(VECTOR2D);
 
+	VECTOR2D GetVelocity()	const { return m_velocity; }
+	void SetVelocity(VECTOR2D velocity) { m_velocity = velocity; };
+
 	VECTOR2D GetSize(Matrix3x2F* pd2dmtxTransform = nullptr);
 
 	void SetIsDrawBoundingBox(bool value) { m_isDrawBoundingBox = value; }
+
+	void SetCollisionObject(GameObject* object) { m_collisionObject = object; }
 
 	list<GameObject*>& GetHierarchyList() { return m_hierarchyList; }
 	GameObject* FindObject(const string& name);
@@ -54,4 +59,6 @@ protected:
 
 	unordered_map<string, GameObject*> m_hierarchyMap;
 	list<GameObject*> m_hierarchyList;
+
+	GameObject* m_collisionObject;
 };

@@ -14,6 +14,7 @@ GameObject::GameObject(const string& name)
 	m_gravity = VECTOR2D(0.f, 0.f);
 	m_isDrawBoundingBox = false;
 
+	m_collisionObject = nullptr;
 	//m_animationName.clear();
 }
 

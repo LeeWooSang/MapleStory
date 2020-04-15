@@ -12,6 +12,7 @@ public:
 	virtual void Render();
 
 	void GetTopPos();
+	bool CheckCollision(GameObject*);
 
 private:
 	VECTOR2D m_topStartPos;

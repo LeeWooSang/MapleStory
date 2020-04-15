@@ -39,6 +39,20 @@ void Tile::GetTopPos()
 	int halfHeight = tex->GetHeight() * 0.5f;
 
 	m_topStartPos = VECTOR2D(m_worldMatrix._31 - halfWidth, m_worldMatrix._32 - halfHeight);
-	m_topEndPos = VECTOR2D(m_worldMatrix._31 + halfWidth, m_worldMatrix._32 - halfHeight);
+	m_topEndPos = VECTOR2D(m_worldMatrix._31 + halfWidth, m_worldMatrix._32 - halfHeight + 5);
+}
+
+bool Tile::CheckCollision(GameObject* object)
+{
+	if (object->GetPositionVector().x < m_topStartPos.x)
+		return false;
+	if (object->GetPositionVector().x > m_topEndPos.x)
+		return false;
+	if (object->GetPositionVector().y < m_topStartPos.y)
+		return false;
+	if (object->GetPositionVector().y > m_topEndPos.y)
+		return false;
+
+	return true;
 }
 

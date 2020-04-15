@@ -40,12 +40,16 @@ bool Player::Initialize()
 
 void Player::Update(float elapsedTime)
 {
-	ProcessInput();
+	m_velocity += m_gravity * elapsedTime * 100;
+	if (m_collisionObject != nullptr)
+		m_velocity.y = 0.f;
 
+	ProcessInput();
 	Move(elapsedTime);
 
-	m_velocity += m_gravity * elapsedTime * 100;
+
 	float length = m_velocity.Length();
+
 	if (!::IsZero(length))
 	{
 		if (m_velocity.x > m_maxVelocity.x)
@@ -65,23 +69,22 @@ void Player::Update(float elapsedTime)
 	//if (m_pCameraUpdatedContext) 
 	//	OnCameraUpdated(elapsedTime);
 
+	//if (!::IsZero(m_friction))
+	//{
+	//	VECTOR2D vDeceleration = -m_velocity;
+	//	vDeceleration = vDeceleration.Normalize();
+	//	length = m_velocity.Length();
 
-	if (!::IsZero(m_friction))
-	{
-		VECTOR2D vDeceleration = -m_velocity;
-		vDeceleration = vDeceleration.Normalize();
-		length = m_velocity.Length();
+	//	float fDeceleration = (m_friction * elapsedTime);
 
-		float fDeceleration = (m_friction * elapsedTime);
+	//	if (fDeceleration > length || m_collision == true) 
+	//		fDeceleration = length;
 
-		if (fDeceleration > length) 
-			fDeceleration = length;
-
-		m_velocity += vDeceleration * fDeceleration;
-	}
+	//	m_velocity += vDeceleration * fDeceleration;
+	//}
 
 	Character::Update(elapsedTime);
-	//cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
+	cout << m_worldMatrix._31 << ", " << m_worldMatrix._32 << endl;
 }
 
 void Player::Render()
@@ -204,10 +207,10 @@ void Player::Move(float elapsedTime)
 		shift -= m_rightVector * distance;
 	}
 
-	if (KEY_DOWN(VK_UP))
+	if (KEY_DOWN(VK_MENU))
 	{
 		dir |= DIR_TYPE::UP;
-		shift += m_upVector * distance;
+		shift += m_upVector * distance * 30;
 	}
 
 	if (KEY_DOWN(VK_DOWN))

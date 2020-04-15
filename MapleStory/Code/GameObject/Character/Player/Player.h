@@ -11,6 +11,8 @@ public:
 	virtual void Update(float);
 	virtual void Render();
 
+	void SetCollision(bool value) { m_collision = value; }
+
 private:
 	virtual void InitAnimation();
 
@@ -29,4 +31,6 @@ private:
 
 	LPVOID m_pPlayerUpdatedContext;
 	LPVOID m_pCameraUpdatedContext;
+
+	bool m_collision;
 };
