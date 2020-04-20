@@ -18,12 +18,11 @@ public:
 	bool Initialize();
 	void ErrorDisplay();
 
-	bool LoadLuaScript(const string&);
+	bool LoadObjectInfoScript(const string&);
 	
-	lua_State* GetLua() { return m_lua; }
-
+	// API ÇÔ¼öµé
+public:
 	static int API_HenesysObjectInfo(lua_State*);
-	static int API_GetArcaneSymbolInfo(lua_State*);
 
 private:
 	lua_State* m_lua;

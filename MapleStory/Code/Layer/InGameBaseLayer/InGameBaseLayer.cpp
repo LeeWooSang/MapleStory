@@ -33,6 +33,15 @@ bool InGameBaseLayer::Initialize()
 	//henesysBackground6->InitWrap();
 	//henesysBackground6->SetPosition(VECTOR2D(0.f, 0.f));
 
+	for (int i = 0; i < 8; ++i)
+	{
+		string name = "HenesysHouse" + to_string(i);
+		Map* house = new Map(name);
+		m_objectList.emplace_back(house);
+		if (house->Initialize() == false)
+			return false;
+	}
+
 	int tileNum = 0;
 	float startX = -WORLD_WIDTH * 0.5f;
 	float startY = WORLD_HEIGHT * 0.5f;

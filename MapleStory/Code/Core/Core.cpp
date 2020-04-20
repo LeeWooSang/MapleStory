@@ -19,7 +19,7 @@ Core::Core()
 	//	Dumping objects ->
 	// {233} normal block at 0x000001469D91A680, 24 bytes long.
 	// 233 이라는 지점에서 릭이 생김	
-	//_CrtSetBreakAlloc(1291);
+	//_CrtSetBreakAlloc(1148243);
 }
 
 Core::~Core()

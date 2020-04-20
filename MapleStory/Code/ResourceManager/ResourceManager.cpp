@@ -11,7 +11,7 @@ ResourceManager::ResourceManager()
 ResourceManager::~ResourceManager()
 {
 	SAFE_DELETE_MAP(m_textureList);
-	SAFE_DELETE_MAP(m_scriptList);
+	SAFE_DELETE_MAP(m_objectInfoList);
 }
 
 bool ResourceManager::Initialize()
@@ -320,17 +320,58 @@ bool ResourceManager::LoadTexture()
 		}
 	}
 
+	Texture* tex50 = new Texture;
+	m_textureList.emplace("HenesysHouse0", tex50);
+	if (tex50->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse0.png", 326, 377, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex51 = new Texture;
+	m_textureList.emplace("HenesysHouse2", tex51);
+	if (tex51->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse2.png", 473, 241, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex52 = new Texture;
+	m_textureList.emplace("HenesysHouse3", tex52);
+	if (tex52->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse3.png", 517, 325, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex53 = new Texture;
+	m_textureList.emplace("HenesysHouse1", tex53);
+	if (tex53->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse1.png", 335, 478, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex54 = new Texture;
+	m_textureList.emplace("HenesysHouse4", tex54);
+	if (tex54->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse4.png", 763, 710, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex55 = new Texture;
+	m_textureList.emplace("HenesysHouse5", tex55);
+	if (tex55->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse5.png", 439, 348, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex56 = new Texture;
+	m_textureList.emplace("HenesysHouse6", tex56);
+	if (tex56->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse6.png", 388, 277, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex57 = new Texture;
+	m_textureList.emplace("HenesysHouse7", tex57);
+	if (tex57->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse7.png", 321, 269, 1, 1, 0, 0) == false)
+		return false;
+
 	return true;
 }
 
 bool ResourceManager::LoadScript()
 {
-	Script* script0 = new Script;
-	m_scriptList.emplace("TileInfo", script0);
-	if (script0->Initialize() == false)
+	Script* script = new Script;
+	if (script->Initialize() == false)
 		return false;
-	if (script0->LoadLuaScript("../Resource/Script/HenesysObjectInfo.lua") == false)
+	if (script->LoadObjectInfoScript("../Resource/Script/HenesysObjectInfo.lua") == false)
 		return false;
+
+	delete script;
 
 
 	return true;
@@ -345,10 +386,10 @@ Texture* ResourceManager::GetTexture(const string& key)
 	return (*iter).second;
 }
 
-Script * ResourceManager::GetScript(const string& key)
+ObjectInfo* ResourceManager::GetObjectInfo(const string& name)
 {
-	auto iter = m_scriptList.find(key);
-	if (iter == m_scriptList.end())
+	auto iter = m_objectInfoList.find(name);
+	if (iter == m_objectInfoList.end())
 		return nullptr;
 
 	return (*iter).second;

@@ -23,10 +23,6 @@ private:
 
 	void ProcessInput();
 
-	VECTOR2D m_positionVector;
-	VECTOR2D m_rightVector;
-	VECTOR2D m_upVector;
-
 	float           	m_friction;
 
 	LPVOID m_pPlayerUpdatedContext;

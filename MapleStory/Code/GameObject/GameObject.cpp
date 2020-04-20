@@ -7,6 +7,8 @@ GameObject::GameObject(const string& name)
 	: m_name(name)
 {
 	m_worldMatrix = Matrix3x2F::Identity();
+	m_direction = 1;
+
 	m_collider = nullptr;
 	m_angle = 0;
 	m_velocity = VECTOR2D(0.f, 0.f);
@@ -108,6 +110,14 @@ void GameObject::RenderBoundingBox()
 	}
 }
 
+void GameObject::SetDirection(char dir)
+{
+	m_direction = dir;
+
+	for (auto& object : m_hierarchyList)
+		object->SetDirection(dir);
+}
+
 VECTOR2D GameObject::GetRightVector() const
 {
 	VECTOR2D right = VECTOR2D(m_worldMatrix._11, m_worldMatrix._12);
@@ -118,6 +128,9 @@ void GameObject::SetRightVector(VECTOR2D right)
 {
 	m_worldMatrix._11 = right.x;
 	m_worldMatrix._12 = right.y;
+
+	for (auto& object : m_hierarchyList)
+		object->SetRightVector(right);
 }
 
 VECTOR2D GameObject::GetUpVector() const
@@ -130,6 +143,9 @@ void GameObject::SetUpVector(VECTOR2D up)
 {
 	m_worldMatrix._21 = up.x;
 	m_worldMatrix._22 = up.y;
+
+	for (auto& object : m_hierarchyList)
+		object->SetUpVector(up);
 }
 
 VECTOR2D GameObject::GetPositionVector() const
@@ -141,6 +157,9 @@ void GameObject::SetPosition(VECTOR2D position)
 {
 	m_worldMatrix._31 = position.x;
 	m_worldMatrix._32 = position.y;
+
+	for (auto& object : m_hierarchyList)
+		object->SetPosition(position);
 }
 
 VECTOR2D GameObject::GetSize(Matrix3x2F* pd2dmtxTransform)

@@ -1,4 +1,5 @@
 #include "Script.h"
+#include "../ResourceManager.h"
 
 Script::Script()
 {
@@ -32,7 +33,7 @@ void Script::ErrorDisplay()
 	lua_pop(m_lua, 1);
 }
 
-bool Script::LoadLuaScript(const string& path)
+bool Script::LoadObjectInfoScript(const string& path)
 {
 	int error = luaL_loadfile(m_lua, path.c_str());
 	if (error)
@@ -78,20 +79,9 @@ int Script::API_HenesysObjectInfo(lua_State* lua)
 	float x = static_cast<float>(lua_tonumber(lua, -2));
 	float y = static_cast<float>(lua_tonumber(lua, -1));
 
-	cout << name << ", " << x << ", " << y << endl;
+	GET_INSTANCE(ResourceManager)->AddObjectInfo(name, x, y);
 
 	lua_pop(lua, 3);
-
-	return 0;
-}
-
-int Script::API_GetArcaneSymbolInfo(lua_State* lua)
-{
-	string name = const_cast<char*>(lua_tostring(lua, -2));
-	int requestLevel = static_cast<int>(lua_tonumber(lua, -1));
-	lua_pop(lua, 3);
-
-	//GET_INSTANCE(Resource)->AddNormalItemInfo(name, requestLevel);
 
 	return 0;
 }

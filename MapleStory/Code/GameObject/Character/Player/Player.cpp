@@ -7,10 +7,6 @@
 Player::Player(const string& name) 
 	: Character(name)
 {
-	m_positionVector = VECTOR2D(0.0f, 0.0f);
-	m_rightVector = VECTOR2D(1.0f, 0.0f);
-	m_upVector = VECTOR2D(0.0f, -1.0f);
-
 	//m_rot = VECTOR2D(0.0f, 0.0f);
 	//m_center = VECTOR2D(0.0f, 0.0f);
 
@@ -32,7 +28,10 @@ bool Player::Initialize()
 	m_friction = 50.f;
 	m_gravity = VECTOR2D(0.f, GRAVITY);
 	m_maxVelocity = VECTOR2D(125.f, 125.f);
-	m_positionVector = VECTOR2D(0.f, 0.f);
+
+	m_worldMatrix._21 = 0.f;
+	m_worldMatrix._22 = -1.f;
+
 	RegenerateWorldMatrix();
 
 	return true;
@@ -44,9 +43,8 @@ void Player::Update(float elapsedTime)
 	if (m_collisionObject != nullptr)
 		m_velocity.y = 0.f;
 
-	ProcessInput();
 	Move(elapsedTime);
-
+	ProcessInput();
 
 	float length = m_velocity.Length();
 
@@ -171,15 +169,6 @@ void Player::InitAnimation()
 
 void Player::RegenerateWorldMatrix()
 {
-	m_worldMatrix._11 = m_rightVector.x; 
-	m_worldMatrix._12 = m_rightVector.y;
-
-	m_worldMatrix._21 = m_upVector.x;
-	m_worldMatrix._22 = m_upVector.y;
-
-	m_worldMatrix._31 = m_positionVector.x; 
-	m_worldMatrix._32 = m_positionVector.y;
-
 	for (auto& object : m_hierarchyList)
 	{
 		object->SetRightVector(VECTOR2D(m_worldMatrix._11, m_worldMatrix._12));
@@ -194,29 +183,34 @@ void Player::Move(float elapsedTime)
 	float distance = elapsedTime * 100;
 
 	VECTOR2D shift = VECTOR2D(0.f, 0.f);
+	VECTOR2D temp = VECTOR2D(0.f, 0.f);
 
 	if (KEY_DOWN(VK_RIGHT))
 	{
 		dir |= DIR_TYPE::RIGHT;
-		shift += m_rightVector * distance;
+		temp = VECTOR2D(m_worldMatrix._11, m_worldMatrix._12);
+		shift += temp * distance;
 	}
 
 	if (KEY_DOWN(VK_LEFT))
 	{
 		dir |= DIR_TYPE::LEFT;
-		shift -= m_rightVector * distance;
+		temp = VECTOR2D(m_worldMatrix._11, m_worldMatrix._12);
+		shift -= temp * distance;
 	}
 
 	if (KEY_DOWN(VK_MENU))
 	{
 		dir |= DIR_TYPE::UP;
-		shift += m_upVector * distance * 30;
+		temp = VECTOR2D(m_worldMatrix._21, m_worldMatrix._22);
+		shift += temp * distance * 30;
 	}
 
 	if (KEY_DOWN(VK_DOWN))
 	{
 		dir |= DIR_TYPE::DOWN;
-		shift -= m_upVector * distance;
+		temp = VECTOR2D(m_worldMatrix._21, m_worldMatrix._22);
+		shift -= temp * distance;
 	}
 
 	if (dir)
@@ -260,10 +254,8 @@ void Player::Move(VECTOR2D& shift, bool updateVelocity)
 
 	else
 	{
-		m_positionVector += shift;
-
-		RegenerateWorldMatrix();
-
+		VECTOR2D pos = VECTOR2D(m_worldMatrix._31 + shift.x, m_worldMatrix._32 + shift.y);
+		SetPosition(pos);
 		GET_INSTANCE(Camera)->Move(shift);
 	}
 }
@@ -272,13 +264,22 @@ void Player::ProcessInput()
 {
 	GET_INSTANCE(Input)->ProcessKeyEvent();
 
-	if (GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_LEFT) == true
-		|| GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_RIGHT) == true)
+	if (GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_LEFT) == true)
 	{
 		cout << "첨 누름" << endl;
+		SetDirection(1);
 		SetAnimation("Walk");
 		// 이때 다른 플레이어에게 애니메이션 정보를 보내면 됨
 	}
+
+	else if (GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_RIGHT) == true)
+	{
+		cout << "첨 누름" << endl;
+		SetDirection(-1);
+		SetAnimation("Walk");
+		// 이때 다른 플레이어에게 애니메이션 정보를 보내면 됨
+	}
+
 	else if (GET_INSTANCE(Input)->GetIsPushed(KEY_TYPE::KEYBOARD_ALT) == true)
 	{
 		cout << "점프 누름" << endl;

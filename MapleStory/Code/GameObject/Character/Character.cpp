@@ -57,7 +57,10 @@ void Character::Render()
 	//	reinterpret_cast<AABBCollider*>(m_collider)->SetAABB(AABB(-width * 0.5f, -height * 0.5f, width * 0.5f, height * 0.5f));
 
 	Matrix3x2F transform = m_worldMatrix;
-	transform._31 += tex->GetOriginX();
+
+	// ¹æÇâÀ» °öÇØÁà¾ß ÇÔ
+	transform._11 *= m_direction;
+	transform._31 += tex->GetOriginX() * m_direction;
 	transform._32 += tex->GetOriginY();
 
 	transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
@@ -95,6 +98,8 @@ void Character::RenderBoundingBox()
 			int height = tex->GetHeight();
 
 			Matrix3x2F transform = m_worldMatrix;
+
+			transform._11 *= m_direction;
 			transform._31 += tex->GetOriginX();
 			transform._32 += tex->GetOriginY();
 

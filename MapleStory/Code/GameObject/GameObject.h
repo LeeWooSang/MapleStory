@@ -18,6 +18,8 @@ public:
 
 	 Matrix3x2F& GetWorldMatrix() { return m_worldMatrix; }
 	
+	 void SetDirection(char dir);
+
 	Collider* GetCollider()	 { return m_collider; }
 	void SetCollider(Collider* collider) { m_collider = collider; }
 
@@ -46,6 +48,8 @@ public:
 protected:
 	string m_name;
 	Matrix3x2F m_worldMatrix;
+	char m_direction;
+
 	class Collider* m_collider;
 
 	float m_angle;
