@@ -191,6 +191,7 @@
     <ClCompile Include="..\Code\Main.cpp" />
     <ClCompile Include="..\Code\Network\Network.cpp" />
     <ClCompile Include="..\Code\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="..\Code\ResourceManager\Script\Script.cpp" />
     <ClCompile Include="..\Code\ResourceManager\Texture\Texture.cpp" />
     <ClCompile Include="..\Code\Scene\CharacterSelectScene\CharacterSelectScene.cpp" />
     <ClCompile Include="..\Code\Scene\InGameScene\InGameScene.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="..\Code\Macro.h" />
     <ClInclude Include="..\Code\Network\Network.h" />
     <ClInclude Include="..\Code\ResourceManager\ResourceManager.h" />
+    <ClInclude Include="..\Code\ResourceManager\Script\Script.h" />
     <ClInclude Include="..\Code\ResourceManager\Texture\Texture.h" />
     <ClInclude Include="..\Code\Scene\CharacterSelectScene\CharacterSelectScene.h" />
     <ClInclude Include="..\Code\Scene\InGameScene\InGameScene.h" />
@@ -244,6 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Code\Default\Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\Script\HenesysObjectInfo.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

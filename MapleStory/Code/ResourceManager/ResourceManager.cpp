@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 #include "Texture/Texture.h"
+#include "Script/Script.h"
 //#include "../../../GameServer/Code/Protocol.h"
 
 INIT_INSTACNE(ResourceManager)
@@ -10,6 +11,7 @@ ResourceManager::ResourceManager()
 ResourceManager::~ResourceManager()
 {
 	SAFE_DELETE_MAP(m_textureList);
+	SAFE_DELETE_MAP(m_scriptList);
 }
 
 bool ResourceManager::Initialize()
@@ -17,6 +19,8 @@ bool ResourceManager::Initialize()
 	if (LoadTexture() == false)
 		return false;
 
+	if (LoadScript() == false)
+		return false;
 
 	return true;
 }
@@ -319,10 +323,32 @@ bool ResourceManager::LoadTexture()
 	return true;
 }
 
+bool ResourceManager::LoadScript()
+{
+	Script* script0 = new Script;
+	m_scriptList.emplace("TileInfo", script0);
+	if (script0->Initialize() == false)
+		return false;
+	if (script0->LoadLuaScript("../Resource/Script/HenesysObjectInfo.lua") == false)
+		return false;
+
+
+	return true;
+}
+
 Texture* ResourceManager::GetTexture(const string& key)
 {
 	auto iter = m_textureList.find(key);
 	if (iter == m_textureList.end())
+		return nullptr;
+
+	return (*iter).second;
+}
+
+Script * ResourceManager::GetScript(const string& key)
+{
+	auto iter = m_scriptList.find(key);
+	if (iter == m_scriptList.end())
 		return nullptr;
 
 	return (*iter).second;

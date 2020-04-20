@@ -12,4 +12,6 @@ public:
 	virtual void Render();
 
 	void InitWrap();
+	static int API_HenesysObjectInfo(struct lua_State* lua);
+
 };

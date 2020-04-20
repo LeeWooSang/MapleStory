@@ -119,6 +119,9 @@
     <Filter Include="Code\GameObject\Map\Tile">
       <UniqueIdentifier>{83aa4a18-b623-4929-8538-0d836afb0b30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Resource\Script">
+      <UniqueIdentifier>{4f9d9eab-044f-4432-9148-41b66cbde15f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -156,9 +159,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\UI\UI.cpp">
       <Filter>Code\GameObject\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\GameObject\Map\Map.cpp">
-      <Filter>Code\GameObject\Map</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Collision\Collision.cpp">
       <Filter>Code\Collision</Filter>
@@ -235,6 +235,12 @@
     <ClCompile Include="..\Code\GameObject\Map\Tile\Tile.cpp">
       <Filter>Code\GameObject\Map\Tile</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\ResourceManager\Script\Script.cpp">
+      <Filter>Code\Resource\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\Map\Map.cpp">
+      <Filter>Code\GameObject\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h">
@@ -272,9 +278,6 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\UI\UI.h">
       <Filter>Code\GameObject\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Code\GameObject\Map\Map.h">
-      <Filter>Code\GameObject\Map</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\Defines.h">
       <Filter>Code</Filter>
@@ -360,10 +363,21 @@
     <ClInclude Include="..\Code\GameObject\Map\Tile\Tile.h">
       <Filter>Code\GameObject\Map\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Code\ResourceManager\Script\Script.h">
+      <Filter>Code\Resource\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\Map\Map.h">
+      <Filter>Code\GameObject\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Code\Default\Resource.rc">
       <Filter>Code\Default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\Script\HenesysObjectInfo.lua">
+      <Filter>Code\Resource\Script</Filter>
+    </None>
   </ItemGroup>
 </Project>
