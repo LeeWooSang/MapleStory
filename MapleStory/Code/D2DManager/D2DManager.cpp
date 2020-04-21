@@ -58,13 +58,15 @@ bool D2DManager::Initialize(HWND hWnd)
 	if (result != S_OK)
 		return false;
 
-	// 텍스트를 위한 Factory 생성
-	result = ::DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory5), (IUnknown**)&m_pWriteFactory);
-	if (result != S_OK)
-		return false;
 
 	// 이미지를 위한 Factory 생성
 	result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, __uuidof(IWICImagingFactory), (void**)&m_pWICImagingFactory);
+	if (result != S_OK)
+		return false;
+
+	// 텍스트를 위한 Factory 생성
+	result = ::DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory5), (IUnknown**)&m_pWriteFactory);
+	//result = ::DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory4), (IUnknown**)&m_pWriteFactory);
 	if (result != S_OK)
 		return false;
 

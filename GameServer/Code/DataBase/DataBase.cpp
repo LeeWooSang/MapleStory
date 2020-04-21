@@ -69,7 +69,7 @@ bool DataBase::Initialize()
 bool DataBase::Connect()
 {
 	SQLRETURN retcode;
-	wstring odbc_dsn = L"MapleStory";
+	wstring odbc_dsn = L"MapleStoryDB";
 
 	SQLSetConnectAttr(m_Hdbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0);
 

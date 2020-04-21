@@ -48,6 +48,7 @@ private:
 	ID2D1HwndRenderTarget*	m_pRenderTarget;
 	// D2DManager로 텍스트를 그리기 위한 팩토리
 	IDWriteFactory5*					m_pWriteFactory;
+
 	IDWriteFontCollection1*		m_pFontCollection;
 	// D2DManager로 이미지를 그리기 위한 팩토리
 	IWICImagingFactory*			m_pWICImagingFactory;
