@@ -11,7 +11,8 @@ ResourceManager::ResourceManager()
 ResourceManager::~ResourceManager()
 {
 	SAFE_DELETE_MAP(m_textureList);
-	SAFE_DELETE_MAP(m_objectInfoList);
+	SAFE_DELETE_MAP(m_staticObjectInfoList);
+	SAFE_DELETE_MAP(m_animatedObjectInfoList);
 }
 
 bool ResourceManager::Initialize()
@@ -186,13 +187,13 @@ bool ResourceManager::LoadTexture()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	Texture* tex30 = new Texture;
-	m_textureList.emplace("FrontHead", tex30);
-	if (tex30->Initialize(L"../Resource/Textures/Character/Head/FrontHead.png", 39, 35, 1, 1, 0, 0, 2.5f, 0.f) == false)
+	m_textureList.emplace("FrontHead0", tex30);
+	if (tex30->Initialize(L"../Resource/Textures/Character/Head/FrontHead0.png", 39, 35, 1, 1, 0, 0, 2.5f, 0.f) == false)
 		return false;
 
 	Texture* tex31 = new Texture;
-	m_textureList.emplace("BackHead", tex31);
-	if (tex31->Initialize(L"../Resource/Textures/Character/Head/BackHead.png", 41, 35, 1, 1, 0, 0) == false)
+	m_textureList.emplace("BackHead0", tex31);
+	if (tex31->Initialize(L"../Resource/Textures/Character/Head/BackHead0.png", 41, 35, 1, 1, 0, 0) == false)
 		return false;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -360,19 +361,51 @@ bool ResourceManager::LoadTexture()
 	if (tex57->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/House/HenesysHouse7.png", 321, 269, 1, 1, 0, 0) == false)
 		return false;
 
+	Texture* tex58 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag0", tex58);
+	if (tex58->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag0.png", 54, 56, 1, 1, 0, 0) == false)
+		return false;
+
+	Texture* tex59 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag1", tex59);
+	if (tex59->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag1.png", 64, 53, 1, 1, 0, 0, 5.f, 3.f) == false)
+		return false;
+
+	Texture* tex60 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag2", tex60);
+	if (tex60->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag2.png", 71, 59, 1, 1, 0, 0, 8.5f, 3.f) == false)
+		return false;
+
+	Texture* tex61 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag3", tex61);
+	if (tex61->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag3.png", 75, 59, 1, 1, 0, 0, 10.5f, 10.f) == false)
+		return false;
+
+	Texture* tex62 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag4", tex62);
+	if (tex62->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag4.png", 72, 51, 1, 1, 0, 0, 9.f, 9.f) == false)
+		return false;
+
+	Texture* tex63 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag5", tex63);
+	if (tex63->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag5.png", 71, 54, 1, 1, 0, 0, 8.5f, 9.f) == false)
+		return false;
+
+	Texture* tex64 = new Texture;
+	m_textureList.emplace("HenesysHouse1_Flag6", tex64);
+	if (tex64->Initialize(L"../Resource/Textures/Map/Henesys/Henesys/Obj/Default/HenesysHouse1_Flag6.png", 58, 63, 1, 1, 0, 0, 2.f, 3.5f) == false)
+		return false;
+
 	return true;
 }
 
 bool ResourceManager::LoadScript()
 {
 	Script* script = new Script;
-	if (script->Initialize() == false)
-		return false;
-	if (script->LoadObjectInfoScript("../Resource/Script/HenesysObjectInfo.lua") == false)
+	if (script->Initialize("../Resource/Script/HenesysObjectInfo.lua") == false)
 		return false;
 
 	delete script;
-
 
 	return true;
 }
@@ -386,10 +419,19 @@ Texture* ResourceManager::GetTexture(const string& key)
 	return (*iter).second;
 }
 
-ObjectInfo* ResourceManager::GetObjectInfo(const string& name)
+StaticObjectInfo* ResourceManager::GetStaticObjectInfo(const string& name)
 {
-	auto iter = m_objectInfoList.find(name);
-	if (iter == m_objectInfoList.end())
+	auto iter = m_staticObjectInfoList.find(name);
+	if (iter == m_staticObjectInfoList.end())
+		return nullptr;
+
+	return (*iter).second;
+}
+
+AnimatedObjectInfo* ResourceManager::GetAnimatedObjectInfo(const string& name)
+{
+	auto iter = m_animatedObjectInfoList.find(name);
+	if (iter == m_animatedObjectInfoList.end())
 		return nullptr;
 
 	return (*iter).second;

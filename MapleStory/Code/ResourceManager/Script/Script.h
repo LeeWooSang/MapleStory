@@ -15,14 +15,16 @@ public:
 	Script();
 	~Script();
 
-	bool Initialize();
+	bool Initialize(const string&);
 	void ErrorDisplay();
 
-	bool LoadObjectInfoScript(const string&);
-	
+	bool LoadStaticObjectInfoScript();
+	bool LoadAnimatedObjectInfoScript();
+
 	// API ÇÔ¼öµé
 public:
-	static int API_HenesysObjectInfo(lua_State*);
+	static int API_HenesysStaticObjectInfo(lua_State*);
+	static int API_HenesysAnimatedObjectInfo(lua_State*);
 
 private:
 	lua_State* m_lua;

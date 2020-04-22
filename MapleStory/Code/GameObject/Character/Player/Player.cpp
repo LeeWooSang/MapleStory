@@ -20,9 +20,22 @@ Player::~Player()
 
 bool Player::Initialize()
 {
-	InitAnimation();
-	m_animation = "Idle";
-	SetAnimation(m_animation);
+	AnimatedObject* body = InitHierarchy("Body");
+	InitAnimation(3, "Idle", "IdleBody", body);
+	InitAnimation(4, "Walk", "WalkBody", body);
+	InitAnimation(1, "Jump", "JumpBody", body);
+
+	AnimatedObject* arm = InitHierarchy("Arm");
+	InitAnimation(3, "Idle", "IdleArm", arm);
+	InitAnimation(4, "Walk", "WalkArm", arm);
+	InitAnimation(1, "Jump", "JumpArm", arm);
+
+	AnimatedObject* head = InitHierarchy("Head");
+	InitAnimation(1, "Idle", "FrontHead", head);
+	InitAnimation(1, "Walk", "FrontHead", head);
+	InitAnimation(1, "Jump", "FrontHead", head);
+
+	SetAnimation("Idle");
 	RegenerateColliderAABB();
 
 	m_friction = 50.f;
@@ -90,82 +103,82 @@ void Player::Render()
 	Character::Render();
 }
 
-void Player::InitAnimation()
-{
-	string objectName;
-
-	{
-		objectName = "Body";
-		Character* body = new Character(objectName);
-		//m_hierarchyMap.emplace(objectName, body);
-		m_hierarchyList.emplace_back(body);
-		body->SetRightVector(VECTOR2D(1.f, 0.f));
-		body->SetUpVector(VECTOR2D(0.f, -1.f));
-
-		Animation* IdleBodyAni = new Animation("Idle");
-		IdleBodyAni->AddAnimation("IdleBody0");
-		IdleBodyAni->AddAnimation("IdleBody1");
-		IdleBodyAni->AddAnimation("IdleBody2");
-		body->AddAnimation("Idle", IdleBodyAni);
-
-		Animation* walkBodyAni = new Animation("Walk");
-		walkBodyAni->AddAnimation("WalkBody0");
-		walkBodyAni->AddAnimation("WalkBody1");
-		walkBodyAni->AddAnimation("WalkBody2");
-		walkBodyAni->AddAnimation("WalkBody3");
-		body->AddAnimation("Walk", walkBodyAni);
-
-		Animation* jumpBodyAni = new Animation("Jump");
-		jumpBodyAni->AddAnimation("JumpBody0");
-		body->AddAnimation("Jump", jumpBodyAni);
-	}
-
-	{
-		objectName = "Arm";
-		Character* arm = new Character(objectName);
-		//m_hierarchyMap.emplace(objectName, arm);
-		m_hierarchyList.emplace_back(arm);
-		arm->SetRightVector(VECTOR2D(1.f, 0.f));
-		arm->SetUpVector(VECTOR2D(0.f, -1.f));
-
-		Animation* IdleArmAni = new Animation("Idle");
-		IdleArmAni->AddAnimation("IdleArm0");
-		IdleArmAni->AddAnimation("IdleArm1");
-		IdleArmAni->AddAnimation("IdleArm2");
-		arm->AddAnimation("Idle", IdleArmAni);
-
-		Animation* walkArmAni = new Animation("Walk");
-		walkArmAni->AddAnimation("WalkArm0");
-		walkArmAni->AddAnimation("WalkArm1");
-		walkArmAni->AddAnimation("WalkArm2");
-		walkArmAni->AddAnimation("WalkArm3");
-		arm->AddAnimation("Walk", walkArmAni);
-
-		Animation* jumpArmAni = new Animation("Jump");
-		jumpArmAni->AddAnimation("JumpArm0");
-		arm->AddAnimation("Jump", jumpArmAni);
-	}
-
-	{
-		objectName = "Head";
-		Character* head = new Character(objectName);
-		head->SetRightVector(VECTOR2D(1.f, 0.f));
-		head->SetUpVector(VECTOR2D(0.f, -1.f));
-		m_hierarchyList.emplace_back(head);
-
-		Animation* idleHeadAni = new Animation("Idle");
-		idleHeadAni->AddAnimation("FrontHead");
-		head->AddAnimation("Idle", idleHeadAni);
-
-		Animation* walkHeadAni = new Animation("Walk");
-		walkHeadAni->AddAnimation("FrontHead");
-		head->AddAnimation("Walk", walkHeadAni);
-
-		Animation* jumpHeadAni = new Animation("Jump");
-		jumpHeadAni->AddAnimation("FrontHead");
-		head->AddAnimation("Jump", jumpHeadAni);
-	}
-}
+//void Player::InitAnimation()
+//{
+//	string objectName;
+//
+//	{
+//		objectName = "Body";
+//		Character* body = new Character(objectName);
+//		//m_hierarchyMap.emplace(objectName, body);
+//		m_hierarchyList.emplace_back(body);
+//		body->SetRightVector(VECTOR2D(1.f, 0.f));
+//		body->SetUpVector(VECTOR2D(0.f, -1.f));
+//
+//		Animation* IdleBodyAni = new Animation("Idle");
+//		IdleBodyAni->AddAnimation("IdleBody0");
+//		IdleBodyAni->AddAnimation("IdleBody1");
+//		IdleBodyAni->AddAnimation("IdleBody2");
+//		body->AddAnimationMap("Idle", IdleBodyAni);
+//
+//		Animation* walkBodyAni = new Animation("Walk");
+//		walkBodyAni->AddAnimation("WalkBody0");
+//		walkBodyAni->AddAnimation("WalkBody1");
+//		walkBodyAni->AddAnimation("WalkBody2");
+//		walkBodyAni->AddAnimation("WalkBody3");
+//		body->AddAnimationMap("Walk", walkBodyAni);
+//
+//		Animation* jumpBodyAni = new Animation("Jump");
+//		jumpBodyAni->AddAnimation("JumpBody0");
+//		body->AddAnimationMap("Jump", jumpBodyAni);
+//	}
+//
+//	{
+//		objectName = "Arm";
+//		Character* arm = new Character(objectName);
+//		//m_hierarchyMap.emplace(objectName, arm);
+//		m_hierarchyList.emplace_back(arm);
+//		arm->SetRightVector(VECTOR2D(1.f, 0.f));
+//		arm->SetUpVector(VECTOR2D(0.f, -1.f));
+//
+//		Animation* IdleArmAni = new Animation("Idle");
+//		IdleArmAni->AddAnimation("IdleArm0");
+//		IdleArmAni->AddAnimation("IdleArm1");
+//		IdleArmAni->AddAnimation("IdleArm2");
+//		arm->AddAnimationMap("Idle", IdleArmAni);
+//
+//		Animation* walkArmAni = new Animation("Walk");
+//		walkArmAni->AddAnimation("WalkArm0");
+//		walkArmAni->AddAnimation("WalkArm1");
+//		walkArmAni->AddAnimation("WalkArm2");
+//		walkArmAni->AddAnimation("WalkArm3");
+//		arm->AddAnimationMap("Walk", walkArmAni);
+//
+//		Animation* jumpArmAni = new Animation("Jump");
+//		jumpArmAni->AddAnimation("JumpArm0");
+//		arm->AddAnimationMap("Jump", jumpArmAni);
+//	}
+//
+//	{
+//		objectName = "Head";
+//		Character* head = new Character(objectName);
+//		head->SetRightVector(VECTOR2D(1.f, 0.f));
+//		head->SetUpVector(VECTOR2D(0.f, -1.f));
+//		m_hierarchyList.emplace_back(head);
+//
+//		Animation* idleHeadAni = new Animation("Idle");
+//		idleHeadAni->AddAnimation("FrontHead");
+//		head->AddAnimationMap("Idle", idleHeadAni);
+//
+//		Animation* walkHeadAni = new Animation("Walk");
+//		walkHeadAni->AddAnimation("FrontHead");
+//		head->AddAnimationMap("Walk", walkHeadAni);
+//
+//		Animation* jumpHeadAni = new Animation("Jump");
+//		jumpHeadAni->AddAnimation("FrontHead");
+//		head->AddAnimationMap("Jump", jumpHeadAni);
+//	}
+//}
 
 void Player::RegenerateWorldMatrix()
 {

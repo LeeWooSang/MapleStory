@@ -14,7 +14,6 @@ public:
 	void SetCollision(bool value) { m_collision = value; }
 
 private:
-	virtual void InitAnimation();
 
 	void RegenerateWorldMatrix();
 	void Move(float);

@@ -170,6 +170,7 @@
     <ClCompile Include="..\Code\Core\Core.cpp" />
     <ClCompile Include="..\Code\D2DManager\D2DManager.cpp" />
     <ClCompile Include="..\Code\Framework\Framework.cpp" />
+    <ClCompile Include="..\Code\GameObject\AnimatedObject\AnimatedObject.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Character.cpp" />
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp" />
     <ClCompile Include="..\Code\GameObject\GameObject.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\Code\Default\Resource.h" />
     <ClInclude Include="..\Code\Defines.h" />
     <ClInclude Include="..\Code\Framework\Framework.h" />
+    <ClInclude Include="..\Code\GameObject\AnimatedObject\AnimatedObject.h" />
     <ClInclude Include="..\Code\GameObject\Character\Character.h" />
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h" />
     <ClInclude Include="..\Code\GameObject\GameObject.h" />

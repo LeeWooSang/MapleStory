@@ -18,19 +18,19 @@ public:
 
 	 Matrix3x2F& GetWorldMatrix() { return m_worldMatrix; }
 	
-	 void SetDirection(char dir);
+	 virtual void SetDirection(char dir) { m_direction = dir; }
 
 	Collider* GetCollider()	 { return m_collider; }
 	void SetCollider(Collider* collider) { m_collider = collider; }
 
-	VECTOR2D GetRightVector() const;
-	void SetRightVector(VECTOR2D);
+	virtual VECTOR2D GetRightVector() const;
+	virtual void SetRightVector(VECTOR2D);
 
-	VECTOR2D GetUpVector()	const;
-	void SetUpVector(VECTOR2D);
+	virtual VECTOR2D GetUpVector()	const;
+	virtual void SetUpVector(VECTOR2D);
 
-	VECTOR2D GetPositionVector()	const;
-	void SetPosition(VECTOR2D);
+	virtual VECTOR2D GetPositionVector()	const;
+	virtual void SetPosition(VECTOR2D);
 
 	VECTOR2D GetVelocity()	const { return m_velocity; }
 	void SetVelocity(VECTOR2D velocity) { m_velocity = velocity; };
@@ -40,10 +40,6 @@ public:
 	void SetIsDrawBoundingBox(bool value) { m_isDrawBoundingBox = value; }
 
 	void SetCollisionObject(GameObject* object) { m_collisionObject = object; }
-
-	list<GameObject*>& GetHierarchyList() { return m_hierarchyList; }
-	GameObject* FindObject(const string& name);
-	//virtual void InitHierarchyMap() = 0;
 
 protected:
 	string m_name;
@@ -60,9 +56,6 @@ protected:
 	VECTOR2D m_gravity;
 
 	bool m_isDrawBoundingBox;
-
-	unordered_map<string, GameObject*> m_hierarchyMap;
-	list<GameObject*> m_hierarchyList;
 
 	GameObject* m_collisionObject;
 };

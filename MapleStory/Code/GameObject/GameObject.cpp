@@ -2,6 +2,7 @@
 #include "../ResourceManager/ResourceManager.h"
 #include "../ResourceManager/Texture/Texture.h"
 #include "../Camera/Camera.h"
+#include "../Animation/Animation.h"
 
 GameObject::GameObject(const string& name)
 	: m_name(name)
@@ -17,15 +18,12 @@ GameObject::GameObject(const string& name)
 	m_isDrawBoundingBox = false;
 
 	m_collisionObject = nullptr;
-	//m_animationName.clear();
 }
 
 GameObject::~GameObject()
 {
 	if (m_collider)
 		delete m_collider;
-
-	SAFE_DELETE_VECTOR(m_hierarchyList);
 }
 
 bool GameObject::Initialize()
@@ -110,14 +108,6 @@ void GameObject::RenderBoundingBox()
 	}
 }
 
-void GameObject::SetDirection(char dir)
-{
-	m_direction = dir;
-
-	for (auto& object : m_hierarchyList)
-		object->SetDirection(dir);
-}
-
 VECTOR2D GameObject::GetRightVector() const
 {
 	VECTOR2D right = VECTOR2D(m_worldMatrix._11, m_worldMatrix._12);
@@ -128,9 +118,6 @@ void GameObject::SetRightVector(VECTOR2D right)
 {
 	m_worldMatrix._11 = right.x;
 	m_worldMatrix._12 = right.y;
-
-	for (auto& object : m_hierarchyList)
-		object->SetRightVector(right);
 }
 
 VECTOR2D GameObject::GetUpVector() const
@@ -143,9 +130,6 @@ void GameObject::SetUpVector(VECTOR2D up)
 {
 	m_worldMatrix._21 = up.x;
 	m_worldMatrix._22 = up.y;
-
-	for (auto& object : m_hierarchyList)
-		object->SetUpVector(up);
 }
 
 VECTOR2D GameObject::GetPositionVector() const
@@ -157,9 +141,6 @@ void GameObject::SetPosition(VECTOR2D position)
 {
 	m_worldMatrix._31 = position.x;
 	m_worldMatrix._32 = position.y;
-
-	for (auto& object : m_hierarchyList)
-		object->SetPosition(position);
 }
 
 VECTOR2D GameObject::GetSize(Matrix3x2F* pd2dmtxTransform)
@@ -170,13 +151,3 @@ VECTOR2D GameObject::GetSize(Matrix3x2F* pd2dmtxTransform)
 	return m_collider->GetSize(&m_worldMatrix);
 }
 
-GameObject * GameObject::FindObject(const string & name)
-{
-	for (auto object : m_hierarchyList)
-	{
-		if (object->m_name == name)
-			return object;
-	}
-
-	return nullptr;
-}

@@ -44,12 +44,6 @@
     <Filter Include="Code\Camera">
       <UniqueIdentifier>{e7ebb9ed-a573-4c5e-b459-9b486bda74ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\GameObject\Character">
-      <UniqueIdentifier>{f40896e4-c3ce-4f38-bf01-6eb6f9f120b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\GameObject\Character\Player">
-      <UniqueIdentifier>{1f4f239b-2959-4158-9695-753d6d7e0d5e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\GameObject\UI\LoginUI">
       <UniqueIdentifier>{22c39442-dc2d-4947-9949-5fb840726466}</UniqueIdentifier>
     </Filter>
@@ -122,6 +116,18 @@
     <Filter Include="Code\Resource\Script">
       <UniqueIdentifier>{4f9d9eab-044f-4432-9148-41b66cbde15f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\GameObject\AnimatedObject">
+      <UniqueIdentifier>{3e5bd8bb-ed0e-44e3-afe1-a0b9d2316bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\StaticObject">
+      <UniqueIdentifier>{b5f94863-108d-4368-acd0-f286493c9836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\AnimatedObject\Character">
+      <UniqueIdentifier>{f40896e4-c3ce-4f38-bf01-6eb6f9f120b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\AnimatedObject\Character\Player">
+      <UniqueIdentifier>{1f4f239b-2959-4158-9695-753d6d7e0d5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -164,10 +170,10 @@
       <Filter>Code\Collision</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp">
-      <Filter>Code\GameObject\Character\Player</Filter>
+      <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\Character\Character.cpp">
-      <Filter>Code\GameObject\Character</Filter>
+      <Filter>Code\GameObject\AnimatedObject\Character</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Camera\Camera.cpp">
       <Filter>Code\Camera</Filter>
@@ -241,6 +247,9 @@
     <ClCompile Include="..\Code\GameObject\Map\Map.cpp">
       <Filter>Code\GameObject\Map</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\GameObject\AnimatedObject\AnimatedObject.cpp">
+      <Filter>Code\GameObject\AnimatedObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h">
@@ -289,10 +298,10 @@
       <Filter>Code\Collision</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Character\Player\Player.h">
-      <Filter>Code\GameObject\Character\Player</Filter>
+      <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Character\Character.h">
-      <Filter>Code\GameObject\Character</Filter>
+      <Filter>Code\GameObject\AnimatedObject\Character</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\Camera\Camera.h">
       <Filter>Code\Camera</Filter>
@@ -368,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\Map\Map.h">
       <Filter>Code\GameObject\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\AnimatedObject\AnimatedObject.h">
+      <Filter>Code\GameObject\AnimatedObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

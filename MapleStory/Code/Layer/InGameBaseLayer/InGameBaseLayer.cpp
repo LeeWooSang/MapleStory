@@ -1,9 +1,13 @@
 #include "InGameBaseLayer.h"
 #include "../../GameObject/Map/Map.h"
+#include "../../GameObject/AnimatedObject/AnimatedObject.h"
 #include "../../GameObject/Map/Tile/Tile.h"
+
 #include "../../GameObject/Character/Player/Player.h"
 #include "../../../../GameServer/Code/Protocol.h"
 #include "../../Camera/Camera.h"
+
+#include "../../ResourceManager/ResourceManager.h"
 
 InGameBaseLayer::InGameBaseLayer()
 {
@@ -33,6 +37,15 @@ bool InGameBaseLayer::Initialize()
 	//henesysBackground6->InitWrap();
 	//henesysBackground6->SetPosition(VECTOR2D(0.f, 0.f));
 
+	AnimatedObject* flag = new AnimatedObject("HenesysHouse1_Flag");
+	m_objectList.emplace_back(flag);
+	if (flag->Initialize() == false)
+		return false;
+	AnimatedObjectInfo* info = GET_INSTANCE(ResourceManager)->GetAnimatedObjectInfo("HenesysHouse1_Flag");
+	flag->SetPosition(VECTOR2D(info->m_x, info->m_y));
+	flag->InitAnimation(info->m_size, info->m_animationName, info->m_name);
+	flag->SetAnimation(info->m_animationName);
+
 	for (int i = 0; i < 8; ++i)
 	{
 		string name = "HenesysHouse" + to_string(i);
@@ -41,6 +54,8 @@ bool InGameBaseLayer::Initialize()
 		if (house->Initialize() == false)
 			return false;
 	}
+
+
 
 	int tileNum = 0;
 	float startX = -WORLD_WIDTH * 0.5f;

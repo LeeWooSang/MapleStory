@@ -61,8 +61,8 @@ void Animation::Update(float elapsedTime)
 				--m_animationNum;
 		}
 	}
-
-	else if (m_name == "Walk")
+	else
+	//else if (m_name == "Walk")
 	{
 		if (m_animationNum == m_animationList.size() - 1)
 		{
