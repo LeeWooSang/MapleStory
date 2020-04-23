@@ -1,6 +1,5 @@
 #include "Scene.h"
 #include "../Layer/Layer.h"
-#include "../GameObject/Character/Player/Player.h"
 
 Scene::Scene()
 {
@@ -14,9 +13,6 @@ Scene::~Scene()
 		delete (*iter).second;
 		iter = m_layerList.erase(iter);
 	}
-
-	if (m_player != nullptr)
-		delete m_player;
 }
 
 Layer* Scene::GetLayer(const string& key)

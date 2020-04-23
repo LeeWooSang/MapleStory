@@ -1,7 +1,7 @@
 #include "Character.h"
-#include "../../Camera/Camera.h"
-#include "../../ResourceManager/ResourceManager.h"
-#include "../../ResourceManager/Texture/Texture.h"
+#include "../../../Camera/Camera.h"
+#include "../../../ResourceManager/ResourceManager.h"
+#include "../../../ResourceManager/Texture/Texture.h"
 
 Character::Character(const string& name)
 	: AnimatedObject(name)

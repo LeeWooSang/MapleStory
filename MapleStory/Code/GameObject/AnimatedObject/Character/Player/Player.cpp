@@ -1,8 +1,9 @@
 #include "Player.h"
-#include "../../../Camera/Camera.h"
-#include "../../../../../GameServer/Code/Protocol.h"
-#include "../../../Animation/Animation.h"
-#include "../../../Input/Input.h"
+#include "../../../../ResourceManager/ResourceManager.h"
+#include "../../../../Camera/Camera.h"
+#include "../../../../../../GameServer/Code/Protocol.h"
+#include "../../../../Animation/Animation.h"
+#include "../../../../Input/Input.h"
 
 Player::Player(const string& name) 
 	: Character(name)
@@ -20,20 +21,22 @@ Player::~Player()
 
 bool Player::Initialize()
 {
-	AnimatedObject* body = InitHierarchy("Body");
-	InitAnimation(3, "Idle", "IdleBody", body);
-	InitAnimation(4, "Walk", "WalkBody", body);
-	InitAnimation(1, "Jump", "JumpBody", body);
+	unordered_multimap<string, AnimatedObjectInfo*>infoList = GET_INSTANCE(ResourceManager)->GetCharacterObjectInfoList();
 
-	AnimatedObject* arm = InitHierarchy("Arm");
-	InitAnimation(3, "Idle", "IdleArm", arm);
-	InitAnimation(4, "Walk", "WalkArm", arm);
-	InitAnimation(1, "Jump", "JumpArm", arm);
+	string objName = "Body";
+	AnimatedObject* body = InitHierarchy(objName);	
+	for (auto iter = infoList.lower_bound(objName); iter != infoList.upper_bound(objName); ++iter)
+		InitAnimation((*iter).second->m_size, (*iter).second->m_animationName, (*iter).second->m_textureName, body);
 
-	AnimatedObject* head = InitHierarchy("Head");
-	InitAnimation(1, "Idle", "FrontHead", head);
-	InitAnimation(1, "Walk", "FrontHead", head);
-	InitAnimation(1, "Jump", "FrontHead", head);
+	objName = "Arm";
+	AnimatedObject* arm = InitHierarchy(objName);
+	for (auto iter = infoList.lower_bound(objName); iter != infoList.upper_bound(objName); ++iter)
+		InitAnimation((*iter).second->m_size, (*iter).second->m_animationName, (*iter).second->m_textureName, arm);
+
+	objName = "Head";
+	AnimatedObject* head = InitHierarchy(objName);
+	for (auto iter = infoList.lower_bound(objName); iter != infoList.upper_bound(objName); ++iter)
+		InitAnimation((*iter).second->m_size, (*iter).second->m_animationName, (*iter).second->m_textureName, head);
 
 	SetAnimation("Idle");
 	RegenerateColliderAABB();

@@ -13,6 +13,7 @@ ResourceManager::~ResourceManager()
 	SAFE_DELETE_MAP(m_textureList);
 	SAFE_DELETE_MAP(m_staticObjectInfoList);
 	SAFE_DELETE_MAP(m_animatedObjectInfoList);
+	SAFE_DELETE_MAP(m_characterObjectInfoList);
 }
 
 bool ResourceManager::Initialize()
@@ -401,11 +402,26 @@ bool ResourceManager::LoadTexture()
 
 bool ResourceManager::LoadScript()
 {
-	Script* script = new Script;
-	if (script->Initialize("../Resource/Script/HenesysObjectInfo.lua") == false)
-		return false;
+	{
+		Script* script = new Script;
+		if (script->Initialize("../Resource/Script/HenesysObjectInfo.lua") == false)
+			return false;
 
-	delete script;
+		script->LoadStaticObjectInfoScript();
+		script->LoadAnimatedObjectInfoScript();
+		
+		delete script;
+	}
+
+	{
+		Script* script = new Script;
+		if (script->Initialize("../Resource/Script/CharacterObjectInfo.lua") == false)
+			return false;
+
+		script->LoadCharacterObjectInfoScript();
+
+		delete script;
+	}
 
 	return true;
 }

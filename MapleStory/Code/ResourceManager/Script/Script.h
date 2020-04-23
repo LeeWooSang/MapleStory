@@ -20,11 +20,13 @@ public:
 
 	bool LoadStaticObjectInfoScript();
 	bool LoadAnimatedObjectInfoScript();
+	bool LoadCharacterObjectInfoScript();
 
 	// API ÇÔ¼öµé
 public:
 	static int API_HenesysStaticObjectInfo(lua_State*);
 	static int API_HenesysAnimatedObjectInfo(lua_State*);
+	static int API_CharacterObjectInfo(lua_State*);
 
 private:
 	lua_State* m_lua;

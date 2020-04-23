@@ -1,7 +1,6 @@
 #include "CharacterSelectScene.h"
 #include "../../Layer/CharacterSelectBaseLayer/CharacterSelectBaseLayer.h"
 #include "../../Layer/CharacterSelectUILayer/CharacterSelectUILayer.h"
-#include "../../GameObject/Character/Player/Player.h"
 
 CharacterSelectScene::CharacterSelectScene()
 {
@@ -30,18 +29,12 @@ void CharacterSelectScene::Update(float elapsedTime)
 {
 	for (auto layer : m_layerList)
 		layer.second->Update(elapsedTime);
-
-	if (m_player != nullptr)
-		m_player->Update(elapsedTime);
 }
 
 void CharacterSelectScene::Render()
 {
 	for (auto layer : m_layerList)
 		layer.second->Render();
-
-	if (m_player != nullptr)
-		m_player->Render();
 }
 
 void CharacterSelectScene::ProcessKeyboardMessage(HWND, UINT, WPARAM, LPARAM)

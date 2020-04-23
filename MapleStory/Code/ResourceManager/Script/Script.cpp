@@ -38,9 +38,6 @@ bool Script::Initialize(const string& path)
 		return false;
 	}
 
-	LoadStaticObjectInfoScript();
-	LoadAnimatedObjectInfoScript();
-
 	return true;
 }
 
@@ -100,6 +97,31 @@ bool Script::LoadAnimatedObjectInfoScript()
 	return true;
 }
 
+bool Script::LoadCharacterObjectInfoScript()
+{
+	// 스크립트에 테이블이 몇개있는지
+	lua_getglobal(m_lua, "g_characterObjectTableSize");
+	int size = static_cast<int>(lua_tonumber(m_lua, -1));
+	lua_pop(m_lua, 1);
+
+	// size 개수만큼 루프를 돔
+	for (int i = 0; i < size; ++i)
+	{
+		lua_register(m_lua, "API_CharacterObjectInfo", API_CharacterObjectInfo);
+		lua_getglobal(m_lua, "GetCharacterObjectInfo");
+		lua_pushnumber(m_lua, i);
+
+		int error = lua_pcall(m_lua, 1, 0, 0);
+		if (error)
+		{
+			ErrorDisplay();
+			return false;
+		}
+	}
+
+	return true;
+}
+
 int Script::API_HenesysStaticObjectInfo(lua_State* lua)
 {
 	string name = const_cast<char*>(lua_tostring(lua, -3));
@@ -115,15 +137,32 @@ int Script::API_HenesysStaticObjectInfo(lua_State* lua)
 
 int Script::API_HenesysAnimatedObjectInfo(lua_State* lua)
 {
-	string name = const_cast<char*>(lua_tostring(lua, -5));
-	string animationName = const_cast<char*>(lua_tostring(lua, -4));
+	string objectName = const_cast<char*>(lua_tostring(lua, -6));
+	string animationName = const_cast<char*>(lua_tostring(lua, -5));
+	string textureName = const_cast<char*>(lua_tostring(lua, -4));
 	float x = static_cast<float>(lua_tonumber(lua, -3));
 	float y = static_cast<float>(lua_tonumber(lua, -2));
 	int size = static_cast<int>(lua_tonumber(lua, -1));
 
-	GET_INSTANCE(ResourceManager)->AddAnimatedObjectInfo(name, animationName, x, y, size);
+	GET_INSTANCE(ResourceManager)->AddAnimatedObjectInfo(objectName, animationName, textureName, x, y, size);
 
-	lua_pop(lua, 6);
+	lua_pop(lua, 7);
+
+	return 0;
+}
+
+int Script::API_CharacterObjectInfo(lua_State* lua)
+{
+	string objectName = const_cast<char*>(lua_tostring(lua, -6));
+	string animationName = const_cast<char*>(lua_tostring(lua, -5));
+	string textureName = const_cast<char*>(lua_tostring(lua, -4));
+	float x = static_cast<float>(lua_tonumber(lua, -3));
+	float y = static_cast<float>(lua_tonumber(lua, -2));
+	int size = static_cast<int>(lua_tonumber(lua, -1));
+
+	GET_INSTANCE(ResourceManager)->AddCharacterObjectInfo(objectName, animationName, textureName, x, y, size);
+
+	lua_pop(lua, 7);
 
 	return 0;
 }

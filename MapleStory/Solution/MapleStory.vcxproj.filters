@@ -128,6 +128,9 @@
     <Filter Include="Code\GameObject\AnimatedObject\Character\Player">
       <UniqueIdentifier>{1f4f239b-2959-4158-9695-753d6d7e0d5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Resource\Script\LuaScript">
+      <UniqueIdentifier>{fc70f5f7-73d9-4a81-a9e5-9dce810e4a5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Core\Core.cpp">
@@ -168,12 +171,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\Collision\Collision.cpp">
       <Filter>Code\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\GameObject\Character\Player\Player.cpp">
-      <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\GameObject\Character\Character.cpp">
-      <Filter>Code\GameObject\AnimatedObject\Character</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Camera\Camera.cpp">
       <Filter>Code\Camera</Filter>
@@ -250,6 +247,15 @@
     <ClCompile Include="..\Code\GameObject\AnimatedObject\AnimatedObject.cpp">
       <Filter>Code\GameObject\AnimatedObject</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\GameObject\StaticObject\StaticObject.cpp">
+      <Filter>Code\GameObject\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\AnimatedObject\Character\Character.cpp">
+      <Filter>Code\GameObject\AnimatedObject\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\AnimatedObject\Character\Player\Player.cpp">
+      <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Code\Core\Core.h">
@@ -296,12 +302,6 @@
     </ClInclude>
     <ClInclude Include="..\Code\Collision\Collision.h">
       <Filter>Code\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Code\GameObject\Character\Player\Player.h">
-      <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Code\GameObject\Character\Character.h">
-      <Filter>Code\GameObject\AnimatedObject\Character</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\Camera\Camera.h">
       <Filter>Code\Camera</Filter>
@@ -381,6 +381,15 @@
     <ClInclude Include="..\Code\GameObject\AnimatedObject\AnimatedObject.h">
       <Filter>Code\GameObject\AnimatedObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Code\GameObject\StaticObject\StaticObject.h">
+      <Filter>Code\GameObject\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\AnimatedObject\Character\Character.h">
+      <Filter>Code\GameObject\AnimatedObject\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\AnimatedObject\Character\Player\Player.h">
+      <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Code\Default\Resource.rc">
@@ -388,8 +397,11 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resource\Script\CharacterObjectInfo.lua">
+      <Filter>Code\Resource\Script\LuaScript</Filter>
+    </None>
     <None Include="..\Resource\Script\HenesysObjectInfo.lua">
-      <Filter>Code\Resource\Script</Filter>
+      <Filter>Code\Resource\Script\LuaScript</Filter>
     </None>
   </ItemGroup>
 </Project>

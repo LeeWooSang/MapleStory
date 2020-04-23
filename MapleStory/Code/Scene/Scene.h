@@ -18,6 +18,5 @@ public:
 
 protected:
 	unordered_map<string, class Layer*> m_layerList;
-	class Player* m_player;
 };
 

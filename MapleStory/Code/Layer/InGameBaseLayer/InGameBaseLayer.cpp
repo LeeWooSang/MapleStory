@@ -3,7 +3,7 @@
 #include "../../GameObject/AnimatedObject/AnimatedObject.h"
 #include "../../GameObject/Map/Tile/Tile.h"
 
-#include "../../GameObject/Character/Player/Player.h"
+#include "../../GameObject/AnimatedObject/Character/Player/Player.h"
 #include "../../../../GameServer/Code/Protocol.h"
 #include "../../Camera/Camera.h"
 
@@ -37,13 +37,15 @@ bool InGameBaseLayer::Initialize()
 	//henesysBackground6->InitWrap();
 	//henesysBackground6->SetPosition(VECTOR2D(0.f, 0.f));
 
-	AnimatedObject* flag = new AnimatedObject("HenesysHouse1_Flag");
+	AnimatedObjectInfo* info = GET_INSTANCE(ResourceManager)->GetAnimatedObjectInfo("HenesysHouse1_Flag");
+
+	AnimatedObject* flag = new AnimatedObject(info->m_objectName);
 	m_objectList.emplace_back(flag);
 	if (flag->Initialize() == false)
 		return false;
-	AnimatedObjectInfo* info = GET_INSTANCE(ResourceManager)->GetAnimatedObjectInfo("HenesysHouse1_Flag");
+
 	flag->SetPosition(VECTOR2D(info->m_x, info->m_y));
-	flag->InitAnimation(info->m_size, info->m_animationName, info->m_name);
+	flag->InitAnimation(info->m_size, info->m_animationName, info->m_textureName);
 	flag->SetAnimation(info->m_animationName);
 
 	for (int i = 0; i < 8; ++i)
