@@ -107,12 +107,6 @@
     <Filter Include="Code\Layer\InGameUILayer">
       <UniqueIdentifier>{37dc0e2e-4f9c-47f5-bf95-5526b9ca1aaa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Layer\InGameBaseLayer">
-      <UniqueIdentifier>{110eb555-c511-4a72-88fc-c720ac8db5ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\GameObject\Map\Tile">
-      <UniqueIdentifier>{83aa4a18-b623-4929-8538-0d836afb0b30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Resource\Script">
       <UniqueIdentifier>{4f9d9eab-044f-4432-9148-41b66cbde15f}</UniqueIdentifier>
     </Filter>
@@ -130,6 +124,12 @@
     </Filter>
     <Filter Include="Code\Resource\Script\LuaScript">
       <UniqueIdentifier>{fc70f5f7-73d9-4a81-a9e5-9dce810e4a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Layer\InGameBaseLayer">
+      <UniqueIdentifier>{110eb555-c511-4a72-88fc-c720ac8db5ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\GameObject\StaticObject\Tile">
+      <UniqueIdentifier>{83aa4a18-b623-4929-8538-0d836afb0b30}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -235,14 +235,8 @@
     <ClCompile Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.cpp">
       <Filter>Code\Layer\InGameBaseLayer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\GameObject\Map\Tile\Tile.cpp">
-      <Filter>Code\GameObject\Map\Tile</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\ResourceManager\Script\Script.cpp">
       <Filter>Code\Resource\Script</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\GameObject\Map\Map.cpp">
-      <Filter>Code\GameObject\Map</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\AnimatedObject\AnimatedObject.cpp">
       <Filter>Code\GameObject\AnimatedObject</Filter>
@@ -255,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\GameObject\AnimatedObject\Character\Player\Player.cpp">
       <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GameObject\StaticObject\Tile\Tile.cpp">
+      <Filter>Code\GameObject\StaticObject\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -369,14 +366,8 @@
     <ClInclude Include="..\Code\Layer\InGameBaseLayer\InGameBaseLayer.h">
       <Filter>Code\Layer\InGameBaseLayer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Code\GameObject\Map\Tile\Tile.h">
-      <Filter>Code\GameObject\Map\Tile</Filter>
-    </ClInclude>
     <ClInclude Include="..\Code\ResourceManager\Script\Script.h">
       <Filter>Code\Resource\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Code\GameObject\Map\Map.h">
-      <Filter>Code\GameObject\Map</Filter>
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\AnimatedObject\AnimatedObject.h">
       <Filter>Code\GameObject\AnimatedObject</Filter>
@@ -389,6 +380,9 @@
     </ClInclude>
     <ClInclude Include="..\Code\GameObject\AnimatedObject\Character\Player\Player.h">
       <Filter>Code\GameObject\AnimatedObject\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\GameObject\StaticObject\Tile\Tile.h">
+      <Filter>Code\GameObject\StaticObject\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

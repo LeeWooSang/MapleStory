@@ -124,11 +124,12 @@ bool Script::LoadCharacterObjectInfoScript()
 
 int Script::API_HenesysStaticObjectInfo(lua_State* lua)
 {
-	string name = const_cast<char*>(lua_tostring(lua, -3));
+	string objectName = const_cast<char*>(lua_tostring(lua, -4));
+	string textureName = const_cast<char*>(lua_tostring(lua, -3));
 	float x = static_cast<float>(lua_tonumber(lua, -2));
 	float y = static_cast<float>(lua_tonumber(lua, -1));
 
-	GET_INSTANCE(ResourceManager)->AddStaticObjectInfo(name, x, y);
+	GET_INSTANCE(ResourceManager)->AddStaticObjectInfo(objectName, textureName, x, y);
 
 	lua_pop(lua, 4);
 

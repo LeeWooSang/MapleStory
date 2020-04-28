@@ -1,7 +1,8 @@
 #include "InGameBaseLayer.h"
-#include "../../GameObject/Map/Map.h"
 #include "../../GameObject/AnimatedObject/AnimatedObject.h"
-#include "../../GameObject/Map/Tile/Tile.h"
+#include "../../GameObject/StaticObject/StaticObject.h"
+
+#include "../../GameObject/StaticObject/Tile/Tile.h"
 
 #include "../../GameObject/AnimatedObject/Character/Player/Player.h"
 #include "../../../../GameServer/Code/Protocol.h"
@@ -37,68 +38,40 @@ bool InGameBaseLayer::Initialize()
 	//henesysBackground6->InitWrap();
 	//henesysBackground6->SetPosition(VECTOR2D(0.f, 0.f));
 
-	AnimatedObjectInfo* info = GET_INSTANCE(ResourceManager)->GetAnimatedObjectInfo("HenesysHouse1_Flag");
-
-	AnimatedObject* flag = new AnimatedObject(info->m_objectName);
-	m_objectList.emplace_back(flag);
-	if (flag->Initialize() == false)
-		return false;
-
-	flag->SetPosition(VECTOR2D(info->m_x, info->m_y));
-	flag->InitAnimation(info->m_size, info->m_animationName, info->m_textureName);
-	flag->SetAnimation(info->m_animationName);
-
-	for (int i = 0; i < 8; ++i)
 	{
-		string name = "HenesysHouse" + to_string(i);
-		Map* house = new Map(name);
-		m_objectList.emplace_back(house);
-		if (house->Initialize() == false)
+		AnimatedObjectInfo* info = GET_INSTANCE(ResourceManager)->GetAnimatedObjectInfo("HenesysHouse1_Flag");
+		AnimatedObject* flag = new AnimatedObject(info->m_objectName);
+		m_objectList.emplace_back(flag);
+		if (flag->Initialize() == false)
 			return false;
+		flag->SetPosition(VECTOR2D(info->m_x, info->m_y));
+		flag->InitAnimation(info->m_size, info->m_animationName, info->m_textureName);
+		flag->SetAnimation(info->m_animationName);
 	}
 
-
-
-	int tileNum = 0;
-	float startX = -WORLD_WIDTH * 0.5f;
-	float startY = WORLD_HEIGHT * 0.5f;
-	int gapX = 90;
-	int gapY = -60;
-
-	// WoodMarbleTile
-	// 가로
-	for (int i = 0; i < 67; ++i)
 	{
-		// 세로
-		for (int j = 0; j < 4; ++j)
+		unordered_multimap<string, StaticObjectInfo*> staticObjectInfoList = GET_INSTANCE(ResourceManager)->GetStaticObjectInfoList();
+		for (auto iter = staticObjectInfoList.begin(); iter != staticObjectInfoList.end(); ++iter)
 		{
-			if (tileNum >= 6)
-				tileNum = 0;
+			if ((*iter).second->m_objectName == "WoodMarbleTop")
+				continue;
 
-			string name = "WoodMarbleTile" + to_string(tileNum++);
-
-			Map* tile = new Map(name);
-			m_objectList.emplace_back(tile);
-			if (tile->Initialize() == false)
+			StaticObject* obj = new StaticObject((*iter).second->m_objectName);		
+			m_objectList.emplace_back(obj);
+			if (obj->Initialize((*iter).second->m_textureName) == false)
 				return false;
-			tile->SetPosition(VECTOR2D(startX + gapX * i, startY + gapY * j));
+			obj->SetPosition(VECTOR2D((*iter).second->m_x, (*iter).second->m_y));
 		}
-	}
 
-	// WoodMarbleTop
-	for (int i = 0; i < 67; ++i)
-	{
-		if (tileNum >= 4)
-			tileNum = 0;
-
-		string name = "WoodMarbleTop" + to_string(tileNum++);
-
-		Tile* tile = new Tile(name);
-		m_tileTopList.emplace_back(tile);
-		if (tile->Initialize() == false)
-			return false;
-		tile->SetPosition(VECTOR2D(startX + gapX * i, startY - 180 - 30 - 33*0.5));
-		tile->GetTopPos();
+		for (auto iter = staticObjectInfoList.lower_bound("WoodMarbleTop"); iter != staticObjectInfoList.upper_bound("WoodMarbleTop"); ++iter)
+		{
+			Tile* obj = new Tile((*iter).second->m_objectName);
+			m_tileTopList.emplace_back(obj);
+			if (obj->Initialize((*iter).second->m_textureName) == false)
+				return false;
+			obj->SetPosition(VECTOR2D((*iter).second->m_x, (*iter).second->m_y));
+			obj->GetTopPos();
+		}
 	}
 
 	m_player = new Player("플레이어");

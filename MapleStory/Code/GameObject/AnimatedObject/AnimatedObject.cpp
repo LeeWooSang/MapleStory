@@ -11,6 +11,8 @@ AnimatedObject::AnimatedObject(const string& name)
 	m_hierarchyMap.clear();
 	m_animation.clear();
 	m_animationMap.clear();
+
+	m_textureMap.clear();
 }
 
 AnimatedObject::~AnimatedObject()
@@ -18,6 +20,8 @@ AnimatedObject::~AnimatedObject()
 	SAFE_DELETE_LIST(m_hierarchyList);
 	//SAFE_DELETE_MAP(m_hierarchyMap);
 	SAFE_DELETE_MAP(m_animationMap);
+
+	m_textureMap.clear();
 }
 
 bool AnimatedObject::Initialize()
@@ -50,26 +54,46 @@ void AnimatedObject::Render()
 	auto iter = m_animationMap.find(m_animation);
 	if (iter != m_animationMap.end())
 	{
-		// 현재 재생할 애니메이션 이름을 얻어와 텍스쳐를 가져옴
-		Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture((*iter).second->GetAnimation());
-		if (tex == nullptr)
-			return;
+		//// 현재 재생할 애니메이션 이름을 얻어와 텍스쳐를 가져옴
+		//Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture((*iter).second->GetAnimation());
+		//if (tex == nullptr)
+		//	return;
 
-		Matrix3x2F transform = m_worldMatrix;
+		//Matrix3x2F transform = m_worldMatrix;
 
-		// 방향을 곱해줘야 함
-		transform._11 *= m_direction;
-		transform._31 += tex->GetOriginX() * m_direction;
-		transform._32 += tex->GetOriginY();
+		//// 방향을 곱해줘야 함
+		//transform._11 *= m_direction;
+		//transform._31 += tex->GetOriginX() * m_direction;
+		//transform._32 += tex->GetOriginY();
 
-		transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
-		GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
+		//transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
+		//GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
 
-		D2D1_RECT_F rect;
-		m_collider->GetAABB(&rect);
-		GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(tex->GetBitmap(), rect);
+		//D2D1_RECT_F rect;
+		//m_collider->GetAABB(&rect);
+		//GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap(tex->GetBitmap(), rect);
 
-		AnimatedObject::RenderBoundingBox();
+		//AnimatedObject::RenderBoundingBox();
+
+		auto iter0 = m_textureMap.find((*iter).second->GetAnimation());
+		if (iter0 != m_textureMap.end())
+		{
+			Matrix3x2F transform = m_worldMatrix;
+
+			// 방향을 곱해줘야 함
+			transform._11 *= m_direction;
+			transform._31 += (*iter0).second->GetOriginX() * m_direction;
+			transform._32 += (*iter0).second->GetOriginY();
+
+			transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
+
+			D2D1_RECT_F rect;
+			m_collider->GetAABB(&rect);
+			GET_INSTANCE(D2DManager)->GetRenderTarget()->DrawBitmap((*iter0).second->GetBitmap(), rect);
+
+			AnimatedObject::RenderBoundingBox();
+		}
 	}
 
 	for (auto object : m_hierarchyList)
@@ -227,7 +251,11 @@ void AnimatedObject::InitAnimation(int size, const string& animationName, const 
 	
 	// 애니메이션 텍스쳐 이름 : 애니메이션 이름 + 오브젝트 이름 + a
 	for (int i = 0; i < size; ++i)
-		ani->AddAnimation(textureName + to_string(i));
+	{
+		string s = textureName + to_string(i);
+		ani->AddAnimation(s);
+		m_textureMap.emplace(s, GET_INSTANCE(ResourceManager)->GetTexture(s));
+	}
 
 	AddAnimationMap(animationName, ani);
 }
@@ -237,7 +265,11 @@ void AnimatedObject::InitAnimation(int size, const string& animationName, const 
 	// 애니메이션에 필요한 텍스쳐 개수를 알아야함.
 	Animation* ani = new Animation(animationName);
 	for (int i = 0; i < size; ++i)
-		ani->AddAnimation(textureName + to_string(i));
+	{
+		string s = textureName + to_string(i);
+		ani->AddAnimation(s);
+		obj->m_textureMap.emplace(s, GET_INSTANCE(ResourceManager)->GetTexture(s));
+	}
 
 	obj->AddAnimationMap(animationName, ani);
 }

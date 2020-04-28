@@ -43,6 +43,8 @@ public:
 
 protected:
 	string m_name;
+	unordered_map<string, class Texture*> m_textureMap;
+
 	Matrix3x2F m_worldMatrix;
 	char m_direction;
 

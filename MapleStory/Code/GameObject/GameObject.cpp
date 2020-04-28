@@ -7,6 +7,8 @@
 GameObject::GameObject(const string& name)
 	: m_name(name)
 {
+	m_textureMap.clear();
+
 	m_worldMatrix = Matrix3x2F::Identity();
 	m_direction = 1;
 
@@ -22,14 +24,16 @@ GameObject::GameObject(const string& name)
 
 GameObject::~GameObject()
 {
+	m_textureMap.clear();
+
 	if (m_collider)
 		delete m_collider;
+
+	m_collisionObject = nullptr;
 }
 
 bool GameObject::Initialize()
 {
-	//m_animationName = m_name;
-
 	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
 	if (tex == nullptr)
 		return false;

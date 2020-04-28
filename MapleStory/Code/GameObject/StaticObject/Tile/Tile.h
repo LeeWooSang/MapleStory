@@ -1,13 +1,14 @@
 #pragma once
-#include "../Map.h"
+#include "../StaticObject.h"
 
-class Tile : public Map
+class Tile : public StaticObject
 {
 public:
 	Tile(const string&);
 	virtual ~Tile();
 
-	virtual bool Initialize();
+	virtual bool Initialize(const string&);
+
 	virtual void Update(float);
 	virtual void Render();
 

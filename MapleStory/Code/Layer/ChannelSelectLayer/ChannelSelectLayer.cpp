@@ -1,5 +1,5 @@
 #include "ChannelSelectLayer.h"
-#include "../../GameObject/Map/Map.h"
+#include "../../GameObject/StaticObject/StaticObject.h"
 #include "../../GameObject/UI/ButtonUI/ButtonUI.h"
 #include "../../Network/Network.h"
 
@@ -14,14 +14,14 @@ ChannelSelectLayer::~ChannelSelectLayer()
 bool ChannelSelectLayer::Initialize()
 {
 	string name = "ChannelSelectBackground";
-	Map* background = new Map(name);
+	StaticObject* background = new StaticObject(name);
 	m_objectList.emplace_back(background);
 	if (background->Initialize() == false)
 		return false;
 	background->SetPosition(VECTOR2D(0.f, 0.f));
 
 	name = "ChannelWorldLogo";
-	Map* channelWorldLogo = new Map(name);
+	StaticObject* channelWorldLogo = new StaticObject(name);
 	m_objectList.emplace_back(channelWorldLogo);
 	if (channelWorldLogo->Initialize() == false)
 		return false;

@@ -8,8 +8,13 @@ public:
 	virtual ~StaticObject();
 
 	virtual bool Initialize();
-	virtual void Update(float) = 0;
+	virtual bool Initialize(const string&);
+
+	virtual void Update(float);
 	virtual void Render();
 	virtual void RenderBoundingBox();
+
+protected:
+	string m_textureName;
 };
 

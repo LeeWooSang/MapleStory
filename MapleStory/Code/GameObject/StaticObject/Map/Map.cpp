@@ -13,8 +13,15 @@ Map::~Map()
 
 bool Map::Initialize()
 {
-	if (GameObject::Initialize() == false)
+	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
+	if (tex == nullptr)
 		return false;
+
+	int width = tex->GetWidth();
+	int height = tex->GetHeight();
+	m_collider = new AABBCollider(AABB(-width * 0.5f, -height * 0.5f, width * 0.5f, height * 0.5f));
+
+	m_isDrawBoundingBox = true;
 
 	m_worldMatrix._21 = 0.f;
 	m_worldMatrix._22 = -1.f;
@@ -22,14 +29,6 @@ bool Map::Initialize()
 	StaticObjectInfo* info0 = GET_INSTANCE(ResourceManager)->GetStaticObjectInfo(m_name);
 	if (info0 != nullptr)
 		SetPosition(VECTOR2D(info0->m_x, info0->m_y));
-
-	AnimatedObjectInfo* info1 = GET_INSTANCE(ResourceManager)->GetAnimatedObjectInfo(m_name);
-	if (info1 != nullptr)
-	{
-		SetPosition(VECTOR2D(info1->m_x, info1->m_y));
-		//InitAnimation(info1->m_size, info1->m_animationName);
-	}
-
 
 	return true;
 }

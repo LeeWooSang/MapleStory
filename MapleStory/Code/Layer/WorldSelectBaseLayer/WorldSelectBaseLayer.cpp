@@ -1,5 +1,5 @@
 #include "WorldSelectBaseLayer.h"
-#include "../../GameObject/Map/Map.h"
+#include "../../GameObject/StaticObject/StaticObject.h"
 
 WorldSelectBaseLayer::WorldSelectBaseLayer()
 {
@@ -12,28 +12,28 @@ WorldSelectBaseLayer::~WorldSelectBaseLayer()
 bool WorldSelectBaseLayer::Initialize()
 {
 	string name = "WorldSelectBackground";
-	Map* background = new Map(name);
+	StaticObject* background = new StaticObject(name);
 	m_objectList.emplace_back(background);
 	if (background->Initialize() == false)
 		return false;
 	background->SetPosition(VECTOR2D(0.f, 0.f));
 
 	name = "WorldSelectFrame";
-	Map* worldSelectFrame = new Map(name);
+	StaticObject* worldSelectFrame = new StaticObject(name);
 	m_objectList.emplace_back(worldSelectFrame);
 	if (worldSelectFrame->Initialize() == false)
 		return false;
 	worldSelectFrame->SetPosition(VECTOR2D(310.f, -5.f));
 
 	name = "Frame";
-	Map* frame = new Map(name);
+	StaticObject* frame = new StaticObject(name);
 	m_objectList.emplace_back(frame);
 	if (frame->Initialize() == false)
 		return false;
 	frame->SetPosition(VECTOR2D(0.f, 0.f));
 
 	name = "WorldSelectLogo";
-	Map* worldSelectlogo = new Map(name);
+	StaticObject* worldSelectlogo = new StaticObject(name);
 	m_objectList.emplace_back(worldSelectlogo);
 	if (worldSelectlogo->Initialize() == false)
 		return false;

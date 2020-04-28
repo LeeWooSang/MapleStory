@@ -1,5 +1,5 @@
 #include "CharacterSelectBaseLayer.h"
-#include "../../GameObject/Map/Map.h"
+#include "../../GameObject/StaticObject/StaticObject.h"
 
 CharacterSelectBaseLayer::CharacterSelectBaseLayer()
 {
@@ -12,42 +12,42 @@ CharacterSelectBaseLayer::~CharacterSelectBaseLayer()
 bool CharacterSelectBaseLayer::Initialize()
 {
 	string name = "CharacterSelectBackground";
-	Map* background = new Map(name);
+	StaticObject* background = new StaticObject(name);
 	m_objectList.emplace_back(background);
 	if (background->Initialize() == false)
 		return false;
 	background->SetPosition(VECTOR2D(0.f, 0.f));
 
 	name = "Frame";
-	Map* frame = new Map(name);
+	StaticObject* frame = new StaticObject(name);
 	m_objectList.emplace_back(frame);
 	if (frame->Initialize() == false)
 		return false;
 	frame->SetPosition(VECTOR2D(0.f, 0.f));
 
 	name = "CharacterSelectLogo";
-	Map* characterSelectLogo = new Map(name);
+	StaticObject* characterSelectLogo = new StaticObject(name);
 	m_objectList.emplace_back(characterSelectLogo);
 	if (characterSelectLogo->Initialize() == false)
 		return false;
 	characterSelectLogo->SetPosition(VECTOR2D(-300.f, -279.f));
 
 	name = "WorldLogoBackground";
-	Map* worldLogoBackground = new Map(name);
+	StaticObject* worldLogoBackground = new StaticObject(name);
 	m_objectList.emplace_back(worldLogoBackground);
 	if (worldLogoBackground->Initialize() == false)
 		return false;
 	worldLogoBackground->SetPosition(VECTOR2D(272.5f, -222.5f));
 
 	name = "WorldLogoIcon";
-	Map* worldLogoIcon = new Map(name);
+	StaticObject* worldLogoIcon = new StaticObject(name);
 	m_objectList.emplace_back(worldLogoIcon);
 	if (worldLogoIcon->Initialize() == false)
 		return false;
 	worldLogoIcon->SetPosition(VECTOR2D(225.f, -222.5f));
 
 	name = "WorldLogoName";
-	Map* worldLogoName = new Map(name);
+	StaticObject* worldLogoName = new StaticObject(name);
 	m_objectList.emplace_back(worldLogoName);
 	if (worldLogoName->Initialize() == false)
 		return false;

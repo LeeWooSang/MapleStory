@@ -1,9 +1,8 @@
 #include "Tile.h"
-#include "../../../ResourceManager/ResourceManager.h"
 #include "../../../ResourceManager/Texture/Texture.h"
 
 Tile::Tile(const string& name)
-	: Map(name)
+	: StaticObject(name)
 {
 }
 
@@ -11,32 +10,32 @@ Tile::~Tile()
 {
 }
 
-bool Tile::Initialize()
+bool Tile::Initialize(const string& textureName)
 {
-	if (GameObject::Initialize() == false)
+	if (StaticObject::Initialize(textureName) == false)
 		return false;
-
-	m_worldMatrix._21 = 0.f;
-	m_worldMatrix._22 = -1.f;
 
 	return true;
 }
 
 void Tile::Update(float elapsedTime)
 {
+	StaticObject::Update(elapsedTime);
 }
 
 void Tile::Render()
 {
-	GameObject::Render();
+	StaticObject::Render();
 }
 
 void Tile::GetTopPos()
 {
-	Texture* tex = GET_INSTANCE(ResourceManager)->GetTexture(m_name);
-	
-	int halfWidth = tex->GetWidth() * 0.5f;
-	int halfHeight = tex->GetHeight() * 0.5f;
+	auto iter = m_textureMap.find(m_textureName);
+	if (iter == m_textureMap.end())
+		return;
+
+	int halfWidth = (*iter).second->GetWidth() * 0.5f;
+	int halfHeight = (*iter).second->GetHeight() * 0.5f;
 
 	m_topStartPos = VECTOR2D(m_worldMatrix._31 - halfWidth, m_worldMatrix._32 - halfHeight);
 	m_topEndPos = VECTOR2D(m_worldMatrix._31 + halfWidth, m_worldMatrix._32 - halfHeight + 5);
