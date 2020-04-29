@@ -70,7 +70,7 @@ bool InGameBaseLayer::Initialize()
 			if (obj->Initialize((*iter).second->m_textureName) == false)
 				return false;
 			obj->SetPosition(VECTOR2D((*iter).second->m_x, (*iter).second->m_y));
-			obj->GetTopPos();
+			obj->SetTopPos();
 		}
 	}
 
@@ -125,7 +125,7 @@ bool InGameBaseLayer::CheckCollision(GameObject* tile, int& flag)
 	if (m_player == nullptr)
 		return false;
 
-	GameObject* object = m_player->FindObject("Body");
+	AnimatedObject* object = m_player->FindObject("Body");
 	if (object == nullptr)
 		return false;
 

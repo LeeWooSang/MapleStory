@@ -16,9 +16,11 @@ public:
 	virtual void SetRightVector(VECTOR2D);
 	virtual void SetUpVector(VECTOR2D);
 	virtual void SetPosition(VECTOR2D);
+	
+	virtual float GetObjectBottomPos();
 
 	AnimatedObject* InitHierarchy(const string&);
-	AnimatedObject* FindObject(const string& name);
+	AnimatedObject* FindObject(const string&);
 
 	void InitAnimation(int, const string&, const string&);
 	void InitAnimation(int, const string&, const string&, AnimatedObject*);

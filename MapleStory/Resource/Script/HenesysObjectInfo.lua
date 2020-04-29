@@ -83,10 +83,12 @@ g_staticObjectTable[tableSize] =
 tableSize = tableSize + 1;
 
 local tileNum = 0;
+local str0 = "WoodMarbleTile";;
+
+-- for문 i는 0부터 66보다 작거나 같을때까지 1씩 증가
 for i = 0, 66, 1 do
 	for j = 0, 3, 1 do
 
-	local str0 = "WoodMarbleTile";;
 	local str1 = tostring(tileNum);
 
 	g_staticObjectTable[tableSize] = 
@@ -94,9 +96,6 @@ for i = 0, 66, 1 do
 		objectName = str0;
 		-- string.format : 문자열 합치기 함수
 		textureName = string.format("%s%s", str0, str1);
-
-		--textureName = "WoodMarbleTile0";
-
 		x = (-WORLD_WIDTH * 0.5) + (gapX * i);
 		y = (WORLD_HEIGHT * 0.5) + (gapY * j);
 	};
@@ -110,8 +109,9 @@ for i = 0, 66, 1 do
 end
 
 tileNum = 0;
+str0 = "WoodMarbleTop";
 for i = 0, 66, 1 do
-	local str0 = "WoodMarbleTop";
+
 	local str1 = tostring(tileNum);
 
 	g_staticObjectTable[tableSize] = 
@@ -119,7 +119,8 @@ for i = 0, 66, 1 do
 		objectName = str0;
 		textureName = string.format("%s%s", str0, str1);
 		x = (-WORLD_WIDTH * 0.5) + (gapX * i);
-		y = (WORLD_HEIGHT * 0.5) - 180 - 30 - (33 * 0.5);
+		-- y좌표 : (전체 월드의 높이 절반값) - (WoodMarbleTile 4개의 높이) - (WoodMarbleTile의 높이 절반값) - (WoodMarbleTop의 높이 절반값)
+		y = (WORLD_HEIGHT * 0.5) - (60 * 3) - (60 * 0.5) - (33 * 0.5);
 	};
 
 	tileNum = tileNum + 1;	
@@ -128,6 +129,45 @@ for i = 0, 66, 1 do
 	end
 	tableSize = tableSize + 1;
 end
+
+g_staticObjectTable[tableSize] = 
+{
+	objectName = "WoodMarbleSlopingTop";
+	textureName = "WoodMarbleSlopingTop0";
+	x = -2620;
+	y = (WORLD_HEIGHT * 0.5) - (60 * 3) + 15;
+};
+tableSize = tableSize + 1;
+
+g_staticObjectTable[tableSize] = 
+{
+	objectName = "WoodMarbleSlopingTop";
+	textureName = "WoodMarbleSlopingTop0";
+	x = -2350;
+	y = (WORLD_HEIGHT * 0.5) - (60 * 3) + 15;
+};
+tableSize = tableSize + 1;
+
+--tileNum = 0;
+--str0 = "WoodMarbleSlopingTop";
+--for i = 0, 1, 1 do
+
+--	local str1 = tostring(tileNum);
+
+--	g_staticObjectTable[tableSize] = 
+--	{
+--		objectName = str0;
+--		textureName = string.format("%s%s", str0, str1);
+--		x = 0+ (gapX * i);
+--		y = 0;
+--	};
+
+--	tileNum = tileNum + 1;	
+--	if tileNum >= 2 then
+--		tileNum = 0;
+--	end
+--	tableSize = tableSize + 1;
+--end
 
 g_staticObjectTableSize = tableSize;
 

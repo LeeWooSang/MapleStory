@@ -1,5 +1,6 @@
 #include "Tile.h"
 #include "../../../ResourceManager/Texture/Texture.h"
+#include "../../AnimatedObject/AnimatedObject.h"
 
 Tile::Tile(const string& name)
 	: StaticObject(name)
@@ -28,7 +29,7 @@ void Tile::Render()
 	StaticObject::Render();
 }
 
-void Tile::GetTopPos()
+void Tile::SetTopPos()
 {
 	auto iter = m_textureMap.find(m_textureName);
 	if (iter == m_textureMap.end())
@@ -38,18 +39,20 @@ void Tile::GetTopPos()
 	int halfHeight = (*iter).second->GetHeight() * 0.5f;
 
 	m_topStartPos = VECTOR2D(m_worldMatrix._31 - halfWidth, m_worldMatrix._32 - halfHeight);
-	m_topEndPos = VECTOR2D(m_worldMatrix._31 + halfWidth, m_worldMatrix._32 - halfHeight + 5);
+	m_topEndPos = VECTOR2D(m_worldMatrix._31 + halfWidth, m_worldMatrix._32 - halfHeight + 1);
 }
 
-bool Tile::CheckCollision(GameObject* object)
+bool Tile::CheckCollision(AnimatedObject* object)
 {
-	if (object->GetPositionVector().x < m_topStartPos.x)
+	AnimatedObject* obj = reinterpret_cast<AnimatedObject*>(object);
+
+	if (obj->GetPositionVector().x < m_topStartPos.x)
 		return false;
-	if (object->GetPositionVector().x > m_topEndPos.x)
+	if (obj->GetPositionVector().x > m_topEndPos.x)
 		return false;
-	if (object->GetPositionVector().y < m_topStartPos.y)
+	if (obj->GetObjectBottomPos() < m_topStartPos.y)
 		return false;
-	if (object->GetPositionVector().y > m_topEndPos.y)
+	if (obj->GetObjectBottomPos() > m_topEndPos.y)
 		return false;
 
 	return true;

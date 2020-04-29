@@ -12,8 +12,8 @@ public:
 	virtual void Update(float);
 	virtual void Render();
 
-	void GetTopPos();
-	bool CheckCollision(GameObject*);
+	void SetTopPos();
+	bool CheckCollision(class AnimatedObject*);
 
 private:
 	VECTOR2D m_topStartPos;

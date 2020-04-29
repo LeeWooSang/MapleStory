@@ -6,7 +6,7 @@ class Texture
 public:
 	Texture();
 	~Texture();
-	bool Initialize(const wstring&, int, int, int, int, int, int, float originX = 0.f, float originY = 0.f);
+	bool Initialize(const wstring&, int, int, int, int, int, int, float offsetX = 0.f, float offsetY = 0.f);
 
 	bool InitWrap();
 
@@ -14,8 +14,8 @@ public:
 	int GetWidth()	const { return m_width; }
 	int GetHeight()	const { return m_height; }
 
-	float GetOriginX()	const { return m_originX; }
-	float GetOriginY()	const { return m_originY; }
+	float GetOffsetX()	const { return m_offsetX; }
+	float GetOffsetY()	const { return m_offsetY; }
 
 	ID2D1BitmapBrush* GetWrapBrush() { return m_bitmapBrush[0]; }
 
@@ -34,8 +34,8 @@ private:
 	int m_frameX;
 	int m_frameY;
 
-	float m_originX;
-	float m_originY;
+	float m_offsetX;
+	float m_offsetY;
 
 	ID2D1BitmapBrush* m_bitmapBrush[3];
 };

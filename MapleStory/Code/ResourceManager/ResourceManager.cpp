@@ -309,6 +309,7 @@ bool ResourceManager::LoadTexture()
 				return false;
 		}
 	}
+
 	{
 		for (int i = 0; i < 4; ++i)
 		{
@@ -318,6 +319,19 @@ bool ResourceManager::LoadTexture()
 			Texture* tex = new Texture;
 			m_textureList.emplace(s, tex);
 			if (tex->Initialize(L"../Resource/Textures/Map/Henesys/Tile/Top/" + ws, 90, 33, 1, 1, 0, 0) == false)
+				return false;
+		}
+	}
+
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			string s = "WoodMarbleSlopingTop" + to_string(i);
+			wstring ws = L"WoodMarbleSlopingTop" + to_wstring(i) + L".png";
+
+			Texture* tex = new Texture;
+			m_textureList.emplace(s, tex);
+			if (tex->Initialize(L"../Resource/Textures/Map/Henesys/Tile/SlopingTop/" + ws, 90, 90, 1, 1, 0, 0) == false)
 				return false;
 		}
 	}

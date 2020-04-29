@@ -82,8 +82,8 @@ void AnimatedObject::Render()
 
 			// 방향을 곱해줘야 함
 			transform._11 *= m_direction;
-			transform._31 += (*iter0).second->GetOriginX() * m_direction;
-			transform._32 += (*iter0).second->GetOriginY();
+			transform._31 += (*iter0).second->GetOffsetX() * m_direction;
+			transform._32 += (*iter0).second->GetOffsetY();
 
 			transform = transform * GET_INSTANCE(Camera)->GetViewMatrix();
 			GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(transform);
@@ -127,8 +127,8 @@ void AnimatedObject::RenderBoundingBox()
 				Matrix3x2F transform = m_worldMatrix;
 
 				transform._11 *= m_direction;
-				transform._31 += tex->GetOriginX();
-				transform._32 += tex->GetOriginY();
+				transform._31 += tex->GetOffsetX();
+				transform._32 += tex->GetOffsetY();
 
 				aabbCollider->GetTransformedBounds(&transform, &boundRect);
 				GET_INSTANCE(D2DManager)->GetRenderTarget()->SetTransform(GET_INSTANCE(Camera)->GetViewMatrix());
@@ -196,6 +196,22 @@ void AnimatedObject::SetPosition(VECTOR2D position)
 		object->SetPosition(position);
 }
 
+float AnimatedObject::GetObjectBottomPos()
+{
+	auto iter0 = m_animationMap.find(m_animation);
+	if (iter0 == m_animationMap.end())
+		return 0.f;
+
+	auto iter1 = m_textureMap.find((*iter0).second->GetAnimation());
+	if (iter1 == m_textureMap.end())
+		return 0.f;
+
+	// 오브젝트의 y좌표 + 이미지 높이의 절반 + offsetY
+	float y = GetPositionVector().y + (*iter1).second->GetHeight() * 0.5f + (*iter1).second->GetOffsetY();
+
+	return y;
+}
+
 void AnimatedObject::RegenerateColliderAABB()
 {
 	auto iter = m_animationMap.find(m_animation);
@@ -216,8 +232,8 @@ void AnimatedObject::RegenerateColliderAABB()
 		reinterpret_cast<AABBCollider*>(m_collider)->SetAABB(AABB(-width * 0.5f, -height * 0.5f, width * 0.5f, height * 0.5f));
 
 	Matrix3x2F transform = m_worldMatrix;
-	transform._31 += tex->GetOriginX();
-	transform._32 += tex->GetOriginY();
+	transform._31 += tex->GetOffsetX();
+	transform._32 += tex->GetOffsetY();
 
 	m_collider->Update(&transform);
 
@@ -235,7 +251,7 @@ AnimatedObject* AnimatedObject::InitHierarchy(const string& name)
 	return obj;
 }
 
-AnimatedObject * AnimatedObject::FindObject(const string & name)
+AnimatedObject* AnimatedObject::FindObject(const string & name)
 {
 	for (auto object : m_hierarchyList)
 		if (object->m_name == name)
